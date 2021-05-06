@@ -1,0 +1,43 @@
+html,
+body {
+  height: auto;
+  min-height: 100%;
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+.test-item {
+    background: #fff;
+    border-radius: 0.375rem;
+    box-shadow: 0px 2px 16px -4px rgba(0,0,0,0.6);
+    padding: .8rem 1rem;
+}
+
+.test-item .name {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.question-container {
+    border-radius: 0.375rem;
+    box-shadow: 0px 2px 16px -4px rgba(0,0,0,0.6);
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+}
+
+.correctAnswer {
+    font-size: 1.8rem;
+    margin-left: 1.5rem;
+    cursor: pointer;
+}
+
+.correctAnswer.active {
+    color: green;
+}
+
+#deleteQuestion {
+    color: red;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
