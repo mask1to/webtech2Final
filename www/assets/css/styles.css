@@ -441,3 +441,14 @@ body {
     font-size: 1.8rem;
     cursor: pointer;
 }
+
+.theContainer
+{
+    max-width: 540px;
+}
+
+.letsClose
+{
+    line-height: 0 !important;
+    right: 15px !important;
+}
