@@ -22,11 +22,18 @@ include "config/config.php";
                         </div>
                     </div>
                 </div>
-                <form action="" class="test-form mt-5">
-                    <div class="form-group mb-5 questionTitle">
-                        <label for="testName" class="col-form-label col-form-label-lg">Názov testu</label>
-                        <input type="text" class="form-control form-control-lg" id="testName" name="testName" placeholder="Názov">
+                <form class="test-form mt-5">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="form-group mb-5 questionTitle pr-2 w-75">
+                            <label for="testName" class="col-form-label col-form-label-lg">Názov testu</label>
+                            <input type="text" class="form-control form-control-lg" id="testName" name="testName" placeholder="Názov">
+                        </div>
+                        <div class="form-group mb-5 questionTitle pl-2 w-25">
+                            <label for="testTime" class="col-form-label col-form-label-lg">Trvanie v minútach</label>
+                            <input type="number" class="form-control form-control-lg" id="testTime" name="testTime" placeholder="Trvanie">
+                        </div>
                     </div>
+                    <p class="totalTime"></p>
                     <button type="submit" class="btn btn-success w-100 btn-lg" id="addTest" name="addTest">Pridať test</button>
                 </form>
             </div>
@@ -36,33 +43,15 @@ include "config/config.php";
 
 <script>
     $(document).ready(function() {
+        $('.totalTime').text("Celkový počet bodov: " + countPoints());
+
+        $(document).on('input', '.points', function() {
+            $('.totalTime').text("Celkový počet bodov: " + countPoints());
+        })
+
         $('#checkboxQuestion').on('click', function() {
             checkboxCreate();
         });
-
-        function checkboxCreate() {
-            var question = ($('<div class="form-group question-container" style="display: none">' +
-                '<div class="ml-auto w-100 text-right"><a href="#" id="deleteQuestion" class="d-inline-block"><i class="bi bi-x-circle-fill"></i></a></div>' +
-                '<label class="d-block col-form-label col-form-label-lg">Znenie otázky</label>' +
-                '<input type="text" class="form-control form-control-lg mb-4" name="questionTitle" placeholder="Otázka">' +
-                '<div class="form-group">' +
-                '<label>Možnosť</label>' +
-                '<div class="d-flex align-items-center align-items-center">' +
-                '<input type="text" class="form-control" class="answer">' +
-                '<i class="bi bi-check-circle-fill correctAnswer"></i>' +
-                '</div>' +
-                '</div>' +
-                '<div class="form-group">' +
-                '<label>Možnosť</label>' +
-                '<div class="d-flex align-items-center align-items-center">' +
-                '<input type="text" class="form-control" class="answer">' +
-                '<i class="bi bi-check-circle-fill correctAnswer"></i>' +
-                '</div>' +
-                '</div>' +
-                '<button id="addAnswer" class="btn btn-secondary">Pridať možnosť</button>' +
-                '</div>'));
-            question.insertBefore('#addTest').slideDown("fast");
-        }
 
         $(document).on('click', '.correctAnswer', function() {
             if ($(this).hasClass('active')) {
@@ -72,7 +61,7 @@ include "config/config.php";
             }
         });
 
-        $(document).on('click', '#deleteQuestion', function(e) {
+        $(document).on('click', '.deleteQuestion', function(e) {
             e.preventDefault();
             $(this).parents('.question-container').slideToggle("fast", function() {
                 $(this).remove();
@@ -81,15 +70,109 @@ include "config/config.php";
 
         $(document).on('click', '#addAnswer', function(e) {
             e.preventDefault();
-            var option = ($('<div class="form-group">' +
+            addOption($(this));
+        });
+
+        $(document).on('click', '.deleteOption', function() {
+            $(this).parents('.form-option').slideToggle("fast", function() {
+                $(this).remove();
+            })
+        })
+
+        $(document).on('click', '#addTest', function(e) {
+            e.preventDefault();
+            var $name = $('#testName').val(),
+                $points = countPoints(),
+                $time = $('#testTime').val();
+            $.ajax({
+                url: "controllers/addTestController.php",
+                method: "POST",
+                cache: false,
+                data: {
+                    name: $name,
+                    points: $points,
+                    time: $time
+                },
+                success: function(result) {
+                    if (result > 0) {
+                        addQuestion(result);
+                    } else {
+                        console.log('dd');
+                    }
+                }
+            });
+        })
+
+        function addQuestion(testId) {
+            $('.question-container').each(function() {
+                var $this = $(this),
+                    $type = $this.data('type'),
+                    $question = $this.find('.questionInput').val(),
+                    $points = $this.find('.points').val();
+
+                $.ajax({
+                    url: "controllers/addQuestionController.php",
+                    method: "POST",
+                    cache: false,
+                    data: {
+                        testId: testId,
+                        question: $question,
+                        type: $type,
+                        points: $points
+                    },
+                    success: function() {
+                        if(result > 0) {
+
+                        }
+                    }
+                });
+            })
+        }
+
+        function checkboxCreate() {
+            var question = ($('<div class="form-group question-container" data-type="checkbox" style="display: none">' +
+                '<div class="d-flex align-items-center justify-content-between">' +
+                '<input type="number" class="form-control w-25 points" name="points" placeholder="Počet bodov" required>' +
+                '<a href="#" class="d-inline-block deleteQuestion"><i class="bi bi-x-circle-fill"></i></a></div>' +
+                '<label class="d-block col-form-label col-form-label-lg">Znenie otázky</label>' +
+                '<input type="text" class="form-control form-control-lg mb-4 questionInput" name="questionTitle" placeholder="Otázka" required>' +
+                '<button id="addAnswer" class="btn btn-secondary">Pridať možnosť</button>' +
+                '</div>'));
+            question.insertBefore('#addTest').slideDown("fast");
+        }
+
+        function addOption(btn) {
+            var option = ($('<div class="form-group form-option" style="display: none">' +
                 '<label>Možnosť</label>' +
                 '<div class="d-flex align-items-center align-items-center">' +
-                '<input type="text" class="form-control" class="answer">' +
+                '<input type="text" class="form-control answer">' +
                 '<i class="bi bi-check-circle-fill correctAnswer"></i>' +
+                '<i class="bi bi-x-circle-fill deleteOption"></i>' +
                 '</div>' +
                 '</div>'));
-            option.insertBefore($(this)).slideDown("fast");
-        });
+            option.insertBefore(btn).slideDown("fast");
+        }
+
+        function countPoints() {
+            var points = 0;
+
+            $('.points').each(function() {
+                points += parseInt($(this).val());
+            });
+
+            return points;
+        }
+
+        function makeid(length) {
+            var result = [];
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var charactersLength = characters.length;
+            for (var i = 0; i < length; i++) {
+                result.push(characters.charAt(Math.floor(Math.random() *
+                    charactersLength)));
+            }
+            return result.join('');
+        }
     })
 </script>
 

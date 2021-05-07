@@ -1,3 +1,20 @@
+<?php
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+if(isset($_POST['logOut'])) {
+    unset($_SESSION["id"]);
+    unset($_SESSION["firstName"]);
+    unset($_SESSION["lastName"]);
+    unset($_SESSION["loggedin"]);
+
+    session_destroy();
+
+    header("Location: index.php");
+}
+
+?>
 <!doctype html>
 <html lang="sk">
 
@@ -14,4 +31,39 @@
 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 </head>
+
 <body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Examify</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto align-items-center">
+                    <?php
+
+                    if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+                        echo '<li class="nav-item mr-3 welcome">
+                            Vitaj ' . $_SESSION['firstName'] . '
+                        </li>
+                        <li class="nav-item">
+                            <form method="POST" action="">
+                                <button type="submit" name="logOut" class="btn btn-danger">Odhlásiť sa</button>
+                            </form>
+                        </li>';
+                    } else {
+                        echo '<li class="nav-item">
+                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>';
+                    }
+                    ?>
+                </ul>
+            </div>
+        </nav>
+    </header>

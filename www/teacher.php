@@ -7,7 +7,6 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
     exit;
 }
 
-include "partials/header.php";
 include "config/config.php";
 
 $link = new mysqli(servername, username, password, database);
@@ -40,6 +39,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     }
 }
+include "partials/header.php";
 ?>
 
 <div class="container theContainer">
