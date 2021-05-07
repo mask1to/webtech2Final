@@ -8,7 +8,7 @@ include "partials/header.php";
     <div class="card"></div>
     <div class="card">
         <h1 class="title">Examify STU | Učiteľ <br> Prihlásenie</h1>
-        <form>
+        <form action="admin.php" method="post" enctype="multipart/form-data">
             <div class="input-container">
                 <input type="email" id="loginEmailTeacher" required="required" name="loginEmailTeacher"/>
                 <label for="loginEmailTeacher">E-mail</label>
@@ -20,7 +20,7 @@ include "partials/header.php";
                 <div class="bar"></div>
             </div>
             <div class="button-container">
-                <button name="loginTeacherBtn"><span>Prihlásiť sa</span></button>
+                <button name="loginTeacherBtn" type="submit"><span>Prihlásiť sa</span></button>
         </form>
     </div>
     <div class="card alt">
@@ -50,7 +50,7 @@ include "partials/header.php";
                 <div class="bar"></div>
             </div>
             <div class="button-container">
-                <button name="registerTeacherBtn" type="submit"><span>Registrovať saa</span></button>
+                <button name="registerTeacherBtn" type="submit"><span>Registrovať sa</span></button>
             </div>
         </form>
     </div>

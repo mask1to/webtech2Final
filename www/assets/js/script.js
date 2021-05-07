@@ -10,6 +10,19 @@ $(document).ready(function()
         }
     });
 
+    $('#showModal2').modal('show');
+    $.ajax({
+        type: "post",
+        url: "admin.php",
+        success:function (data)
+        {
+            if(data)
+            {
+                console.log("1");
+            }
+        }
+    });
+
     $('.toggle').on('click', function() {
         $('.container').stop().addClass('active');
     });
