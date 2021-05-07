@@ -10,13 +10,13 @@ include "partials/header.php";
         <h1 class="title">Examify STU | Učiteľ <br> Prihlásenie</h1>
         <form>
             <div class="input-container">
-                <input type="email" id="#{label}" required="required" name="loginEmailTeacher"/>
-                <label for="#{label}">E-mail</label>
+                <input type="email" id="loginEmailTeacher" required="required" name="loginEmailTeacher"/>
+                <label for="loginEmailTeacher">E-mail</label>
                 <div class="bar"></div>
             </div>
             <div class="input-container">
-                <input type="password" id="#{label}" required="required" name="loginPasswordTeacher"/>
-                <label for="#{label}">Heslo</label>
+                <input type="password" id="loginPasswordTeacher" required="required" name="loginPasswordTeacher"/>
+                <label for="loginPasswordTeacher">Heslo</label>
                 <div class="bar"></div>
             </div>
             <div class="button-container">
@@ -28,29 +28,29 @@ include "partials/header.php";
         <h1 class="title">Examify STU | Učiteľ <br> Registrácia
             <div class="close letsClose"></div>
         </h1>
-        <form>
+        <form action="addTeacher.php" method="post" enctype="multipart/form-data">
             <div class="input-container">
-                <input type="text" id="#{label}" required="required" name="teacherName"/>
-                <label for="#{label}">Meno</label>
+                <input type="text" id="teacherName" required="required" name="teacherName"/>
+                <label for="teacherName">Meno</label>
                 <div class="bar"></div>
             </div>
             <div class="input-container">
-                <input type="text" id="#{label}" required="required" name="teacherSurname"/>
-                <label for="#{label}">Priezvisko</label>
+                <input type="text" id="teacherSurname" required="required" name="teacherSurname"/>
+                <label for="teacherSurname">Priezvisko</label>
                 <div class="bar"></div>
             </div>
             <div class="input-container">
-                <input type="email" id="#{label}" required="required" name="teacherEmail"/>
-                <label for="#{label}">Email</label>
+                <input type="email" id="teacherEmail" required="required" name="teacherEmail"/>
+                <label for="teacherEmail">Email</label>
                 <div class="bar"></div>
             </div>
             <div class="input-container">
-                <input type="password" id="#{label}" required="required" name="teacherPassword"/>
-                <label for="#{label}">Heslo</label>
+                <input type="password" id="teacherPassword" required="required" name="teacherPassword"/>
+                <label for="teacherPassword">Heslo</label>
                 <div class="bar"></div>
             </div>
             <div class="button-container">
-                <button name="registerTeacherBtn"><span>Registrovať sa</span></button>
+                <button name="registerTeacherBtn" type="submit"><span>Registrovať sa</span></button>
             </div>
         </form>
     </div>

@@ -10,18 +10,18 @@ include "partials/header.php";
         <h1 class="title">Examify STU | Študent <br> Prihlásenie</h1>
         <form>
             <div class="input-container">
-                <input type="text" id="#{label}" required="required" name="studentName"/>
-                <label for="#{label}">Meno</label>
+                <input type="text" id="studentName" required="required" name="studentName"/>
+                <label for="studentName">Meno</label>
                 <div class="bar"></div>
             </div>
             <div class="input-container">
-                <input type="text" id="#{label}" required="required" name="studentSurname"/>
-                <label for="#{label}">Priezvisko</label>
+                <input type="text" id="studentSurname" required="required" name="studentSurname"/>
+                <label for="studentSurname">Priezvisko</label>
                 <div class="bar"></div>
             </div>
             <div class="input-container">
-                <input type="text" id="#{label}" required="required" name="testCode"/>
-                <label for="#{label}">Kód testu</label>
+                <input type="text" id="testCode" required="required" name="testCode"/>
+                <label for="testCode">Kód testu</label>
                 <div class="bar"></div>
             </div>
             <div class="button-container">
