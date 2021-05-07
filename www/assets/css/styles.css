@@ -1,9 +1,9 @@
 @charset "UTF-8";
 body {
     background: #e9e9e9;
-    color: #666666;
+    color: #000;
     font-family: "RobotoDraft", "Roboto", sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -87,12 +87,7 @@ body {
 }
 
 /* Container */
-.container {
-    position: relative;
-    max-width: 460px;
-    width: 100%;
-    margin: 0 auto 100px;
-}
+
 .container.active .card:first-child {
     background: #f2f2f2;
     margin: 0 15px;
