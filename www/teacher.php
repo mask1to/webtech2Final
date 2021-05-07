@@ -50,7 +50,7 @@ include "partials/header.php";
                 <div class="bar"></div>
             </div>
             <div class="button-container">
-                <button name="registerTeacherBtn" type="submit"><span>Registrovať sa</span></button>
+                <button name="registerTeacherBtn" type="submit"><span>Registrovať saa</span></button>
             </div>
         </form>
     </div>
