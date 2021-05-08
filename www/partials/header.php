@@ -54,7 +54,19 @@ if(isset($_POST['logOut'])) {
                                 <button type="submit" name="logOut" class="btn btn-danger">Odhlásiť sa</button>
                             </form>
                         </li>';
-                    } else {
+                    }
+                    else if(isset($_SESSION["student"]) && $_SESSION["student"] === true)
+                    {
+                        echo '<li class="nav-item mr-3 welcome">
+                            Vitaj ' . $_SESSION['studentName'] . '
+                        </li>
+                        <li class="nav-item">
+                            <form method="POST" action="">
+                                <button type="submit" name="logOut" class="btn btn-danger">Odhlásiť sa</button>
+                            </form>
+                        </li>';
+                    }
+                    else {
                         echo '<li class="nav-item">
                             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                         </li>

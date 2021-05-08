@@ -25,7 +25,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     insertNewStudent($link, $type, $studentName, $studentSurname);
 
     $selectTestCode = $link->query("SELECT test_code FROM test WHERE test_code = '$testCode'");
-    
+
     if($selectTestCode->num_rows > 0)
     {
         $selectedTestCode = mysqli_fetch_assoc($selectTestCode);
