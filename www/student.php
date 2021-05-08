@@ -1,45 +1,35 @@
 <?php
-session_start();
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+if(!isset($_SESSION['testCode'])){
+    header("location: index.php");
+}
+
 include "partials/header.php";
 include "queries/queries.php";
 include "config/config.php";
 
-
 $link = new mysqli(servername, username, password, database);
 
+$row = mysqli_fetch_assoc(getTestTime($link,$_SESSION['testCode']));
+$time = $row['total_time'];
 
 ?>
 
-<?php
-    $row = mysqli_fetch_assoc(getTestTime($link,$_SESSION['testCode']));
-    $time = $row['total_time'];
-
-    $_SESSION['countdown'] = $time;
-
-    $_SESSION['time_started'] = time();
-
-    $now = time();
-
-    $timeSince = $now - $_SESSION['time_started'];
-
-    $remainingSeconds = ($_SESSION['countdown'] - $timeSince);
-?>
-
-    <p>HELLO BITCHES</p>
-
-<div id="countdown"></div>
 <script type="text/javascript">
-    var iTime = <?php echo $remainingSeconds; ?>;
+    var iTime = <?php echo $time; ?>;
     function countdown()
     {
         var i = setInterval(function(){
-            document.getElementById("countdown").innerHTML = iTime;
+            document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + iTime;
             if(iTime===0){
-                alert('Countdown timer finished!');
-                <?php session_destroy();
-                header("location:../../index.php");
-                ?>
+                alert('Cas na test vyprsal!');
                 clearInterval(i);
+                <?php
+                session_destroy(); ?>
+                location.reload();
             } else {
                 iTime--;
             }
@@ -48,10 +38,7 @@ $link = new mysqli(servername, username, password, database);
     countdown();
 </script>
 
-<form name="test" method="post">
-    Enter time: <input type="text" name="time" />
-    <input type="submit" name="submit" value="Submit" />
-</form>
+    <div id="fixedTimer" class="fancy"></div>
 
 
 <?php
