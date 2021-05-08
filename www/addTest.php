@@ -97,7 +97,7 @@ include "config/config.php";
                     if (result > 0) {
                         addQuestion(result);
                     } else {
-                        console.log('dd');
+                        console.log('error');
                     }
                 }
             });
@@ -120,9 +120,35 @@ include "config/config.php";
                         type: $type,
                         points: $points
                     },
-                    success: function() {
-                        if(result > 0) {
+                    success: function(result) {
+                        if (result > 0) {
+                            $this.find('.form-option').each(function() {
+                                var $this1 = $(this),
+                                    $option = $this1.find('.answer').val();
+                                if ($this1.find('.correctAnswer').hasClass('active')) {
+                                    var $correct = 1;
+                                } else {
+                                    var $correct = 0;
+                                }
 
+                                $.ajax({
+                                    url: "controllers/addOptionController.php",
+                                    method: "POST",
+                                    cache: false,
+                                    data: {
+                                        questionId: result,
+                                        option: $option,
+                                        correct: $correct
+                                    },
+                                    success: function(result) {
+                                        if (result > 0) {
+                                            console.log("Uspešne nahraatie");
+                                        }
+                                    }
+                                });
+                            })
+                        } else {
+                            console.log('error 1');
                         }
                     }
                 });
