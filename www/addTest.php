@@ -17,7 +17,7 @@ include "config/config.php";
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="#" id="checkboxQuestion">Otázka s možnosťami</a>
-                            <a class="dropdown-item" href="#"id="shortanswerQuestion">Otázka s kratkou odpoveďou</a>
+                            <a class="dropdown-item" href="#" id="shortanswerQuestion">Otázka s kratkou odpoveďou</a>
                             <a class="dropdown-item" href="#">Something else here</a>
                         </div>
                     </div>
