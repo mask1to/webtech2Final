@@ -1,25 +1,13 @@
 $(document).ready(function()
 {
-    $('#showModal').modal('show');
+
+    $('#showModal').modal({backdrop: 'static', keyboard: false},'show');
     $.ajax({
         type: "post",
         url: "addTeacher.php",
         success:function (data)
         {
             console.log("1");
-        }
-    });
-
-    $('#showModal2').modal('show');
-    $.ajax({
-        type: "post",
-        url: "admin.php",
-        success:function (data)
-        {
-            if(data)
-            {
-                console.log("1");
-            }
         }
     });
 

@@ -1,5 +1,54 @@
 <?php
 
+session_start();
+if(isset($_SESSION["student"]) && $_SESSION["student"] === true)
+{
+    header("location: student.php");
+    exit;
+}
+
+include "config/config.php";
+include "queries/queries.php";
+
+$link = new mysqli(servername, username, password, database);
+
+$studentName = $studentSurname = $testCode = "";
+
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+    $studentName = $_POST['studentName'];
+    $studentSurname = $_POST['studentSurname'];
+    $type = "student";
+    $testCode = $_POST['testCode'];
+
+    //TODO: osetrit existujuceho usera
+    insertNewStudent($link, $type, $studentName, $studentSurname);
+
+    $selectTestCode = $link->query("SELECT test_code FROM test WHERE test_code = '$testCode'");
+    
+    if($selectTestCode->num_rows > 0)
+    {
+        $selectedTestCode = mysqli_fetch_assoc($selectTestCode);
+        $dbTestCode = $selectedTestCode['test_code'];
+
+        $_SESSION['studentName'] = $studentName;
+        $_SESSION['studentSurname'] = $studentSurname;
+        $_SESSION['testCode'] = $testCode;
+        $_SESSION['student'] = true;
+
+        if(isset($_SESSION["student"]) && $_SESSION["student"] === true)
+        {
+            header("location: student.php");
+            exit;
+        }
+    }
+    else
+    {
+
+    }
+
+}
+
 include "partials/header.php";
 
 ?>
@@ -8,7 +57,7 @@ include "partials/header.php";
     <div class="card"></div>
     <div class="card">
         <h1 class="title">Examify STU | Študent <br> Prihlásenie</h1>
-        <form>
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="input-container">
                 <input type="text" id="studentName" required="required" name="studentName"/>
                 <label for="studentName">Meno</label>
