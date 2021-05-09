@@ -17,8 +17,10 @@ include "config/config.php";
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="#" id="checkboxQuestion">Otázka s možnosťami</a>
-                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#" id="shortanswerQuestion">Otázka s kratkou odpoveďou</a>
                             <a class="dropdown-item" href="#">Something else here</a>
+                            <a class="dropdown-item" href="#" id="drawQuestion">Otázka s nakreslením obrázku</a>
+                            <a class="dropdown-item" href="#" id="mathQuestion">Otázka s napísaním matematického výrazu</a>
                         </div>
                     </div>
                 </div>
@@ -51,6 +53,18 @@ include "config/config.php";
 
         $('#checkboxQuestion').on('click', function() {
             checkboxCreate();
+        });
+
+		$('#shortanswerQuestion').on('click', function() {
+            shortanswerCreate();
+        });
+
+        $('#drawQuestion').on('click', function() {
+            drawquestionCreate();
+        });
+
+        $('#mathQuestion').on('click', function() {
+            mathquestionCreate();
         });
 
         $(document).on('click', '.correctAnswer', function() {
@@ -125,7 +139,7 @@ include "config/config.php";
                             $this.find('.form-option').each(function() {
                                 var $this1 = $(this),
                                     $option = $this1.find('.answer').val();
-                                if ($this1.find('.correctAnswer').hasClass('active')) {
+                                if (($this1.find('.correctAnswer').hasClass('active'))||($this1.find('.answer').hasClass('spravna'))) {
                                     var $correct = 1;
                                 } else {
                                     var $correct = 0;
@@ -142,7 +156,7 @@ include "config/config.php";
                                     },
                                     success: function(result) {
                                         if (result > 0) {
-                                            console.log("Uspešne nahraatie");
+                                            console.log("Uspešne nahratie");
                                         }
                                     }
                                 });
@@ -167,6 +181,43 @@ include "config/config.php";
             question.insertBefore('#addTest').slideDown("fast");
         }
 
+        function shortanswerCreate() {
+            var question = ($('<div class="form-group question-container" data-type="short" style="display: none">' +
+                '<div class="d-flex align-items-center justify-content-between">' +
+                '<input type="number" class="form-control w-25 points" name="points" placeholder="Počet bodov" required>' +
+                '<a href="#" class="d-inline-block deleteQuestion"><i class="bi bi-x-circle-fill"></i></a></div>' +
+                '<label class="d-block col-form-label col-form-label-lg">Znenie otázky</label>' +
+                '<input type="text" class="form-control form-control-lg mb-4 questionInput" name="questionTitle" placeholder="Otázka" required>' +               
+				'<div class="form-group form-option">'+
+				'<label class="d-block col-form-label col-form-label-lg">Správna odpoveď</label>' +
+                '<input type="text" class="form-control answer spravna" name="answer" placeholder="Odpoveď" required>' +
+				'</div>'+
+                '</div>'));
+            question.insertBefore('#addTest').slideDown("fast");
+        }
+
+        function drawquestionCreate() {
+            var question = ($('<div class="form-group question-container" data-type="draw" style="display: none">' +
+                '<div class="d-flex align-items-center justify-content-between">' +
+                '<input type="number" class="form-control w-25 points" name="points" placeholder="Počet bodov" required>' +
+                '<a href="#" class="d-inline-block deleteQuestion"><i class="bi bi-x-circle-fill"></i></a></div>' +
+                '<label class="d-block col-form-label col-form-label-lg">Znenie otázky</label>' +
+                '<input type="text" class="form-control form-control-lg mb-4 questionInput" name="questionTitle" placeholder="Otázka" required>' +
+                '</div>'));
+            question.insertBefore('#addTest').slideDown("fast");
+        }
+
+        function mathquestionCreate() {
+            var question = ($('<div class="form-group question-container" data-type="math" style="display: none">' +
+                '<div class="d-flex align-items-center justify-content-between">' +
+                '<input type="number" class="form-control w-25 points" name="points" placeholder="Počet bodov" required>' +
+                '<a href="#" class="d-inline-block deleteQuestion"><i class="bi bi-x-circle-fill"></i></a></div>' +
+                '<label class="d-block col-form-label col-form-label-lg">Znenie otázky</label>' +
+                '<input type="text" class="form-control form-control-lg mb-4 questionInput" name="questionTitle" placeholder="Otázka" required>' +
+                '</div>'));
+            question.insertBefore('#addTest').slideDown("fast");
+        }
+		
         function addOption(btn) {
             var option = ($('<div class="form-group form-option" style="display: none">' +
                 '<label>Možnosť</label>' +
