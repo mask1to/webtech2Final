@@ -55,9 +55,32 @@ if($sessionTestCode == $selectedData['test_code'])
                      ';
                     echo '</div>';
                 }
+
             }
             echo '<hr>';
         }
+        if($questions['type'] == 'short')
+        {
+            echo '<p class="text-muted"><b>Otázka s krátkou odpoveďou</b></p>
+                   <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>
+                   <p class="text-justify h5 pb-2 font-weight-bold">'.$questions['name'].'</p>';
+            while($option = $selectOptions->fetch_assoc())
+            {
+                if($option['question_id'] == $questionId)
+                {
+//                    <label class="rounded p-2 option"> '.$option['name'].'
+//                    <span class="crossmark"></span>
+                    echo '<div class="options py-3">                    
+                     <input type="text">   
+                     </label>
+                     ';
+                    echo '</div>';
+                }
+
+            }
+            echo '<hr>';
+        }
+
     }
 }
 
