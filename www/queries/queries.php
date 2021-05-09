@@ -54,3 +54,11 @@ function insertNewOption($conn, $questionId, $correct, $option)
     return 0;
 }
 
+function getTestTime($conn, $test_code){
+    $getTest = "SELECT total_time FROM test WHERE test_code='$test_code'";
+
+    $result = $conn->query($getTest) or die("Chyba vo vykonávaní query" . $conn->error);
+
+    return $result;
+}
+
