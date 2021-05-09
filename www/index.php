@@ -1,10 +1,13 @@
 <?php
 
 session_start();
-if(isset($_SESSION["student"]) && $_SESSION["student"] === true)
+if(isset($_SESSION["student"]))
 {
     header("location: student.php");
     exit;
+} else if(isset($_SESSION["loggedin"]))
+{
+    header("Location: admin.php");
 }
 
 include "config/config.php";

@@ -8,9 +8,8 @@ $questionId = $_POST['questionId'];
 $correct = $_POST['correct'];
 
 $result = insertNewOption($conn, $questionId, $correct, $option);
-    if($result > 0) {
-        echo $result;
-    }
-    else {
-        echo 0;
-    }
+if ($result > 0) {
+    echo $result;
+} else {
+    echo 0;
+}

@@ -640,3 +640,22 @@ body {
        corner of the right ear square. */
     border-bottom-left-radius: 0;
 }
+
+.fixed-element.fixed {
+    background:#343a40!important;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: .5rem 0;
+    width: 100%;
+    transition: 0.2s all ease-in;
+}
+
+.fixed-element.fixed > div {
+    max-width: 66%;
+    margin: 0 auto;
+}
+
+.fixed-element.fixed h1 {
+    color: #fff;
+}

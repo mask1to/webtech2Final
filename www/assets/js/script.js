@@ -1,24 +1,19 @@
-$(document).ready(function()
-{
+$(document).ready(function () {
 
-    $('#showModal').modal({backdrop: 'static', keyboard: false},'show');
+    $('#showModal').modal({ backdrop: 'static', keyboard: false }, 'show');
     $.ajax({
         type: "post",
         url: "addTeacher.php",
-        success:function (data)
-        {
-            console.log("1");
+        success: function (data) {
         }
     });
 
-    $('.toggle').on('click', function() {
+    $('.toggle').on('click', function () {
         $('.container').stop().addClass('active');
     });
 
-    $('.close').on('click', function() {
+    $('.close').on('click', function () {
         $('.container').stop().removeClass('active');
     });
 });
-
-
 

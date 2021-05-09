@@ -1,14 +1,13 @@
 <?php
-    session_start();
-    if(!empty($_SESSION["loggedin"]))
-    {
+session_start();
+if (!isset($_SESSION["loggedin"])) {
+    header("location: index.php");
+}
+include "partials/header.php";
+include "config/config.php";
 
-    }
-    include "partials/header.php";
-    include "config/config.php";
-
-    $link = new mysqli(servername, username, password, database);
-    $teacherEmail = $teacherPassword = "";
+$link = new mysqli(servername, username, password, database);
+$teacherEmail = $teacherPassword = "";
 
 ?>
 
@@ -21,7 +20,7 @@
                         Menotestu
                     </p>
                     <div class="d-flex align-items-center">
-                        <a href="addTest.php"><i class="bi bi-plus-circle"></i></a>   
+                        <a href="addTest.php"><i class="bi bi-plus-circle"></i></a>
                     </div>
                 </div>
             </div>
@@ -30,5 +29,5 @@
 </main>
 
 <?php
-    include "partials/footer.php";
+include "partials/footer.php";
 ?>

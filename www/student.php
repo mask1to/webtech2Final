@@ -80,7 +80,7 @@ $time = $row['total_time'];
             } else {
                 iTime--;
             }
-        },1000);
+        },60000);
     }
     countdown();
     <?php session_destroy(); ?>
