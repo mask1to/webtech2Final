@@ -47,7 +47,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     }
     else
     {
-
+        echo '<div id="showModal2" class="modal fade text-center">
+	            <div class="modal-dialog modal-confirm text-center">
+		            <div class="modal-content text-center">
+			            <div class="modal-header text-center">
+				            <div class="icon-box">
+					            <i class="bi bi-emoji-dizzy"></i>
+				            </div>				
+				            <h4 class="modal-title text-center">Neplatný kód</h4>	
+			            </div>
+			        <div class="modal-body text-center">
+				        <p class="text-center">Zadali ste kód testu, ktorý neexistuje !</p>
+			        </div>
+			        <div class="modal-footer text-center">
+				    <button class="btn btn-success btn-block" id="theButton" data-dismiss="modal">Rozumiem</button>
+			        </div>
+		        </div>
+	           </div>
+            </div>';
     }
 
 }
