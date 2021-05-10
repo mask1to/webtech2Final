@@ -54,6 +54,19 @@ function insertNewOption($conn, $questionId, $correct, $option)
     return 0;
 }
 
+function insertNewPair($conn, $questionId, $questionOptionId, $option)
+{
+    $insertQuery = "INSERT INTO OptionsPair(question_id,questionOption_id, name) 
+    VALUES ('$questionId', '$questionOptionId', '$option')";
+
+    $result = $conn->query($insertQuery) or die("Chyba vo vykonávaní query" . $conn->error);
+
+    if ($result) {
+        return 1;
+    }
+    return 0;
+}
+
 function getTestTime($conn, $test_code){
     $getTest = "SELECT total_time FROM test WHERE test_code='$test_code'";
 
