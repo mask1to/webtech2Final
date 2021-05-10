@@ -649,6 +649,7 @@ body {
     padding: .5rem 0;
     width: 100%;
     transition: 0.2s all ease-in;
+    z-index: 1000;
 }
 
 .fixed-element.fixed > div {
