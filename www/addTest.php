@@ -9,7 +9,7 @@ include "partials/header.php";
 include "config/config.php";
 
 ?>
-    <link rel="stylesheet" href="assets/css/fieldsLinker.css">
+
 <main class="pt-4 pb-4">
     <div class="container">
         <div class="row">
