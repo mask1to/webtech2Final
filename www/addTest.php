@@ -13,7 +13,7 @@ include "config/config.php";
 <main class="pt-4 pb-4">
     <div class="container">
         <div class="row">
-            <div class="col-12 col-sm-10 col-md-8 offset-sm-1 offset-md-2">
+            <div class="col-12 col-md-8 offset-md-2">
                 <div class="alert alert-success" role="alert" style="display: none">
                     Nahratie testu prebehlo úspešne!
                 </div>
@@ -27,8 +27,8 @@ include "config/config.php";
                     Je potrebné zadať možnosti
                 </div>
                 <div class="fixed-element">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <h1 class="mb-0">Vytváranie testu</h1>
+                    <div class="d-flex align-items-start justify-content-between flex-column flex-md-row align-items-md-center">
+                        <h1 class="mb-3 mb-md-0">Vytváranie testu</h1>
                         <div class="dropdown">
                             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Pridať otázku
