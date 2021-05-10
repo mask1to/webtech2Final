@@ -49,7 +49,7 @@ function insertNewOption($conn, $questionId, $correct, $option)
     $result = $conn->query($insertQuery) or die("Chyba vo vykonávaní query" . $conn->error);
 
     if ($result) {
-        return 1;
+        return $conn->insert_id;
     }
     return 0;
 }
