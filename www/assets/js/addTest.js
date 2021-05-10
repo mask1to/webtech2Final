@@ -1,6 +1,6 @@
 
 $(document).ready(function () {
-    window.addEventListener('load', function () {
+    //window.addEventListener('load', function () {
         // Fetch all the forms we want to apply custom Bootstrap validation styles to
         var forms = document.getElementsByClassName('needs-validation');
         // Loop over them and prevent submission
@@ -26,7 +26,7 @@ $(document).ready(function () {
                 form.classList.add('was-validated');
             }, false);
         });
-    }, false);
+    //}, false);
     $('.totalTime').text("Celkový počet bodov: " + countPoints());
 
     $(document).on('input', '.points', function () {
