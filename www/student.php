@@ -30,7 +30,7 @@ if($sessionTestCode == $selectedData['test_code'])
             <div class="content">
             <p class="text-muted"><b>Kód testu: '.$sessionTestCode. '</b></p>
             <p class="text-muted"><b>Počet bodov v teste: '.$selectedData["total_points"].'</b></p>
-            <p class="text-muted" id="fixedTimer"><b>Zostávajúci čas: 00:00</b></p> <hr>';
+            <hr>';
 
     while($questions = $selectTypeOfQuestion->fetch_assoc())
     {
@@ -86,95 +86,95 @@ if($sessionTestCode == $selectedData['test_code'])
                    <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>
                    <p class="text-justify h5 pb-2 font-weight-bold">'.$questions['name'].'</p>';
 
-                ?>
+            ?>
             <p class="demoToolList"><button onclick="c(clickX,clickY,clickDrag);" id="clearCanvasSimple" type="button">Odznovu</button></p>
             <div id="canvasDiv"></div>
-                <script>
-                    build_canvas();
+            <script>
+                build_canvas();
 
-                    var clickX = new Array();
-                    var clickY = new Array();
-                    var clickDrag = new Array();
-                    var paint;
+                var clickX = new Array();
+                var clickY = new Array();
+                var clickDrag = new Array();
+                var paint;
 
-                    function build_canvas() {
-                        var canvasDiv = document.getElementById('canvasDiv');
-                        canvas = document.createElement('canvas');
-                        canvas.setAttribute('width', 490);
-                        canvas.setAttribute('height', 220);
-                        canvas.setAttribute('id', 'canvas');
-                        canvas.style = "border:thin solid black";
-                        canvasDiv.appendChild(canvas);
-                        if(typeof G_vmlCanvasManager != 'undefined') {
-                            canvas = G_vmlCanvasManager.initElement(canvas);
-                        }
-                        context = canvas.getContext("2d");
+                function build_canvas() {
+                    var canvasDiv = document.getElementById('canvasDiv');
+                    canvas = document.createElement('canvas');
+                    canvas.setAttribute('width', 490);
+                    canvas.setAttribute('height', 220);
+                    canvas.setAttribute('id', 'canvas');
+                    canvas.style = "border:thin solid black";
+                    canvasDiv.appendChild(canvas);
+                    if(typeof G_vmlCanvasManager != 'undefined') {
+                        canvas = G_vmlCanvasManager.initElement(canvas);
                     }
+                    context = canvas.getContext("2d");
+                }
 
-                    function c() {
-                        context.clearRect(0, 0, canvas.width, canvas.height);
-                        context.closePath();
+                function c() {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    context.closePath();
 
-                        clickX = new Array();
-                        clickY = new Array();
-                        clickDrag = new Array();
-                    }
+                    clickX = new Array();
+                    clickY = new Array();
+                    clickDrag = new Array();
+                }
 
-                    $('#canvas').mousedown(function(e){
-                        var mouseX = e.pageX - this.offsetLeft;
-                        var mouseY = e.pageY - this.offsetTop;
+                $('#canvas').mousedown(function(e){
+                    var mouseX = e.pageX - this.offsetLeft;
+                    var mouseY = e.pageY - this.offsetTop;
 
-                        paint = true;
-                        addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+                    paint = true;
+                    addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+                    redraw();
+                });
+
+                $('#canvas').mousemove(function(e){
+                    if(paint){
+                        addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
                         redraw();
-                    });
-
-                    $('#canvas').mousemove(function(e){
-                        if(paint){
-                            addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
-                            redraw();
-                        }
-                    });
-
-                    $('#canvas').mouseup(function(e){
-                        paint = false;
-                    });
-
-                    $('#canvas').mouseleave(function(e){
-                        paint = false;
-                    });
-
-
-
-                    function addClick(x, y, dragging)
-                    {
-                        clickX.push(x);
-                        clickY.push(y);
-                        clickDrag.push(dragging);
                     }
+                });
 
-                    function redraw(){
-                        context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
+                $('#canvas').mouseup(function(e){
+                    paint = false;
+                });
 
-                        context.strokeStyle = "#df4b26";
-                        context.lineJoin = "round";
-                        context.lineWidth = 5;
+                $('#canvas').mouseleave(function(e){
+                    paint = false;
+                });
 
-                        for(var i=0; i < clickX.length; i++) {
-                            context.beginPath();
-                            if(clickDrag[i] && i){
-                                context.moveTo(clickX[i-1], clickY[i-1]);
-                            }else{
-                                context.moveTo(clickX[i]-1, clickY[i]);
-                            }
-                            context.lineTo(clickX[i], clickY[i]);
-                            context.closePath();
-                            context.stroke();
+
+
+                function addClick(x, y, dragging)
+                {
+                    clickX.push(x);
+                    clickY.push(y);
+                    clickDrag.push(dragging);
+                }
+
+                function redraw(){
+                    context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
+
+                    context.strokeStyle = "#df4b26";
+                    context.lineJoin = "round";
+                    context.lineWidth = 5;
+
+                    for(var i=0; i < clickX.length; i++) {
+                        context.beginPath();
+                        if(clickDrag[i] && i){
+                            context.moveTo(clickX[i-1], clickY[i-1]);
+                        }else{
+                            context.moveTo(clickX[i]-1, clickY[i]);
                         }
+                        context.lineTo(clickX[i], clickY[i]);
+                        context.closePath();
+                        context.stroke();
                     }
-                </script>
+                }
+            </script>
 
-                <?php
+            <?php
 
             echo '<hr>';
         }
@@ -183,7 +183,7 @@ if($sessionTestCode == $selectedData['test_code'])
             echo '<p class="text-muted"><b>Otázka s matematickou odpoveďou</b></p>
                    <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>  
                       <math-field disabled>'. $questions['name'] .'</math-field>
-                   <div id="mathfield" >'.  $questions['name'].' </div> 
+                   <div id="mathfield" style="max-height: 40px">'.  $questions['name'].' </div> 
                 ';
             echo '      <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>
             <script>
@@ -192,19 +192,7 @@ if($sessionTestCode == $selectedData['test_code'])
               virtualKeyboards: "numeric symbols"
             });
             </script>   
-   ';
-//            while($option = $selectOptions->fetch_assoc())
-//            {
-//                if($option['question_id'] == $questionId)
-//                {
-//                    echo '<div class="options py-3">
-//                     <input type="text">
-//                     </label>
-//                     ';
-//                    echo '</div>';
-//                }
-//
-//            }
+               ';
             echo '<hr>';
         }
 
@@ -264,16 +252,13 @@ echo '
             document.cookie = name + "=" + value + expires + "; path=/";
         }
 
-
-        //var iTimeMinutes = <?php echo $time; ?>;
-        //var iTimeSeconds = iTimeMinutes % 60;
-        var iTimeMinutes = 4;
-        var iTimeSeconds = 1;
+        var iTimeMinutes = <?php echo $time; ?>;
+        var iTimeSeconds = iTimeMinutes % 60;
 
         if(checkCookie('timerMinutes') && checkCookie("timerSeconds"))
         {
-            iTimeMinutes = getCookie('timerMinutes');
-            iTimeSeconds = getCookie('timerSeconds');
+            iTimeMinutes = parseInt(getCookie('timerMinutes'), 10);
+            iTimeSeconds = parseInt(getCookie('timerSeconds'), 10);
         }
 
         function countdown()
@@ -283,17 +268,17 @@ echo '
                 document.cookie = "timerMinutes=" + encodeURIComponent(iTimeMinutes);
                 document.cookie = "timerSeconds=" + encodeURIComponent(iTimeSeconds);
 
-                if(iTimeMinutes < 10 && iTimeSeconds < 10)
+                if((iTimeMinutes < 10 && iTimeSeconds < 10) || (iTimeMinutes < "10" && iTimeSeconds < "10"))
                 {
                     document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + "0" + iTimeMinutes + ":" + "0" + iTimeSeconds;
                 }
                 else
                 {
-                    if(iTimeMinutes < 10)
+                    if((iTimeMinutes < 10) || (iTimeMinutes < "10"))
                     {
                         document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + "0" + iTimeMinutes + ":" + iTimeSeconds;
                     }
-                    else if(iTimeSeconds < 10)
+                    else if((iTimeSeconds < 10) || (iTimeSeconds < "10"))
                     {
                         document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + iTimeMinutes + ":" + "0" + iTimeSeconds;
                     }
@@ -304,7 +289,7 @@ echo '
 
                 }
 
-                if(iTimeMinutes === 0 && iTimeSeconds === 0)
+                if((iTimeMinutes === 0 && iTimeSeconds === 0) || (iTimeMinutes === "0" && iTimeSeconds === "0"))
                 {
                     alert('Cas na test vyprsal!');
                     delete_cookie('timerMinutes');
@@ -314,7 +299,7 @@ echo '
                 }
                 else
                 {
-                    if(iTimeSeconds === 0)
+                    if(iTimeSeconds === 0 || iTimeSeconds === "0")
                     {
                         iTimeMinutes--;
                         iTimeSeconds = 60;
@@ -329,7 +314,7 @@ echo '
         <?php session_destroy(); ?>
     </script>
 
-    <!--div id="fixedTimer" class="fancy"></div -->
+    <div id="fixedTimer" class="fancy"></div>
 
 <?php
 
