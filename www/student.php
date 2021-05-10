@@ -80,6 +80,29 @@ if($sessionTestCode == $selectedData['test_code'])
             echo '<hr>';
         }
 
+        if($questions['type'] == 'connect')
+        {
+            echo '<p class="text-muted"><b>Otázka s párovaním správnych odpovedí</b></p>
+                   <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>
+                   <p class="text-justify h5 pb-2 font-weight-bold">'.$questions['name'].'</p>';
+            while($option = $selectOptions->fetch_assoc())
+            {
+                if($option['question_id'] == $questionId)
+                {
+                    $opname=$option['name'];
+                    echo"<p>$opname";
+                    $optionpairId=$option['id'];
+                    $pairOptions = $link->query("SELECT * FROM OptionsPair WHERE questionOption_id = '$optionpairId'");
+                    while($pair = $pairOptions->fetch_assoc()){
+                        $pname=$pair['name'];
+                        echo"   $pname</p>";
+                    }
+
+                }
+            }
+            echo '<hr>';
+        }
+
         if($questions['type'] == 'draw')
         {
             echo '<p class="text-muted"><b>Otázka s nakreslením obrázku</b></p>
