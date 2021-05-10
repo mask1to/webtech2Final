@@ -10,6 +10,17 @@ $(document).ready(function () {
                 if (form.checkValidity() === false) {
                     event.stopPropagation();
                 } else {
+                    $('.question-container').each(function () {
+                        if ($(this).data('type') === 'checkbox' && $(this).find('.form-option').length == 0) {
+                            $("html, body").animate({
+                                scrollTop: 0
+                            }, "slow");
+                            $(".alert-option").fadeTo(2000, 500).slideUp(500, function () {
+                                $(".alert-option").slideUp(500);
+                            })
+                            return;
+                        }
+                    })
                     addTest();
                 }
                 form.classList.add('was-validated');
@@ -25,21 +36,25 @@ $(document).ready(function () {
     $('#checkboxQuestion').on('click', function (e) {
         e.preventDefault();
         checkboxCreate();
+        $('.needs-validation').removeClass('was-validated');
     });
 
     $('#shortanswerQuestion').on('click', function (e) {
         e.preventDefault();
         shortanswerCreate();
+        $('.needs-validation').removeClass('was-validated');
     });
 
     $('#drawQuestion').on('click', function (e) {
         e.preventDefault();
         drawquestionCreate();
+        $('.needs-validation').removeClass('was-validated');
     });
 
     $('#mathQuestion').on('click', function (e) {
         e.preventDefault();
         mathquestionCreate();
+        $('.needs-validation').removeClass('was-validated');
     });
 
     $(document).on('click', '.correctAnswer', function () {
@@ -61,6 +76,7 @@ $(document).ready(function () {
     $(document).on('click', '#addAnswer', function (e) {
         e.preventDefault();
         addOption($(this));
+        $('.needs-validation').removeClass('was-validated');
     });
 
     $(document).on('click', '.deleteOption', function () {
@@ -110,51 +126,41 @@ $(document).ready(function () {
                     },
                     success: function (result) {
                         if (result > 0) {
-                            if ($type === 'checkbox' && $this.find('.form-option').length) {
-                                $this.find('.form-option').each(function () {
-                                    var $this1 = $(this),
-                                        $option = $this1.find('.answer').val();
-                                    if (($this1.find('.correctAnswer').hasClass('active')) || ($this1.find('.answer').hasClass('spravna'))) {
-                                        var $correct = 1;
-                                    } else {
-                                        var $correct = 0;
-                                    }
+                            $this.find('.form-option').each(function () {
+                                var $this1 = $(this),
+                                    $option = $this1.find('.answer').val();
+                                if (($this1.find('.correctAnswer').hasClass('active')) || ($this1.find('.answer').hasClass('spravna'))) {
+                                    var $correct = 1;
+                                } else {
+                                    var $correct = 0;
+                                }
 
-                                    $.ajax({
-                                        url: "controllers/addOptionController.php",
-                                        method: "POST",
-                                        cache: false,
-                                        data: {
-                                            questionId: result,
-                                            option: $option,
-                                            correct: $correct
-                                        },
-                                        success: function (result) {
-                                            $("html, body").animate({
-                                                scrollTop: 0
-                                            }, "slow");
-                                            if (result > 0) {
-                                                $(".alert-success").fadeTo(2000, 500).slideUp(500, function () {
-                                                    $(".alert-success").slideUp(500);
-                                                    window.location.replace('admin.php');
-                                                })
-                                            } else {
-                                                $(".alert-error").fadeTo(2000, 500).slideUp(500, function () {
-                                                    $(".alert-error").slideUp(500);
-                                                });
-                                            }
+                                $.ajax({
+                                    url: "controllers/addOptionController.php",
+                                    method: "POST",
+                                    cache: false,
+                                    data: {
+                                        questionId: result,
+                                        option: $option,
+                                        correct: $correct
+                                    },
+                                    success: function (result) {
+                                        $("html, body").animate({
+                                            scrollTop: 0
+                                        }, "slow");
+                                        if (result > 0) {
+                                            $(".alert-success").fadeTo(2000, 500).slideUp(500, function () {
+                                                $(".alert-success").slideUp(500);
+                                                window.location.replace('admin.php');
+                                            })
+                                        } else {
+                                            $(".alert-error").fadeTo(2000, 500).slideUp(500, function () {
+                                                $(".alert-error").slideUp(500);
+                                            });
                                         }
-                                    });
-                                })
-                            }
-                            else {
-                                $("html, body").animate({
-                                    scrollTop: 0
-                                }, "slow");
-                                $(".alert-option").fadeTo(2000, 500).slideUp(500, function () {
-                                    $(".alert-option").slideUp(500);
-                                })
-                            }
+                                    }
+                                });
+                            })
                         } else {
                             $("html, body").animate({
                                 scrollTop: 0
