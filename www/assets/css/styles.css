@@ -482,6 +482,16 @@ body {
     cursor: pointer;
 }
 
+.deletePair {
+    color: red;
+    font-size: 1.8rem;
+    margin-left: 1.5rem;
+    cursor: pointer;
+}
+.pair{
+    margin-left: 8px;
+}
+
 .theContainer {
 
     max-width: 540px !important;
