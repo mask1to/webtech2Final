@@ -82,6 +82,8 @@ if($sessionTestCode == $selectedData['test_code'])
 
         if($questions['type'] == 'connect')
         {
+            echo '<link rel="stylesheet" href="assets/css/fieldsLinker.css">';
+            echo '<script src="assets/js/fieldsLinker.js"></script>';
             echo '<p class="text-muted"><b>Otázka s párovaním správnych odpovedí</b></p>
                    <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>
                    <p class="text-justify h5 pb-2 font-weight-bold">'.$questions['name'].'</p>';
@@ -94,6 +96,7 @@ if($sessionTestCode == $selectedData['test_code'])
                     $optionpairId=$option['id'];
                     $pairOptions = $link->query("SELECT * FROM OptionsPair WHERE questionOption_id = '$optionpairId'");
                     while($pair = $pairOptions->fetch_assoc()){
+
                         $pname=$pair['name'];
                         echo"   $pname</p>";
                     }
