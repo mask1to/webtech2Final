@@ -164,7 +164,7 @@ $(document).ready(function () {
                                     },
                                     success: function (result) {
                                         if($this1.find('.pair').length) {
-                                            $pair = $this1.find('.pair').val();
+                                            var $pair = $this1.find('.pair').val();
                                             $.ajax({
                                                 url: "controllers/addPairController.php",
                                                 method: "POST",
