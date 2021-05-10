@@ -48,6 +48,12 @@ $(document).ready(function () {
         $('.needs-validation').removeClass('was-validated');
     });
 
+    $('#connectQuestion').on('click', function (e) {
+        e.preventDefault();
+        connectCreate();
+        $('.needs-validation').removeClass('was-validated');
+    });
+
     $('#drawQuestion').on('click', function (e) {
         e.preventDefault();
         drawquestionCreate();
@@ -88,23 +94,20 @@ $(document).ready(function () {
         })
     })
 
+    $(document).on('click', '#addPair', function (e) {
+        e.preventDefault();
+        addPair($(this));
+        $('.needs-validation').removeClass('was-validated');
+    });
+
+    $(document).on('click', '.deletePair', function () {
+        $(this).parents('.form-option').slideToggle("fast", function () {
+            $(this).remove();
+        })
+    })
+
     function addTest() {
         if ($('.question-container').length) {
-            var $name = $('#testName').val(),
-                $points = countPoints(),
-                $time = $('#testTime').val();
-            $.ajax({
-                url: "controllers/addTestController.php",
-                method: "POST",
-                cache: false,
-                data: {
-                    name: $name,
-                    points: $points,
-                    time: $time
-                },
-                success: function (result) {
-                    if (result > 0) {
-                        addQuestion(result);
                     }
                 },
             });
@@ -213,6 +216,18 @@ $(document).ready(function () {
         question.insertBefore('#addTest').slideDown("fast");
     }
 
+    function connectCreate() {
+        var question = ($('<div class="form-group question-container" data-type="connect" style="display: none">' +
+            '<div class="d-flex align-items-center justify-content-between">' +
+            '<input type="number" class="form-control w-25 points" name="points" placeholder="Počet bodov" required>' +
+            '<a href="#" class="d-inline-block deleteQuestion"><i class="bi bi-x-circle-fill"></i></a></div>' +
+            '<label class="d-block col-form-label col-form-label-lg">Znenie otázky</label>' +
+            '<input type="text" class="form-control form-control-lg mb-4 questionInput" name="questionTitle" placeholder="Otázka" required>' +
+            '<button id="addPair" class="btn btn-secondary">Pridať dvojice</button>' +
+            '</div>'));
+        question.insertBefore('#addTest').slideDown("fast");
+    }
+
     function drawquestionCreate() {
         var question = ($('<div class="form-group question-container" data-type="draw" style="display: none">' +
             '<div class="d-flex align-items-center justify-content-between">' +
@@ -242,6 +257,18 @@ $(document).ready(function () {
             '<input type="text" class="form-control answer" required>' +
             '<i class="bi bi-check-circle-fill correctAnswer"></i>' +
             '<i class="bi bi-x-circle-fill deleteOption"></i>' +
+            '</div>' +
+            '</div>'));
+        option.insertBefore(btn).slideDown("fast");
+    }
+
+    function addPair(btn) {
+        var option = ($('<div class="form-group form-option" style="display: none">' +
+            '<label>Správne dvojice</label>' +
+            '<div class="d-flex align-items-center align-items-center">' +
+            '<input type="text" class="form-control answer" required>' +
+            '<input type="text" class="form-control pair" required>' +
+            '<i class="bi bi-x-circle-fill deletePair"></i>' +
             '</div>' +
             '</div>'));
         option.insertBefore(btn).slideDown("fast");

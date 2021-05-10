@@ -36,6 +36,7 @@ include "config/config.php";
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="#" id="checkboxQuestion">Otázka s možnosťami</a>
                                 <a class="dropdown-item" href="#" id="shortanswerQuestion">Otázka s krátkou odpoveďou</a>
+                                <a class="dropdown-item" href="#" id="connectQuestion">Otázka s párovaním správnych odpovedí</a>
                                 <a class="dropdown-item" href="#" id="drawQuestion">Otázka s nakreslením obrázku</a>
                                 <a class="dropdown-item" href="#" id="mathQuestion">Otázka s napísaním matematického výrazu</a>
                             </div>
@@ -62,7 +63,6 @@ include "config/config.php";
 </main>
 
 <script src="assets/js/addTest.js"></script>
-
 <?php
 include "partials/footer.php";
 ?>
