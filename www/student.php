@@ -5,7 +5,6 @@ if(!isset($_SESSION['testCode'])){
     header("location: index.php");
 }
 
-
 include "partials/header.php";
 include "queries/queries.php";
 include "config/config.php";
@@ -81,14 +80,107 @@ if($sessionTestCode == $selectedData['test_code'])
             echo '<hr>';
         }
 
+        if($questions['type'] == 'draw')
+        {
+            echo '<p class="text-muted"><b>Otázka s nakreslením obrázku</b></p>
+                   <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>
+                   <p class="text-justify h5 pb-2 font-weight-bold">'.$questions['name'].'</p>';
+
+                ?>
+            <p class="demoToolList"><button onclick="c(clickX,clickY,clickDrag);" id="clearCanvasSimple" type="button">Odznovu</button></p>
+            <div id="canvasDiv"></div>
+                <script>
+                    build_canvas();
+
+                    var clickX = new Array();
+                    var clickY = new Array();
+                    var clickDrag = new Array();
+                    var paint;
+
+                    function build_canvas() {
+                        var canvasDiv = document.getElementById('canvasDiv');
+                        canvas = document.createElement('canvas');
+                        canvas.setAttribute('width', 490);
+                        canvas.setAttribute('height', 220);
+                        canvas.setAttribute('id', 'canvas');
+                        canvas.style = "border:thin solid black";
+                        canvasDiv.appendChild(canvas);
+                        if(typeof G_vmlCanvasManager != 'undefined') {
+                            canvas = G_vmlCanvasManager.initElement(canvas);
+                        }
+                        context = canvas.getContext("2d");
+                    }
+
+                    function c() {
+                        context.clearRect(0, 0, canvas.width, canvas.height);
+                        context.closePath();
+
+                        clickX = new Array();
+                        clickY = new Array();
+                        clickDrag = new Array();
+                    }
+
+                    $('#canvas').mousedown(function(e){
+                        var mouseX = e.pageX - this.offsetLeft;
+                        var mouseY = e.pageY - this.offsetTop;
+
+                        paint = true;
+                        addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+                        redraw();
+                    });
+
+                    $('#canvas').mousemove(function(e){
+                        if(paint){
+                            addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+                            redraw();
+                        }
+                    });
+
+                    $('#canvas').mouseup(function(e){
+                        paint = false;
+                    });
+
+                    $('#canvas').mouseleave(function(e){
+                        paint = false;
+                    });
+
+
+
+                    function addClick(x, y, dragging)
+                    {
+                        clickX.push(x);
+                        clickY.push(y);
+                        clickDrag.push(dragging);
+                    }
+
+                    function redraw(){
+                        context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
+
+                        context.strokeStyle = "#df4b26";
+                        context.lineJoin = "round";
+                        context.lineWidth = 5;
+
+                        for(var i=0; i < clickX.length; i++) {
+                            context.beginPath();
+                            if(clickDrag[i] && i){
+                                context.moveTo(clickX[i-1], clickY[i-1]);
+                            }else{
+                                context.moveTo(clickX[i]-1, clickY[i]);
+                            }
+                            context.lineTo(clickX[i], clickY[i]);
+                            context.closePath();
+                            context.stroke();
+                        }
+                    }
+                </script>
+
+                <?php
+
+            echo '<hr>';
+        }
+
     }
 }
-
-
-
-
-
-
 
 /*
 echo '
