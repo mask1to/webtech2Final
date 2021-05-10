@@ -207,7 +207,6 @@ $(document).ready(function () {
                     }
                 });
             });
-            alert('lol')
         }
         else {
             $("html, body").animate({
