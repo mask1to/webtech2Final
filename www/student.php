@@ -178,6 +178,35 @@ if($sessionTestCode == $selectedData['test_code'])
 
             echo '<hr>';
         }
+        if($questions['type'] == 'math')
+        {
+            echo '<p class="text-muted"><b>Otázka s matematickou odpoveďou</b></p>
+                   <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>  
+                      <math-field disabled>'. $questions['name'] .'</math-field>
+                   <div id="mathfield" >'.  $questions['name'].' </div> 
+                ';
+            echo '      <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>
+            <script>
+            MathLive.makeMathField(document.getElementById("mathfield"),  {
+              virtualKeyboardMode: "manual",
+              virtualKeyboards: "numeric symbols"
+            });
+            </script>   
+   ';
+//            while($option = $selectOptions->fetch_assoc())
+//            {
+//                if($option['question_id'] == $questionId)
+//                {
+//                    echo '<div class="options py-3">
+//                     <input type="text">
+//                     </label>
+//                     ';
+//                    echo '</div>';
+//                }
+//
+//            }
+            echo '<hr>';
+        }
 
     }
 }
