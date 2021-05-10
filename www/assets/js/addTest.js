@@ -274,7 +274,9 @@ $(document).ready(function () {
             '<input type="number" class="form-control w-25 points" name="points" placeholder="Počet bodov" required>' +
             '<a href="#" class="d-inline-block deleteQuestion"><i class="bi bi-x-circle-fill"></i></a></div>' +
             '<label class="d-block col-form-label col-form-label-lg">Znenie otázky</label>' +
-            '<input type="text" class="form-control form-control-lg mb-4 questionInput" name="questionTitle" placeholder="Otázka" required>' +
+            '<math-field class="questionInput" id="mathfield" ></math-field>' +
+
+            // '<input type="text" class="form-control form-control-lg mb-4 questionInput" name="questionTitle" placeholder="Otázka" required>' +
             '</div>'));
         question.insertBefore('#addTest').slideDown("fast");
     }
