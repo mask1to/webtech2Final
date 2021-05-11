@@ -101,7 +101,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
 ?>
             <p class="demoToolList"><button onclick="c(clickX,clickY,clickDrag);" id="clearCanvasSimple" type="button">Odznovu</button></p>
             <div id="canvasDiv"></div>
-            <button id="download">Download</button>
             <script>
                 build_canvas();
 
@@ -175,7 +174,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     })
                 });*/
 
-                $('#download').on('click', function(event) {
+                $(document).on('click', '.send_answers',  function(event) {
                     event.preventDefault();
                     var dataURL = canvas.toDataURL();
                     $.ajax({
@@ -220,7 +219,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     }
                 }
 
-
                 context.save();
             </script>
 
@@ -243,7 +241,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
             </form>
 
             <div class="dropdown show">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Typ odpovede
                 </a>
 
@@ -265,7 +263,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
             echo '<hr>';
         }
     }
-    echo '</div> <input type="submit" value="Odoslať test" class="mx-sm-0 mx-1 submit">
+    echo '</div>
+                <button id="download" class="send_answers">Odoslať test</button>
     </div>';
 }
 
