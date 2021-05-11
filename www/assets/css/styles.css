@@ -120,6 +120,11 @@ body {
 .container.active .card.alt .toggle:before {
     content: "";
 }
+
+.container.active .card.alt .toggle:after {
+    content: "";
+}
+
 .container.active .card.alt .title,
 .container.active .card.alt .input-container,
 .container.active .card.alt .button-container {
@@ -353,6 +358,9 @@ body {
     -moz-osx-font-smoothing: grayscale;
     transform: translate(0, 0);
 }
+
+
+
 .card.alt .title,
 .card.alt .input-container,
 .card.alt .button-container {
@@ -474,7 +482,18 @@ body {
     cursor: pointer;
 }
 
+.deletePair {
+    color: red;
+    font-size: 1.8rem;
+    margin-left: 1.5rem;
+    cursor: pointer;
+}
+.pair{
+    margin-left: 8px;
+}
+
 .theContainer {
+
     max-width: 540px !important;
 }
 
@@ -492,7 +511,6 @@ body {
     margin: 30px auto;
 }
 .modal-confirm .modal-content {
-    padding: 20px;
     border-radius: 5px;
     border: none;
 }
@@ -501,13 +519,11 @@ body {
     position: relative;
 }
 .modal-confirm h4 {
-    text-align: center;
     font-size: 26px;
-    margin-top: 30px;
-    margin-left: 55px;
+    margin: 15px auto;
 }
 .modal-confirm .form-control,
-.modal-confirm .btn {
+.modal-confirm .btn, .modal-confirm .btn2 {
     min-height: 40px;
     border-radius: 3px;
 }
@@ -533,13 +549,33 @@ body {
     height: 95px;
     border-radius: 50%;
     z-index: 9;
+    /*background: #82ce34;*/
+    background: orangered;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.modal-confirm .icon-box2
+{
+    color: #fff;
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: -70px;
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    z-index: 9;
     background: #82ce34;
     padding: 15px;
     text-align: center;
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
 }
-.modal-confirm .icon-box i {
-    font-size: 58px;
+
+.modal-confirm .icon-box i, .modal-confirm .icon-box2 i {
+    font-size: 48px;
     position: relative;
 }
 .modal-confirm.modal-dialog {
@@ -548,13 +584,32 @@ body {
 .modal-confirm .btn {
     color: #fff;
     border-radius: 4px;
+    /*background: #82ce34;*/
+    background: #2196f3;
+    text-decoration: none;
+    transition: all 0.4s;
+    border: none;
+}
+
+.modal-confirm .btn2 {
+    color: #fff;
+    border-radius: 4px;
     background: #82ce34;
     text-decoration: none;
     transition: all 0.4s;
     border: none;
 }
+
 .modal-confirm .btn:hover,
 .modal-confirm .btn:focus {
+    /*background: #6fb32b;*/
+    background: #2196f3;
+    outline: none;
+}
+
+.modal-confirm .btn2:hover,
+.modal-confirm .btn2:focus
+{
     background: #6fb32b;
     outline: none;
 }
@@ -566,10 +621,6 @@ body {
 #theButton {
     padding-top: 0.5rem !important;
     padding-bottom: 0.5rem !important;
-}
-
-#showModal {
-    background-image: url("https://images.pexels.com/photos/419635/notebook-empty-design-paper-419635.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260");
 }
 
 .welcome {
@@ -871,4 +922,17 @@ input:checked + .slider:before {
     color: red !important;
     font-size: 1.5rem;
     padding-bottom: 0;
+}
+
+.upload-label{
+    text-align: center;
+    padding: 1em 6em;
+    width: 100%;
+    height: 50px;
+    background-color: #229aeb;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
 }

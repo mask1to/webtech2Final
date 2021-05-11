@@ -8,6 +8,7 @@ if(!isset($_SESSION['testCode'])){
 include "partials/header.php";
 include "queries/queries.php";
 include "config/config.php";
+include "uploadFile.php";
 
 $sessionTestCode = $_SESSION['testCode'];
 
@@ -20,7 +21,6 @@ $selectedData = mysqli_fetch_assoc($selectTestCode);
 
 //test id for entered test code
 $testId = $selectedData['id'];
-
 
 $selectTypeOfQuestion = $link->query("SELECT * FROM question WHERE test_id = $testId");
 
@@ -80,6 +80,32 @@ if($sessionTestCode == $selectedData['test_code'])
             echo '<hr>';
         }
 
+        if($questions['type'] == 'connect')
+        {
+            echo '<link rel="stylesheet" href="assets/css/fieldsLinker.css">';
+            echo '<script src="assets/js/fieldsLinker.js"></script>';
+            echo '<p class="text-muted"><b>Otázka s párovaním správnych odpovedí</b></p>
+                   <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>
+                   <p class="text-justify h5 pb-2 font-weight-bold">'.$questions['name'].'</p>';
+            while($option = $selectOptions->fetch_assoc())
+            {
+                if($option['question_id'] == $questionId)
+                {
+                    $opname=$option['name'];
+                    echo"<p>$opname";
+                    $optionpairId=$option['id'];
+                    $pairOptions = $link->query("SELECT * FROM OptionsPair WHERE questionOption_id = '$optionpairId'");
+                    while($pair = $pairOptions->fetch_assoc()){
+
+                        $pname=$pair['name'];
+                        echo"   $pname</p>";
+                    }
+
+                }
+            }
+            echo '<hr>';
+        }
+
         if($questions['type'] == 'draw')
         {
             echo '<p class="text-muted"><b>Otázka s nakreslením obrázku</b></p>
@@ -100,7 +126,7 @@ if($sessionTestCode == $selectedData['test_code'])
                 function build_canvas() {
                     var canvasDiv = document.getElementById('canvasDiv');
                     canvas = document.createElement('canvas');
-                    canvas.setAttribute('width', 490);
+                    canvas.setAttribute('width', 550);
                     canvas.setAttribute('height', 220);
                     canvas.setAttribute('id', 'canvas');
                     canvas.style = "border:thin solid black";
@@ -193,23 +219,40 @@ if($sessionTestCode == $selectedData['test_code'])
             });
             </script>   
                ';
+            ?>
+            <form action="" method="POST" enctype="multipart/form-data" id="typ-odpovede" style="display:none">
+                <p><input type="submit" name="upload" value="Vložiť"></p>
+                <label class="upload-label" for="file-btn">Vybrať súbor na upload</label>
+                <p><input type="file" id="file-btn" name="file" /hidden></p>
+            </form>
+
+            <div class="dropdown show">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Typ odpovede
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" id="nahrat-subor" href="#">Nahranim suboru</a>
+                    <a class="dropdown-item" href="#">bla</a>
+                    <a class="dropdown-item" href="#">bla</a>
+                </div>
+            </div>
+
+            <script>
+                document.getElementById('nahrat-subor').onclick = function(){
+                    document.getElementById('typ-odpovede').style.display = "block";
+                };
+            </script>
+
+            <?php
+
             echo '<hr>';
         }
 
     }
+    echo '</div> <input type="submit" value="Odoslať test" class="mx-sm-0 mx-1">
+    </div>';
 }
-
-/*
-echo '
-        <p class="text-muted">Multiple Choice Question</p>
-        <p class="text-justify h5 pb-2 font-weight-bold">What did Radha Krishnan (Cassius Clay at the time) wear while flying to Rome for the 1960 Games?</p>
-        <div class="options py-3"> <label class="rounded p-2 option"> His boxing gloves <input type="radio" name="radio"> <span class="crossmark"></span> </label> <label class="rounded p-2 option"> A parachute <input type="radio" name="radio"> <span class="checkmark"></span> </label> <label class="rounded p-2 option"> Nothing <input type="radio" name="radio"> <span class="crossmark"></span> </label> <label class="rounded p-2 option"> A world little belt <input type="radio" name="radio"> <span class="crossmark"></span> </label> </div> <b>Correct Feedback</b>
-        <p class="mt-2 mb-4 pl-2 text-justify"> Well done! He was scared of flying so picked up the parachute from an support store before the trip. He won gold </p> <b>Incorrect Feedback</b>
-        <p class="my-2 pl-2"> That was incorrect. Try again </p>
-    </div> <input type="submit" value="Add Question" class="mx-sm-0 mx-1">
-</div>';
-*/
-
 
 ?>
 
@@ -311,7 +354,7 @@ echo '
         }
 
         countdown();
-        <?php session_destroy(); ?>
+        <?php //toto bude treba poriesit, pretoze toto vypne session, teda sa obrazok neuploadne session_destroy(); ?>
     </script>
 
     <div id="fixedTimer" class="fancy"></div>

@@ -49,6 +49,19 @@ function insertNewOption($conn, $questionId, $correct, $option)
     $result = $conn->query($insertQuery) or die("Chyba vo vykonávaní query" . $conn->error);
 
     if ($result) {
+        return $conn->insert_id;
+    }
+    return 0;
+}
+
+function insertNewPair($conn, $questionId, $questionOptionId, $option)
+{
+    $insertQuery = "INSERT INTO OptionsPair(question_id,questionOption_id, name) 
+    VALUES ('$questionId', '$questionOptionId', '$option')";
+
+    $result = $conn->query($insertQuery) or die("Chyba vo vykonávaní query" . $conn->error);
+
+    if ($result) {
         return 1;
     }
     return 0;

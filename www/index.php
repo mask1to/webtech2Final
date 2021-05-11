@@ -24,30 +24,69 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     $type = "student";
     $testCode = $_POST['testCode'];
 
-    //TODO: osetrit existujuceho usera
-    insertNewStudent($link, $type, $studentName, $studentSurname);
-
-    $selectTestCode = $link->query("SELECT test_code FROM test WHERE test_code = '$testCode'");
+    $selectTestCode = $link->query("SELECT test_code, isActive FROM test WHERE test_code = '$testCode'");
 
     if($selectTestCode->num_rows > 0)
     {
+        insertNewStudent($link, $type, $studentName, $studentSurname);
         $selectedTestCode = mysqli_fetch_assoc($selectTestCode);
-        $dbTestCode = $selectedTestCode['test_code'];
-
-        $_SESSION['studentName'] = $studentName;
-        $_SESSION['studentSurname'] = $studentSurname;
-        $_SESSION['testCode'] = $testCode;
-        $_SESSION['student'] = true;
-
-        if(isset($_SESSION["student"]) && $_SESSION["student"] === true)
+        if($selectedTestCode['isActive'] == 1)
         {
-            header("location: student.php");
-            exit;
+            $dbTestCode = $selectedTestCode['test_code'];
+
+            $_SESSION['studentName'] = $studentName;
+            $_SESSION['studentSurname'] = $studentSurname;
+            $_SESSION['testCode'] = $testCode;
+            $_SESSION['student'] = true;
+
+            if(isset($_SESSION["student"]) && $_SESSION["student"] === true)
+            {
+                header("location: student.php");
+                exit;
+            }
+        }
+        else
+        {
+            echo '<div id="showModal4" class="modal fade text-center">
+	            <div class="modal-dialog modal-confirm text-center">
+		            <div class="modal-content text-center">
+			            <div class="modal-header text-center">
+				            <div class="icon-box">
+					            <i class="bi bi-emoji-dizzy"></i>
+				            </div>				
+				            <h4 class="modal-title text-center">Nespustený test</h4>	
+			            </div>
+			        <div class="modal-body text-center">
+				        <p class="text-center">Test už bol vytvorený, ale ešte nebol spustený učiteľom. Prosím počkajte a skúste neskôr.</p>
+			        </div>
+			        <div class="modal-footer text-center">
+				    <button class="btn btn-success btn-block" id="theButton" data-dismiss="modal">Rozumiem</button>
+			        </div>
+		        </div>
+	           </div>
+            </div>';
         }
     }
     else
     {
-
+        echo '<div id="showModal2" class="modal fade text-center">
+	            <div class="modal-dialog modal-confirm text-center">
+		            <div class="modal-content text-center">
+			            <div class="modal-header text-center">
+				            <div class="icon-box">
+					            <i class="bi bi-emoji-dizzy"></i>
+				            </div>				
+				            <h4 class="modal-title text-center">Neplatný kód</h4>	
+			            </div>
+			        <div class="modal-body text-center">
+				        <p class="text-center">Zadali ste kód testu, ktorý neexistuje !</p>
+			        </div>
+			        <div class="modal-footer text-center">
+				    <button class="btn btn-success btn-block" id="theButton" data-dismiss="modal">Rozumiem</button>
+			        </div>
+		        </div>
+	           </div>
+            </div>';
     }
 
 }
