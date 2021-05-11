@@ -1,5 +1,17 @@
 <?php
+require "./images/";
 session_start();
+
+//image upload
+if(isset($_POST['upload']) && isset($_SESSION['studentName']) && isset($_SESSION['studentSurname']) && isset($_SESSION['testCode'])){
+    echo "hi";
+    $file_name = $_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode']."_";
+    $file_type = $_FILES['file']['type'];
+    $file_size = $_FILES['file']['size'];
+    $file_store = "./images/".$file_name.$_FILES['file']['name'];
+    $file_tem_loc = $_FILES['file']['tmp_name'];
+    move_uploaded_file($file_tem_loc, $file_store);
+}
 
 if(!isset($_SESSION['testCode'])){
     header("location: index.php");
@@ -23,6 +35,9 @@ $testId = $selectedData['id'];
 
 
 $selectTypeOfQuestion = $link->query("SELECT * FROM question WHERE test_id = $testId");
+
+
+
 
 if($sessionTestCode == $selectedData['test_code'])
 {
@@ -79,6 +94,158 @@ if($sessionTestCode == $selectedData['test_code'])
             echo '<hr>';
         }
 
+<<<<<<< Updated upstream
+=======
+        if($questions['type'] == 'connect')
+        {
+            echo '<link rel="stylesheet" href="assets/css/fieldsLinker.css">';
+            echo '<script src="assets/js/fieldsLinker.js"></script>';
+            echo '<p class="text-muted"><b>Otázka s párovaním správnych odpovedí</b></p>
+                   <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>
+                   <p class="text-justify h5 pb-2 font-weight-bold">'.$questions['name'].'</p>';
+            while($option = $selectOptions->fetch_assoc())
+            {
+                if($option['question_id'] == $questionId)
+                {
+                    $opname=$option['name'];
+                    echo"<p>$opname";
+                    $optionpairId=$option['id'];
+                    $pairOptions = $link->query("SELECT * FROM OptionsPair WHERE questionOption_id = '$optionpairId'");
+                    while($pair = $pairOptions->fetch_assoc()){
+
+                        $pname=$pair['name'];
+                        echo"   $pname</p>";
+                    }
+
+                }
+            }
+            echo '<hr>';
+        }
+
+        if($questions['type'] == 'draw')
+        {
+            echo '<p class="text-muted"><b>Otázka s nakreslením obrázku</b></p>
+                   <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>
+                   <p class="text-justify h5 pb-2 font-weight-bold">'.$questions['name'].'</p>';
+
+            ?>
+            <p class="demoToolList"><button onclick="c(clickX,clickY,clickDrag);" id="clearCanvasSimple" type="button">Odznovu</button></p>
+            <div id="canvasDiv"></div>
+            <form action="" method="POST" enctype="multipart/form-data">
+                <p><input type="submit" name="upload" value="Vložiť"></p>
+                <label class="upload-label" for="file-btn">Vybrať súbor na upload</label>
+                <p><input type="file" id="file-btn" name="file"></p>
+            </form>
+            <script>
+                build_canvas();
+
+
+
+                var clickX = new Array();
+                var clickY = new Array();
+                var clickDrag = new Array();
+                var paint;
+
+                function build_canvas() {
+                    var canvasDiv = document.getElementById('canvasDiv');
+                    canvas = document.createElement('canvas');
+                    canvas.setAttribute('width', 490);
+                    canvas.setAttribute('height', 220);
+                    canvas.setAttribute('id', 'canvas');
+                    canvas.style = "border:thin solid black";
+                    canvasDiv.appendChild(canvas);
+                    if(typeof G_vmlCanvasManager != 'undefined') {
+                        canvas = G_vmlCanvasManager.initElement(canvas);
+                    }
+                    context = canvas.getContext("2d");
+                }
+
+                function c() {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    context.closePath();
+
+                    clickX = new Array();
+                    clickY = new Array();
+                    clickDrag = new Array();
+                }
+
+                $('#canvas').mousedown(function(e){
+                    var mouseX = e.pageX - this.offsetLeft;
+                    var mouseY = e.pageY - this.offsetTop;
+
+                    paint = true;
+                    addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+                    redraw();
+                });
+
+                $('#canvas').mousemove(function(e){
+                    if(paint){
+                        addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+                        redraw();
+                    }
+                });
+
+                $('#canvas').mouseup(function(e){
+                    paint = false;
+                });
+
+                $('#canvas').mouseleave(function(e){
+                    paint = false;
+                });
+
+
+
+                function addClick(x, y, dragging)
+                {
+                    clickX.push(x);
+                    clickY.push(y);
+                    clickDrag.push(dragging);
+                }
+
+                function redraw(){
+                    context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
+
+                    context.strokeStyle = "#df4b26";
+                    context.lineJoin = "round";
+                    context.lineWidth = 5;
+
+                    for(var i=0; i < clickX.length; i++) {
+                        context.beginPath();
+                        if(clickDrag[i] && i){
+                            context.moveTo(clickX[i-1], clickY[i-1]);
+                        }else{
+                            context.moveTo(clickX[i]-1, clickY[i]);
+                        }
+                        context.lineTo(clickX[i], clickY[i]);
+                        context.closePath();
+                        context.stroke();
+                    }
+                }
+            </script>
+
+            <?php
+
+            echo '<hr>';
+        }
+        if($questions['type'] == 'math')
+        {
+            echo '<p class="text-muted"><b>Otázka s matematickou odpoveďou</b></p>
+                   <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>  
+                      <math-field disabled>'. $questions['name'] .'</math-field>
+                   <div id="mathfield" style="max-height: 40px">'.  $questions['name'].' </div> 
+                ';
+            echo '      <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>
+            <script>
+            MathLive.makeMathField(document.getElementById("mathfield"),  {
+              virtualKeyboardMode: "manual",
+              virtualKeyboards: "numeric symbols"
+            });
+            </script>   
+               ';
+            echo '<hr>';
+        }
+
+>>>>>>> Stashed changes
     }
 }
 
@@ -198,7 +365,7 @@ echo '
         }
 
         countdown();
-        <?php session_destroy(); ?>
+
     </script>
 
     <!--div id="fixedTimer" class="fancy"></div -->
