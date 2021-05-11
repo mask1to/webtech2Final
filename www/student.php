@@ -8,6 +8,7 @@ if(!isset($_SESSION['testCode'])){
 include "partials/header.php";
 include "queries/queries.php";
 include "config/config.php";
+include "uploadFile.php";
 
 $sessionTestCode = $_SESSION['testCode'];
 
@@ -21,6 +22,7 @@ $selectedData = mysqli_fetch_assoc($selectTestCode);
 //test id for entered test code
 $testId = $selectedData['id'];
 
+<<<<<<< HEAD
 $selectTypeOfQuestion = $link->query("SELECT * FROM question WHERE test_id = $testId");
 
 if($sessionTestCode == $selectedData['test_code'])
@@ -60,6 +62,55 @@ if($sessionTestCode == $selectedData['test_code'])
         if($questions['type'] == 'short')
         {
             echo '<p class="text-muted"><b>Otázka s krátkou odpoveďou</b></p>
+=======
+
+$selectTypeOfQuestion = $link->query("SELECT * FROM question WHERE test_id = $testId");
+
+if($sessionTestCode == $selectedData['test_code'])
+{
+    echo '<div class="wrapper bg-white rounded">
+            <div class="content">
+            <p class="text-muted"><b>Kód testu: '.$sessionTestCode. '</b></p>
+            <p class="text-muted"><b>Počet bodov v teste: '.$selectedData["total_points"].'</b></p>
+            <hr>';
+
+    while($questions = $selectTypeOfQuestion->fetch_assoc())
+    {
+        $questionId = $questions['id'];
+
+        $selectOptions = $link->query("SELECT * FROM questionOption WHERE question_id = '$questionId'");
+        if($questions['type'] == 'checkbox')
+        {
+            echo '<p class="text-muted"><b>Otázka s možnosťami</b></p>
+>>>>>>> testTimer
+                   <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>
+                   <p class="text-justify h5 pb-2 font-weight-bold">'.$questions['name'].'</p>';
+            while($option = $selectOptions->fetch_assoc())
+            {
+                if($option['question_id'] == $questionId)
+                {
+<<<<<<< HEAD
+//                    <label class="rounded p-2 option"> '.$option['name'].'
+//                    <span class="crossmark"></span>
+                    echo '<div class="options py-3">                    
+                     <input type="text">   
+=======
+                    echo '<div class="options py-3"> 
+                     <label class="rounded p-2 option"> '.$option['name'].'
+                     <input type="checkbox" name="radio">
+                     <span class="crossmark"></span>
+>>>>>>> testTimer
+                     </label>
+                     ';
+                    echo '</div>';
+                }
+
+            }
+            echo '<hr>';
+        }
+        if($questions['type'] == 'short')
+        {
+            echo '<p class="text-muted"><b>Otázka s krátkou odpoveďou</b></p>
                    <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>
                    <p class="text-justify h5 pb-2 font-weight-bold">'.$questions['name'].'</p>';
             while($option = $selectOptions->fetch_assoc())
@@ -75,6 +126,29 @@ if($sessionTestCode == $selectedData['test_code'])
                     echo '</div>';
                 }
 
+<<<<<<< HEAD
+        if($questions['type'] == 'connect')
+        {
+            echo '<link rel="stylesheet" href="assets/css/fieldsLinker.css">';
+            echo '<script src="assets/js/fieldsLinker.js"></script>';
+            echo '<p class="text-muted"><b>Otázka s párovaním správnych odpovedí</b></p>
+                   <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>
+                   <p class="text-justify h5 pb-2 font-weight-bold">'.$questions['name'].'</p>';
+            while($option = $selectOptions->fetch_assoc())
+            {
+                if($option['question_id'] == $questionId)
+                {
+                    $opname=$option['name'];
+                    echo"<p>$opname";
+                    $optionpairId=$option['id'];
+                    $pairOptions = $link->query("SELECT * FROM OptionsPair WHERE questionOption_id = '$optionpairId'");
+                    while($pair = $pairOptions->fetch_assoc()){
+
+                        $pname=$pair['name'];
+                        echo"   $pname</p>";
+                    }
+
+=======
             }
             echo '<hr>';
         }
@@ -99,7 +173,7 @@ if($sessionTestCode == $selectedData['test_code'])
                         $pname=$pair['name'];
                         echo"   $pname</p>";
                     }
-
+>>>>>>> testTimer
                 }
             }
             echo '<hr>';
@@ -114,6 +188,7 @@ if($sessionTestCode == $selectedData['test_code'])
             ?>
             <p class="demoToolList"><button onclick="c(clickX,clickY,clickDrag);" id="clearCanvasSimple" type="button">Odznovu</button></p>
             <div id="canvasDiv"></div>
+<<<<<<< HEAD
             <script>
                 build_canvas();
 
@@ -201,6 +276,98 @@ if($sessionTestCode == $selectedData['test_code'])
 
             <?php
 
+=======
+
+
+
+            <script>
+                build_canvas();
+
+                var clickX = new Array();
+                var clickY = new Array();
+                var clickDrag = new Array();
+                var paint;
+
+                function build_canvas() {
+                    var canvasDiv = document.getElementById('canvasDiv');
+                    canvas = document.createElement('canvas');
+                    canvas.setAttribute('width', 550);
+                    canvas.setAttribute('height', 220);
+                    canvas.setAttribute('id', 'canvas');
+                    canvas.style = "border:thin solid black";
+                    canvasDiv.appendChild(canvas);
+                    if(typeof G_vmlCanvasManager != 'undefined') {
+                        canvas = G_vmlCanvasManager.initElement(canvas);
+                    }
+                    context = canvas.getContext("2d");
+                }
+
+                function c() {
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+                    context.closePath();
+
+                    clickX = new Array();
+                    clickY = new Array();
+                    clickDrag = new Array();
+                }
+
+                $('#canvas').mousedown(function(e){
+                    var mouseX = e.pageX - this.offsetLeft;
+                    var mouseY = e.pageY - this.offsetTop;
+
+                    paint = true;
+                    addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+                    redraw();
+                });
+
+                $('#canvas').mousemove(function(e){
+                    if(paint){
+                        addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+                        redraw();
+                    }
+                });
+
+                $('#canvas').mouseup(function(e){
+                    paint = false;
+                });
+
+                $('#canvas').mouseleave(function(e){
+                    paint = false;
+                });
+
+
+
+                function addClick(x, y, dragging)
+                {
+                    clickX.push(x);
+                    clickY.push(y);
+                    clickDrag.push(dragging);
+                }
+
+                function redraw(){
+                    context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
+
+                    context.strokeStyle = "#df4b26";
+                    context.lineJoin = "round";
+                    context.lineWidth = 5;
+
+                    for(var i=0; i < clickX.length; i++) {
+                        context.beginPath();
+                        if(clickDrag[i] && i){
+                            context.moveTo(clickX[i-1], clickY[i-1]);
+                        }else{
+                            context.moveTo(clickX[i]-1, clickY[i]);
+                        }
+                        context.lineTo(clickX[i], clickY[i]);
+                        context.closePath();
+                        context.stroke();
+                    }
+                }
+            </script>
+
+            <?php
+
+>>>>>>> testTimer
             echo '<hr>';
         }
         if($questions['type'] == 'math')
@@ -218,14 +385,62 @@ if($sessionTestCode == $selectedData['test_code'])
             });
             </script>   
                ';
+<<<<<<< HEAD
+=======
+
+            ?>
+
+            <form action="" method="POST" enctype="multipart/form-data" id="typ-odpovede" style="display:none">
+                <p><input type="submit" name="upload" value="Vložiť"></p>
+                <label class="upload-label" for="file-btn">Vybrať súbor na upload</label>
+                <p><input type="file" id="file-btn" name="file" /hidden></p>
+            </form>
+
+            <div class="dropdown show">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Typ odpovede
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" id="nahrat-subor" href="#">Nahranim suboru</a>
+                    <a class="dropdown-item" href="#">bla</a>
+                    <a class="dropdown-item" href="#">bla</a>
+                </div>
+            </div>
+
+            <script>
+                document.getElementById('nahrat-subor').onclick = function(){
+                    document.getElementById('typ-odpovede').style.display = "block";
+                };
+            </script>
+
+            <?php
+>>>>>>> testTimer
             echo '<hr>';
         }
 
     }
+<<<<<<< HEAD
     echo '</div> <input type="submit" value="Odoslať test" class="mx-sm-0 mx-1">
     </div>';
 }
 
+=======
+}
+
+/*
+echo '
+        <p class="text-muted">Multiple Choice Question</p>
+        <p class="text-justify h5 pb-2 font-weight-bold">What did Radha Krishnan (Cassius Clay at the time) wear while flying to Rome for the 1960 Games?</p>
+        <div class="options py-3"> <label class="rounded p-2 option"> His boxing gloves <input type="radio" name="radio"> <span class="crossmark"></span> </label> <label class="rounded p-2 option"> A parachute <input type="radio" name="radio"> <span class="checkmark"></span> </label> <label class="rounded p-2 option"> Nothing <input type="radio" name="radio"> <span class="crossmark"></span> </label> <label class="rounded p-2 option"> A world little belt <input type="radio" name="radio"> <span class="crossmark"></span> </label> </div> <b>Correct Feedback</b>
+        <p class="mt-2 mb-4 pl-2 text-justify"> Well done! He was scared of flying so picked up the parachute from an support store before the trip. He won gold </p> <b>Incorrect Feedback</b>
+        <p class="my-2 pl-2"> That was incorrect. Try again </p>
+    </div> <input type="submit" value="Add Question" class="mx-sm-0 mx-1">
+</div>';
+*/
+
+
+>>>>>>> testTimer
 ?>
 
     <script type="text/javascript">
@@ -251,12 +466,20 @@ if($sessionTestCode == $selectedData['test_code'])
             }
             return null;
         }
+<<<<<<< HEAD
 
         var delete_cookie = function(name)
         {
             document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
         };
 
+=======
+
+        var delete_cookie = function(name)
+        {
+            document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        };
+>>>>>>> testTimer
 
         function createCookie(name, value)
         {
@@ -327,6 +550,80 @@ if($sessionTestCode == $selectedData['test_code'])
 
         countdown();
         <?php session_destroy(); ?>
+    </script>
+
+    <div id="fixedTimer" class="fancy"></div>
+
+        function createCookie(name, value)
+        {
+            var date = new Date();
+            date.setTime(date.getTime() + (30*1000));
+            var expires = "; expires= " + date.toGMTString();
+
+            document.cookie = name + "=" + value + expires + "; path=/";
+        }
+
+        var iTimeMinutes = <?php echo $time; ?>;
+        var iTimeSeconds = iTimeMinutes % 60;
+
+        if(checkCookie('timerMinutes') && checkCookie("timerSeconds"))
+        {
+            iTimeMinutes = parseInt(getCookie('timerMinutes'), 10);
+            iTimeSeconds = parseInt(getCookie('timerSeconds'), 10);
+        }
+
+        function countdown()
+        {
+            var i = setInterval(function()
+            {
+                document.cookie = "timerMinutes=" + encodeURIComponent(iTimeMinutes);
+                document.cookie = "timerSeconds=" + encodeURIComponent(iTimeSeconds);
+
+                if((iTimeMinutes < 10 && iTimeSeconds < 10) || (iTimeMinutes < "10" && iTimeSeconds < "10"))
+                {
+                    document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + "0" + iTimeMinutes + ":" + "0" + iTimeSeconds;
+                }
+                else
+                {
+                    if((iTimeMinutes < 10) || (iTimeMinutes < "10"))
+                    {
+                        document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + "0" + iTimeMinutes + ":" + iTimeSeconds;
+                    }
+                    else if((iTimeSeconds < 10) || (iTimeSeconds < "10"))
+                    {
+                        document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + iTimeMinutes + ":" + "0" + iTimeSeconds;
+                    }
+                    else
+                    {
+                        document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + iTimeMinutes + ":" + iTimeSeconds;
+                    }
+
+                }
+
+                if((iTimeMinutes === 0 && iTimeSeconds === 0) || (iTimeMinutes === "0" && iTimeSeconds === "0"))
+                {
+                    alert('Cas na test vyprsal!');
+                    delete_cookie('timerMinutes');
+                    delete_cookie('timerSeconds');
+                    clearInterval(i);
+                    location.reload();
+                }
+                else
+                {
+                    if(iTimeSeconds === 0 || iTimeSeconds === "0")
+                    {
+                        iTimeMinutes--;
+                        iTimeSeconds = 60;
+                    }
+                    iTimeSeconds--;
+
+                }
+            },1000);
+        }
+
+        countdown();
+
+
     </script>
 
     <div id="fixedTimer" class="fancy"></div>

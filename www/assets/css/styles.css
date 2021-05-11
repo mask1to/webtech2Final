@@ -702,6 +702,11 @@ body {
        remains flat, we must make the bottom left
        corner of the right ear square. */
     border-bottom-left-radius: 0;
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> testTimer
 }
 
 .fixed-element.fixed {
@@ -842,12 +847,48 @@ input[type="submit"] {
     cursor: pointer;
 }
 
+<<<<<<< HEAD
+=======
+input[type="file"] {
+    width: 100%;
+    height: 50px;
+    background-color: #229aeb;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.upload-label {
+    padding: 1em 6em;
+    text-align: center;
+    width: 100%;
+    height: 50px;
+    background-color: #229aeb;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+>>>>>>> testTimer
 input[type="submit"]:hover:focus {
     border: none;
     outline: none;
     background-color: #229bebad;
 }
 
+<<<<<<< HEAD
+=======
+input[type="file"]:hover:focus {
+    border: none;
+    outline: none;
+    background-color: #229bebad;
+}
+
+>>>>>>> testTimer
 .switch {
     position: relative;
     display: inline-block;
@@ -922,4 +963,8 @@ input:checked + .slider:before {
     color: red !important;
     font-size: 1.5rem;
     padding-bottom: 0;
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> testTimer
 }
