@@ -8,10 +8,10 @@ function insertNewTeacher($conn, $type, $name, $surname, $password, $email)
     return $result;
 }
 
-function insertNewStudent($conn, $type, $name, $surname)
+function insertNewStudent($conn, $type, $name, $surname, $isWriting, $currentTestCode)
 {
-    $insertquery = "INSERT INTO user(type, name, surname)
-                     VALUES('$type', '$name', '$surname')";
+    $insertquery = "INSERT INTO user(type, name, surname, isWritingExam, currentTestCode)
+                     VALUES('$type', '$name', '$surname', '$isWriting', '$currentTestCode')";
     $result = $conn->query($insertquery) or die("Chyba vo vykonávaní query" . $conn->error);
     return $result;
 }

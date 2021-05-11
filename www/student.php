@@ -5,6 +5,11 @@ if(!isset($_SESSION['testCode'])){
     header("location: index.php");
 }
 
+if(!isset($_SESSION["student"]))
+{
+    header("location: index.php");
+}
+
 include "partials/header.php";
 include "queries/queries.php";
 include "config/config.php";
@@ -209,7 +214,7 @@ if($sessionTestCode == $selectedData['test_code'])
             echo '<p class="text-muted"><b>Otázka s matematickou odpoveďou</b></p>
                    <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>  
                       <math-field disabled>'. $questions['name'] .'</math-field>
-                   <div id="mathfield" style="max-height: 40px">'.  $questions['name'].' </div> 
+                   <div id="mathfield">'.  $questions['name'].' </div> 
                 ';
             echo '      <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>
             <script>

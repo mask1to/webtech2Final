@@ -1,11 +1,12 @@
 <?php
-
 session_start();
+
 if(isset($_SESSION["student"]))
 {
     header("location: student.php");
     exit;
-} else if(isset($_SESSION["loggedin"]))
+}
+else if(isset($_SESSION["loggedin"]))
 {
     header("Location: admin.php");
 }
@@ -16,6 +17,7 @@ include "queries/queries.php";
 $link = new mysqli(servername, username, password, database);
 
 $studentName = $studentSurname = $testCode = "";
+$isWriting = 0;
 
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
@@ -28,12 +30,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     if($selectTestCode->num_rows > 0)
     {
-        insertNewStudent($link, $type, $studentName, $studentSurname);
         $selectedTestCode = mysqli_fetch_assoc($selectTestCode);
         if($selectedTestCode['isActive'] == 1)
         {
             $dbTestCode = $selectedTestCode['test_code'];
-
             $_SESSION['studentName'] = $studentName;
             $_SESSION['studentSurname'] = $studentSurname;
             $_SESSION['testCode'] = $testCode;
@@ -41,8 +41,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
             if(isset($_SESSION["student"]) && $_SESSION["student"] === true)
             {
-                header("location: student.php");
-                exit;
+                if($isWriting == 0)
+                {
+                    $isWriting = 1;
+                    insertNewStudent($link, $type, $studentName, $studentSurname, $isWriting, $testCode);
+                    header("location: student.php");
+                    exit;
+                }
+                else if($isWriting == 1 && $testCode == $dbTestCode)
+                {
+                    header("location: student.php");
+                    exit;
+                }
             }
         }
         else

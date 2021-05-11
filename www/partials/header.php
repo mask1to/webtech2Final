@@ -1,13 +1,30 @@
 <?php
+
+include "config/config.php";
+$link = new mysqli(servername, username, password, database);
+
 if (!isset($_SESSION)) {
     session_start();
 }
 
 if(isset($_POST['logOut'])) {
-    unset($_SESSION["id"]);
-    unset($_SESSION["firstName"]);
-    unset($_SESSION["lastName"]);
-    unset($_SESSION["loggedin"]);
+
+    if(isset($_SESSION['student']))
+    {
+        $studentName = $_SESSION['studentName'];
+        $studentSurname = $_SESSION['studentSurname'];
+        unset($_SESSION['studentName']);
+        unset($_SESSION['studentSurname']);
+        unset($_SESSION['testCode']);
+        unset($_SESSION['student']);
+    }
+    else if(isset($_SESSION["loggedin"]))
+    {
+        unset($_SESSION["id"]);
+        unset($_SESSION["firstName"]);
+        unset($_SESSION["lastName"]);
+        unset($_SESSION["loggedin"]);
+    }
 
     session_destroy();
 
