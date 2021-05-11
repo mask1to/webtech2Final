@@ -272,7 +272,7 @@ if($sessionTestCode == $selectedData['test_code'])
             <form action="uploadFile.php" method="POST" enctype="multipart/form-data" id="typ-odpovede" style="display:none">
                 <p><input type="submit" name="upload" value="Vložiť"></p>
                 <label class="upload-label" for="file-btn">Vybrať súbor na upload</label>
-                <p><input type="file" id="file-btn" name="file" /hidden></p>
+                <p><input type="file" id="file-btn" name="file" hidden></p>
             </form>
 
             <div class="dropdown show">
