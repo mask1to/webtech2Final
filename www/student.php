@@ -315,6 +315,7 @@ if($sessionTestCode == $selectedData['test_code'])
 
                     if ($(this)[0].classList.contains('math')) {
                         var str = $(this)[0].innerText
+                        console.log($(this)[0].innerText)
                         var n = str.search("\n");
                         var res = str.substr(0, n);
                         // console.log(res)$(this).attr("id")
