@@ -2,8 +2,7 @@
 session_start();
 
 
-if(!isset($_SESSION["student"]))
-{
+if (!isset($_SESSION["student"])) {
     header("location: index.php");
 }
 
@@ -15,7 +14,7 @@ require_once("config/config.php");
 $link = $conn;
 
 $sessionTestCode = $_SESSION['testCode'];
-$row = mysqli_fetch_assoc(getTestTime($link,$_SESSION['testCode']));
+$row = mysqli_fetch_assoc(getTestTime($link, $_SESSION['testCode']));
 $time = $row['total_time'];
 
 $selectTestCode = $link->query("SELECT id, test_code, total_points FROM test WHERE test_code = '$sessionTestCode'");
@@ -26,99 +25,84 @@ $testId = $selectedData['id'];
 
 $selectTypeOfQuestion = $link->query("SELECT * FROM question WHERE test_id = '$testId'");
 
-if($sessionTestCode == $selectedData['test_code'])
-{
+if ($sessionTestCode == $selectedData['test_code']) {
     echo '<div class="wrapper bg-white rounded">
             <div class="content">
-            <p class="text-muted"><b>Kód testu: '.$sessionTestCode. '</b></p>
-            <p class="text-muted"><b>Počet bodov v teste: '.$selectedData["total_points"].'</b></p>
+            <p class="text-muted"><b>Kód testu: ' . $sessionTestCode . '</b></p>
+            <p class="text-muted"><b>Počet bodov v teste: ' . $selectedData["total_points"] . '</b></p>
             <hr>';
 
-    while($questions = $selectTypeOfQuestion->fetch_assoc())
-    {
+    while ($questions = $selectTypeOfQuestion->fetch_assoc()) {
         $questionId = $questions['id'];
 
         $selectOptions = $link->query("SELECT * FROM questionOption WHERE question_id = '$questionId'");
-        if($questions['type'] == 'checkbox')
-        {
+        if ($questions['type'] == 'checkbox') {
             echo '<p class="text-muted"><b>Otázka s možnosťami</b></p>
-                   <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>
-                   <p class="text-justify h5 pb-2 font-weight-bold">'.$questions['name'].'</p>';
-            while($option = $selectOptions->fetch_assoc())
-            {
-                if($option['question_id'] == $questionId)
-                {
+                   <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
+                   <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>';
+            while ($option = $selectOptions->fetch_assoc()) {
+                if ($option['question_id'] == $questionId) {
                     echo '<div class="options py-3 "> 
-                     <label class="rounded p-2 option"> '.$option['name'].'
-                     <input id="'. $questionId .'" type="checkbox" name="radio" class="testInput checkbox">
+                     <label class="rounded p-2 option"> ' . $option['name'] . '
+                     <input id="' . $questionId . '" type="checkbox" name="radio" class="testInput checkbox">
                      <span class="crossmark"></span>
                      </label>
                      ';
                     echo '</div>';
                 }
-
             }
             echo '<hr>';
         }
-        if($questions['type'] == 'short')
-        {
+        if ($questions['type'] == 'short') {
             echo '<p class="text-muted"><b>Otázka s krátkou odpoveďou</b></p>
-                   <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>
-                   <p class="text-justify h5 pb-2 font-weight-bold">'.$questions['name'].'</p>';
-            while($option = $selectOptions->fetch_assoc())
-            {
-                if($option['question_id'] == $questionId)
-                {
-//                    <label class="rounded p-2 option"> '.$option['name'].'
-//                    <span class="crossmark"></span>
+                   <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
+                   <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>';
+            while ($option = $selectOptions->fetch_assoc()) {
+                if ($option['question_id'] == $questionId) {
+                    //                    <label class="rounded p-2 option"> '.$option['name'].'
+                    //                    <span class="crossmark"></span>
                     echo '<div class="options py-3">                    
-                     <input id="'. $questionId . '" class="testInput short" type="text">   
+                     <input id="' . $questionId . '" class="testInput short" type="text">   
                      </label>
                      ';
                     echo '</div>';
                 }
-
             }
             echo '<hr>';
         }
 
-        if($questions['type'] == 'connect')
-        {
+        if ($questions['type'] == 'connect') {
             echo '<link rel="stylesheet" href="assets/css/fieldsLinker.css">';
             echo '<script src="assets/js/fieldsLinker.js"></script>';
             echo '<p class="text-muted"><b>Otázka s párovaním správnych odpovedí</b></p>
-                   <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>
-                   <p class="text-justify h5 pb-2 font-weight-bold">'.$questions['name'].'</p>';
-            while($option = $selectOptions->fetch_assoc())
-            {
-                if($option['question_id'] == $questionId)
-                {
-                    $opname=$option['name'];
-                    echo"<p>$opname";
-                    $optionpairId=$option['id'];
+                   <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
+                   <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>';
+            while ($option = $selectOptions->fetch_assoc()) {
+                if ($option['question_id'] == $questionId) {
+                    $opname = $option['name'];
+                    echo "<p>$opname";
+                    $optionpairId = $option['id'];
                     $pairOptions = $link->query("SELECT * FROM OptionsPair WHERE questionOption_id = '$optionpairId'");
-                    while($pair = $pairOptions->fetch_assoc()){
+                    while ($pair = $pairOptions->fetch_assoc()) {
 
-                        $pname=$pair['name'];
-                        echo"   $pname</p>";
+                        $pname = $pair['name'];
+                        echo "   $pname</p>";
                     }
-
                 }
             }
             echo '<hr>';
         }
 
-        if($questions['type'] == 'draw')
-        {
+        if ($questions['type'] == 'draw') {
             echo '<p class="text-muted"><b>Otázka s nakreslením obrázku</b></p>
-                   <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>
-                   <p class="text-justify h5 pb-2 font-weight-bold">'.$questions['name'].'</p>';
+                   <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
+                   <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>';
 
-            ?>
+?>
             <p class="demoToolList"><button onclick="c(clickX,clickY,clickDrag);" id="clearCanvasSimple" type="button">Odznovu</button></p>
             <div id="canvasDiv"></div>
             <button id="download">Download</button>
-                <script>
+            <script>
                 build_canvas();
 
 
@@ -135,7 +119,7 @@ if($sessionTestCode == $selectedData['test_code'])
                     canvas.setAttribute('id', 'canvas');
                     canvas.style = "border:thin solid black";
                     canvasDiv.appendChild(canvas);
-                    if(typeof G_vmlCanvasManager != 'undefined') {
+                    if (typeof G_vmlCanvasManager != 'undefined') {
                         canvas = G_vmlCanvasManager.initElement(canvas);
                     }
                     context = canvas.getContext("2d");
@@ -150,7 +134,7 @@ if($sessionTestCode == $selectedData['test_code'])
                     clickDrag = new Array();
                 }
 
-                $('#canvas').mousedown(function(e){
+                $('#canvas').mousedown(function(e) {
                     var mouseX = e.pageX - this.offsetLeft;
                     var mouseY = e.pageY - this.offsetTop;
 
@@ -159,18 +143,18 @@ if($sessionTestCode == $selectedData['test_code'])
                     redraw();
                 });
 
-                $('#canvas').mousemove(function(e){
-                    if(paint){
+                $('#canvas').mousemove(function(e) {
+                    if (paint) {
                         addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
                         redraw();
                     }
                 });
 
-                $('#canvas').mouseup(function(e){
+                $('#canvas').mouseup(function(e) {
                     paint = false;
                 });
 
-                $('#canvas').mouseleave(function(e){
+                $('#canvas').mouseleave(function(e) {
                     paint = false;
                 });
 
@@ -191,16 +175,16 @@ if($sessionTestCode == $selectedData['test_code'])
                     })
                 });*/
 
-                $('#download').on('click', function (event) {
+                $('#download').on('click', function(event) {
                     event.preventDefault();
                     var dataURL = canvas.toDataURL();
                     $.ajax({
                         type: "post",
                         url: "uploadFile.php",
-                        data:{
+                        data: {
                             img_draw: dataURL
                         },
-                        success:function (data) {
+                        success: function(data) {
                             console.log(data);
                         }
 
@@ -210,26 +194,25 @@ if($sessionTestCode == $selectedData['test_code'])
 
 
 
-                function addClick(x, y, dragging)
-                {
+                function addClick(x, y, dragging) {
                     clickX.push(x);
                     clickY.push(y);
                     clickDrag.push(dragging);
                 }
 
-                function redraw(){
+                function redraw() {
                     context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
 
                     context.strokeStyle = "#df4b26";
                     context.lineJoin = "round";
                     context.lineWidth = 5;
 
-                    for(var i=0; i < clickX.length; i++) {
+                    for (var i = 0; i < clickX.length; i++) {
                         context.beginPath();
-                        if(clickDrag[i] && i){
-                            context.moveTo(clickX[i-1], clickY[i-1]);
-                        }else{
-                            context.moveTo(clickX[i]-1, clickY[i]);
+                        if (clickDrag[i] && i) {
+                            context.moveTo(clickX[i - 1], clickY[i - 1]);
+                        } else {
+                            context.moveTo(clickX[i] - 1, clickY[i]);
                         }
                         context.lineTo(clickX[i], clickY[i]);
                         context.closePath();
@@ -239,36 +222,20 @@ if($sessionTestCode == $selectedData['test_code'])
 
 
                 context.save();
-
             </script>
 
-            <?php
+        <?php
 
             echo '<hr>';
         }
-        if($questions['type'] == 'math')
-        {
+        if ($questions['type'] == 'math') {
             echo '<p class="text-muted"><b>Otázka s matematickou odpoveďou</b></p>
-                   <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>  
-                      <math-field disabled>'. $questions['name'] .'</math-field>
-                   <div id="'. $questionId .'"  class="testInput math " > </div> 
+                   <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>  
+                      <math-field disabled>' . $questions['name'] . '</math-field>
+                   <math-field id="'. $questions['id'] .'" virtual-keyboard-mode="manual" class="testInput math border mb-3"></math-field>
                 ';
-            echo '      <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>
-            <script>
-            
-            var els = document.getElementsByClassName("math");
-
-            Array.prototype.forEach.call(els, function(el) {
-                 MathLive.makeMathField(el,  {
-              virtualKeyboardMode: "manual",
-              virtualKeyboards: "numeric symbols"
-            });
-            });
-            document.getElementsByClassName("math")
-           
-            </script>   
-               ';
-            ?>
+            echo '      <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>';
+        ?>
             <form action="uploadFile.php" method="POST" enctype="multipart/form-data" id="typ-odpovede" style="display:none">
                 <p><input type="submit" name="upload" value="Vložiť"></p>
                 <label class="upload-label" for="file-btn">Vybrať súbor na upload</label>
@@ -288,16 +255,15 @@ if($sessionTestCode == $selectedData['test_code'])
             </div>
 
             <script>
-                document.getElementById('nahrat-subor').onclick = function(){
+                document.getElementById('nahrat-subor').onclick = function() {
                     document.getElementById('typ-odpovede').style.display = "block";
                 };
             </script>
 
-            <?php
+<?php
 
             echo '<hr>';
         }
-
     }
     echo '</div> <input type="submit" value="Odoslať test" class="mx-sm-0 mx-1 submit">
     </div>';
@@ -305,140 +271,136 @@ if($sessionTestCode == $selectedData['test_code'])
 
 ?>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $(".submit").click(function () {
-                var data= new Array()
-                data.push({ "meno":"<?php echo $_SESSION['studentName']?>"})
-                data.push({ "priezvisko":"<?php echo $_SESSION['studentSurname']?>"})
-                $('.testInput').each(function () {
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".submit").click(function() {
+            var data = new Array()
+            data.push({
+                "meno": "<?php echo $_SESSION['studentName'] ?>"
+            })
+            data.push({
+                "priezvisko": "<?php echo $_SESSION['studentSurname'] ?>"
+            })
+            $('.testInput').each(function() {
+                console.log($(this).val());
+                if ($(this)[0].classList.contains('math')) {
+                    var str = $(this)[0].innerText
+                    var n = str.search("\n");
+                    var res = str.substr(0, n);
+                    // console.log(res)$(this).attr("id")
+                    data.push({
+                        "zaznam": [{
+                            "id": $(this).attr("id") + ""
+                        }, {
+                            data: res
+                        }]
+                    })
+                }
+                if ($(this)[0].classList.contains('short')) {
+                    data.push({
+                        "zaznam": [{
+                            "id": $(this).attr("id") + ""
+                        }, {
+                            data: $(this)[0].value
+                        }]
+                    })
+                }
 
-                    if ($(this)[0].classList.contains('math')) {
-                        var str = $(this)[0].innerText
-                        var n = str.search("\n");
-                        var res = str.substr(0, n);
-                        // console.log(res)$(this).attr("id")
-                        data.push( { "zaznam": [{ "id" : $(this).attr("id") +""} , { data: res }]})
-                    }
-                    if ($(this)[0].classList.contains('short')) {
-                        data.push( { "zaznam": [{ "id" : $(this).attr("id") +""} , { data: $(this)[0].value }]})
-                    }
-
-                })
-                console.log(data)
-                $.ajax({
-                    url: "controllers/addTestAnswer.php",
-                    method: "POST",
-                    cache: false,
-                    data: JSON.stringify(data),
-                    success: function (result) {
-                        console.log(result)
-                    }
-                });
+            })
+            //console.log(data)
+            $.ajax({
+                url: "controllers/addTestAnswer.php",
+                method: "POST",
+                cache: false,
+                data: JSON.stringify(data),
+                success: function(result) {
+                    //console.log(result)
+                }
             });
         });
+    });
 
-        function checkCookie()
-        {
-            var f = getCookie("timerMinutes");
-            var g = getCookie("timerSeconds");
-            return f !== null && g !== null;
-        }
+    function checkCookie() {
+        var f = getCookie("timerMinutes");
+        var g = getCookie("timerSeconds");
+        return f !== null && g !== null;
+    }
 
-        function getCookie(name)
-        {
-            var cookieArr = document.cookie.split(";");
+    function getCookie(name) {
+        var cookieArr = document.cookie.split(";");
 
-            for(var i = 0; i < cookieArr.length; i++)
-            {
-                var cookiePair = cookieArr[i].split("=");
+        for (var i = 0; i < cookieArr.length; i++) {
+            var cookiePair = cookieArr[i].split("=");
 
-                if(name === cookiePair[0].trim())
-                {
-                    return decodeURIComponent(cookiePair[1]);
-                }
+            if (name === cookiePair[0].trim()) {
+                return decodeURIComponent(cookiePair[1]);
             }
-            return null;
         }
+        return null;
+    }
 
-        var delete_cookie = function(name)
-        {
-            document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-        };
+    var delete_cookie = function(name) {
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    };
 
 
-        function createCookie(name, value)
-        {
-            var date = new Date();
-            date.setTime(date.getTime() + (30*1000));
-            var expires = "; expires= " + date.toGMTString();
+    function createCookie(name, value) {
+        var date = new Date();
+        date.setTime(date.getTime() + (30 * 1000));
+        var expires = "; expires= " + date.toGMTString();
 
-            document.cookie = name + "=" + value + expires + "; path=/";
-        }
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
 
-        var iTimeMinutes = <?php echo $time; ?>;
-        var iTimeSeconds = iTimeMinutes % 60;
+    var iTimeMinutes = <?php echo $time; ?>;
+    var iTimeSeconds = iTimeMinutes % 60;
 
-        if(checkCookie('timerMinutes') && checkCookie("timerSeconds"))
-        {
-            iTimeMinutes = parseInt(getCookie('timerMinutes'), 10);
-            iTimeSeconds = parseInt(getCookie('timerSeconds'), 10);
-        }
+    if (checkCookie('timerMinutes') && checkCookie("timerSeconds")) {
+        iTimeMinutes = parseInt(getCookie('timerMinutes'), 10);
+        iTimeSeconds = parseInt(getCookie('timerSeconds'), 10);
+    }
 
-        function countdown()
-        {
-            var i = setInterval(function()
-            {
-                document.cookie = "timerMinutes=" + encodeURIComponent(iTimeMinutes);
-                document.cookie = "timerSeconds=" + encodeURIComponent(iTimeSeconds);
+    function countdown() {
+        var i = setInterval(function() {
+            document.cookie = "timerMinutes=" + encodeURIComponent(iTimeMinutes);
+            document.cookie = "timerSeconds=" + encodeURIComponent(iTimeSeconds);
 
-                if((iTimeMinutes < 10 && iTimeSeconds < 10) || (iTimeMinutes < "10" && iTimeSeconds < "10"))
-                {
-                    document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + "0" + iTimeMinutes + ":" + "0" + iTimeSeconds;
-                }
-                else
-                {
-                    if((iTimeMinutes < 10) || (iTimeMinutes < "10"))
-                    {
-                        document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + "0" + iTimeMinutes + ":" + iTimeSeconds;
-                    }
-                    else if((iTimeSeconds < 10) || (iTimeSeconds < "10"))
-                    {
-                        document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + iTimeMinutes + ":" + "0" + iTimeSeconds;
-                    }
-                    else
-                    {
-                        document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + iTimeMinutes + ":" + iTimeSeconds;
-                    }
-
+            if ((iTimeMinutes < 10 && iTimeSeconds < 10) || (iTimeMinutes < "10" && iTimeSeconds < "10")) {
+                document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + "0" + iTimeMinutes + ":" + "0" + iTimeSeconds;
+            } else {
+                if ((iTimeMinutes < 10) || (iTimeMinutes < "10")) {
+                    document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + "0" + iTimeMinutes + ":" + iTimeSeconds;
+                } else if ((iTimeSeconds < 10) || (iTimeSeconds < "10")) {
+                    document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + iTimeMinutes + ":" + "0" + iTimeSeconds;
+                } else {
+                    document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + iTimeMinutes + ":" + iTimeSeconds;
                 }
 
-                if((iTimeMinutes === 0 && iTimeSeconds === 0) || (iTimeMinutes === "0" && iTimeSeconds === "0"))
-                {
-                    alert('Cas na test vyprsal!');
-                    delete_cookie('timerMinutes');
-                    delete_cookie('timerSeconds');
-                    clearInterval(i);
-                    location.reload();
+            }
+
+            if ((iTimeMinutes === 0 && iTimeSeconds === 0) || (iTimeMinutes === "0" && iTimeSeconds === "0")) {
+                alert('Cas na test vyprsal!');
+                delete_cookie('timerMinutes');
+                delete_cookie('timerSeconds');
+                clearInterval(i);
+                location.reload();
+            } else {
+                if (iTimeSeconds === 0 || iTimeSeconds === "0") {
+                    iTimeMinutes--;
+                    iTimeSeconds = 60;
                 }
-                else
-                {
-                    if(iTimeSeconds === 0 || iTimeSeconds === "0")
-                    {
-                        iTimeMinutes--;
-                        iTimeSeconds = 60;
-                    }
-                    iTimeSeconds--;
+                iTimeSeconds--;
 
-                }
-            },1000);
-        }
+            }
+        }, 1000);
+    }
 
-        countdown();
-        <?php //toto bude treba poriesit, pretoze toto vypne session, teda sa obrazok neuploadne session_destroy(); ?>
-    </script>
+    countdown();
+    <?php //toto bude treba poriesit, pretoze toto vypne session, teda sa obrazok neuploadne session_destroy(); 
+    ?>
+</script>
 
-    <div id="fixedTimer" class="fancy"></div>
+<div id="fixedTimer" class="fancy"></div>
 
 <script>
 

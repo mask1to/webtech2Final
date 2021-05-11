@@ -147,55 +147,52 @@ $(document).ready(function () {
                     },
                     success: function (result) {
                         if (result > 0) {
-                            $this.find('.form-option').each(function () {
-                                var $this1 = $(this),
-                                    $option = $this1.find('.answer').val();
-                                if (($this1.find('.correctAnswer').hasClass('active')) || ($this1.find('.answer').hasClass('spravna'))) {
-                                    var $correct = 1;
-                                } else {
-                                    var $correct = 0;
-                                }
-                                var question_id=result;
-                                $.ajax({
-                                    url: "controllers/addOptionController.php",
-                                    method: "POST",
-                                    cache: false,
-                                    data: {
-                                        questionId: result,
-                                        option: $option,
-                                        correct: $correct
-                                    },
-                                    success: function (result) {
-                                        if($this1.find('.pair').length) {
-                                            var $pair = $this1.find('.pair').val();
-                                            $.ajax({
-                                                url: "controllers/addPairController.php",
-                                                method: "POST",
-                                                cache: false,
-                                                data: {
-                                                    questionId: question_id,
-                                                    option: $pair,
-                                                    questionOptionId: result
-                                                },
-                                                success: function (resultt) {}
-                                            });
-                                        }
-                                        $("html, body").animate({
-                                            scrollTop: 0
-                                        }, "slow");
-                                        if (result > 0) {
-                                            $(".alert-success").fadeTo(2000, 500).slideUp(500, function () {
-                                                $(".alert-success").slideUp(500);
-                                                window.location.replace('admin.php');
-                                            })
-                                        } else {
-                                            $(".alert-error").fadeTo(2000, 500).slideUp(500, function () {
-                                                $(".alert-error").slideUp(500);
-                                            });
-                                        }
+                            if ($('.form-option').length) {
+                                $this.find('.form-option').each(function () {
+                                    var $this1 = $(this),
+                                        $option = $this1.find('.answer').val();
+                                    if (($this1.find('.correctAnswer').hasClass('active')) || ($this1.find('.answer').hasClass('spravna'))) {
+                                        var $correct = 1;
+                                    } else {
+                                        var $correct = 0;
                                     }
-                                });
-                            })
+    
+                                    $.ajax({
+                                        url: "controllers/addOptionController.php",
+                                        method: "POST",
+                                        cache: false,
+                                        data: {
+                                            questionId: result,
+                                            option: $option,
+                                            correct: $correct
+                                        },
+                                        success: function (result) {
+                                            $("html, body").animate({
+                                                scrollTop: 0
+                                            }, "slow");
+                                            if (result > 0) {
+                                                $(".alert-success").fadeTo(2000, 500).slideUp(500, function () {
+                                                    $(".alert-success").slideUp(500);
+                                                    window.location.replace('admin.php');
+                                                })
+                                            } else {
+                                                $(".alert-error").fadeTo(2000, 500).slideUp(500, function () {
+                                                    $(".alert-error").slideUp(500);
+                                                });
+                                            }
+                                        }
+                                    });
+                                })
+                            }
+                            else {
+                                $("html, body").animate({
+                                    scrollTop: 0
+                                }, "slow");
+                                $(".alert-success").fadeTo(2000, 500).slideUp(500, function () {
+                                    $(".alert-success").slideUp(500);
+                                    window.location.replace('admin.php');
+                                })
+                            }
                         } else {
                             $("html, body").animate({
                                 scrollTop: 0
@@ -274,9 +271,7 @@ $(document).ready(function () {
             '<input type="number" class="form-control w-25 points" name="points" placeholder="Počet bodov" required>' +
             '<a href="#" class="d-inline-block deleteQuestion"><i class="bi bi-x-circle-fill"></i></a></div>' +
             '<label class="d-block col-form-label col-form-label-lg">Znenie otázky</label>' +
-            '<math-field class="questionInput" id="mathfield" ></math-field>' +
-
-            // '<input type="text" class="form-control form-control-lg mb-4 questionInput" name="questionTitle" placeholder="Otázka" required>' +
+            '<math-field class="questionInput border" id="mathfield" virtual-keyboard-mode="manual"></math-field>' +
             '</div>'));
         question.insertBefore('#addTest').slideDown("fast");
     }
