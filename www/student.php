@@ -227,10 +227,11 @@ if ($sessionTestCode == $selectedData['test_code']) {
             echo '<hr>';
         }
         if ($questions['type'] == 'math') {
+            $questionT = $questions['id'];
             echo '<p class="text-muted"><b>Otázka s matematickou odpoveďou</b></p>
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>  
                       <math-field disabled>' . $questions['name'] . '</math-field>
-                   <math-field id="'. $questions['id'] .'" virtual-keyboard-mode="manual" class="testInput math border mb-3"></math-field>
+                   <math-field id="'. $questions['id'] .'" virtual-keyboard-mode="manual" class="testInput math border mb-3" style="display:none"></math-field>
                 ';
             echo '      <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>';
         ?>
@@ -247,14 +248,19 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" id="nahrat-subor" href="#">Nahranim suboru</a>
-                    <a class="dropdown-item" href="#">bla</a>
-                    <a class="dropdown-item" href="#">bla</a>
+                    <a class="dropdown-item" id="vyraz" href="#">Matematickým výrazom</a>
                 </div>
             </div>
 
             <script>
                 document.getElementById('nahrat-subor').onclick = function() {
+                    document.getElementById(<?php echo $questionT?>).style.display = "none";
                     document.getElementById('typ-odpovede').style.display = "block";
+                };
+
+                document.getElementById('vyraz').onclick = function() {
+                    document.getElementById('typ-odpovede').style.display = "none";
+                    document.getElementById(<?php echo $questionT?>).style.display = "block";
                 };
             </script>
 
