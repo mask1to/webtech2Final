@@ -1,17 +1,5 @@
 <?php
-require "./images/";
 session_start();
-
-//image upload
-if(isset($_POST['upload']) && isset($_SESSION['studentName']) && isset($_SESSION['studentSurname']) && isset($_SESSION['testCode'])){
-    echo "hi";
-    $file_name = $_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode']."_";
-    $file_type = $_FILES['file']['type'];
-    $file_size = $_FILES['file']['size'];
-    $file_store = "./images/".$file_name.$_FILES['file']['name'];
-    $file_tem_loc = $_FILES['file']['tmp_name'];
-    move_uploaded_file($file_tem_loc, $file_store);
-}
 
 if(!isset($_SESSION['testCode'])){
     header("location: index.php");
@@ -20,6 +8,7 @@ if(!isset($_SESSION['testCode'])){
 include "partials/header.php";
 include "queries/queries.php";
 include "config/config.php";
+include "uploadFile.php";
 
 $sessionTestCode = $_SESSION['testCode'];
 
@@ -36,16 +25,13 @@ $testId = $selectedData['id'];
 
 $selectTypeOfQuestion = $link->query("SELECT * FROM question WHERE test_id = $testId");
 
-
-
-
 if($sessionTestCode == $selectedData['test_code'])
 {
     echo '<div class="wrapper bg-white rounded">
             <div class="content">
             <p class="text-muted"><b>Kód testu: '.$sessionTestCode. '</b></p>
             <p class="text-muted"><b>Počet bodov v teste: '.$selectedData["total_points"].'</b></p>
-            <div class="text-muted" id="fixedTimer"><b>Zostávajúci čas: 00:00</b></div> <hr>';
+            <hr>';
 
     while($questions = $selectTypeOfQuestion->fetch_assoc())
     {
@@ -69,6 +55,7 @@ if($sessionTestCode == $selectedData['test_code'])
                      ';
                     echo '</div>';
                 }
+
             }
             echo '<hr>';
         }
@@ -94,8 +81,6 @@ if($sessionTestCode == $selectedData['test_code'])
             echo '<hr>';
         }
 
-<<<<<<< Updated upstream
-=======
         if($questions['type'] == 'connect')
         {
             echo '<link rel="stylesheet" href="assets/css/fieldsLinker.css">';
@@ -116,7 +101,6 @@ if($sessionTestCode == $selectedData['test_code'])
                         $pname=$pair['name'];
                         echo"   $pname</p>";
                     }
-
                 }
             }
             echo '<hr>';
@@ -131,15 +115,11 @@ if($sessionTestCode == $selectedData['test_code'])
             ?>
             <p class="demoToolList"><button onclick="c(clickX,clickY,clickDrag);" id="clearCanvasSimple" type="button">Odznovu</button></p>
             <div id="canvasDiv"></div>
-            <form action="" method="POST" enctype="multipart/form-data">
-                <p><input type="submit" name="upload" value="Vložiť"></p>
-                <label class="upload-label" for="file-btn">Vybrať súbor na upload</label>
-                <p><input type="file" id="file-btn" name="file"></p>
-            </form>
+
+
+
             <script>
                 build_canvas();
-
-
 
                 var clickX = new Array();
                 var clickY = new Array();
@@ -149,7 +129,7 @@ if($sessionTestCode == $selectedData['test_code'])
                 function build_canvas() {
                     var canvasDiv = document.getElementById('canvasDiv');
                     canvas = document.createElement('canvas');
-                    canvas.setAttribute('width', 490);
+                    canvas.setAttribute('width', 550);
                     canvas.setAttribute('height', 220);
                     canvas.setAttribute('id', 'canvas');
                     canvas.style = "border:thin solid black";
@@ -242,13 +222,39 @@ if($sessionTestCode == $selectedData['test_code'])
             });
             </script>   
                ';
+
+            ?>
+
+            <form action="" method="POST" enctype="multipart/form-data" id="typ-odpovede" style="display:none">
+                <p><input type="submit" name="upload" value="Vložiť"></p>
+                <label class="upload-label" for="file-btn">Vybrať súbor na upload</label>
+                <p><input type="file" id="file-btn" name="file" /hidden></p>
+            </form>
+
+            <div class="dropdown show">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Typ odpovede
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" id="nahrat-subor" href="#">Nahranim suboru</a>
+                    <a class="dropdown-item" href="#">bla</a>
+                    <a class="dropdown-item" href="#">bla</a>
+                </div>
+            </div>
+
+            <script>
+                document.getElementById('nahrat-subor').onclick = function(){
+                    document.getElementById('typ-odpovede').style.display = "block";
+                };
+            </script>
+
+            <?php
             echo '<hr>';
         }
 
->>>>>>> Stashed changes
     }
 }
-
 
 /*
 echo '
@@ -303,16 +309,13 @@ echo '
             document.cookie = name + "=" + value + expires + "; path=/";
         }
 
-
-        //var iTimeMinutes = <?php echo $time; ?>;
-        //var iTimeSeconds = iTimeMinutes % 60;
-        var iTimeMinutes = 4;
-        var iTimeSeconds = 1;
+        var iTimeMinutes = <?php echo $time; ?>;
+        var iTimeSeconds = iTimeMinutes % 60;
 
         if(checkCookie('timerMinutes') && checkCookie("timerSeconds"))
         {
-            iTimeMinutes = getCookie('timerMinutes');
-            iTimeSeconds = getCookie('timerSeconds');
+            iTimeMinutes = parseInt(getCookie('timerMinutes'), 10);
+            iTimeSeconds = parseInt(getCookie('timerSeconds'), 10);
         }
 
         function countdown()
@@ -322,17 +325,17 @@ echo '
                 document.cookie = "timerMinutes=" + encodeURIComponent(iTimeMinutes);
                 document.cookie = "timerSeconds=" + encodeURIComponent(iTimeSeconds);
 
-                if(iTimeMinutes < 10 && iTimeSeconds < 10)
+                if((iTimeMinutes < 10 && iTimeSeconds < 10) || (iTimeMinutes < "10" && iTimeSeconds < "10"))
                 {
                     document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + "0" + iTimeMinutes + ":" + "0" + iTimeSeconds;
                 }
                 else
                 {
-                    if(iTimeMinutes < 10)
+                    if((iTimeMinutes < 10) || (iTimeMinutes < "10"))
                     {
                         document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + "0" + iTimeMinutes + ":" + iTimeSeconds;
                     }
-                    else if(iTimeSeconds < 10)
+                    else if((iTimeSeconds < 10) || (iTimeSeconds < "10"))
                     {
                         document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + iTimeMinutes + ":" + "0" + iTimeSeconds;
                     }
@@ -343,7 +346,7 @@ echo '
 
                 }
 
-                if(iTimeMinutes === 0 && iTimeSeconds === 0)
+                if((iTimeMinutes === 0 && iTimeSeconds === 0) || (iTimeMinutes === "0" && iTimeSeconds === "0"))
                 {
                     alert('Cas na test vyprsal!');
                     delete_cookie('timerMinutes');
@@ -353,7 +356,7 @@ echo '
                 }
                 else
                 {
-                    if(iTimeSeconds === 0)
+                    if(iTimeSeconds === 0 || iTimeSeconds === "0")
                     {
                         iTimeMinutes--;
                         iTimeSeconds = 60;
@@ -366,9 +369,10 @@ echo '
 
         countdown();
 
+
     </script>
 
-    <!--div id="fixedTimer" class="fancy"></div -->
+    <div id="fixedTimer" class="fancy"></div>
 
 <?php
 
