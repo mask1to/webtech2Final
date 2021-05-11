@@ -9,9 +9,12 @@ $user_id = getUserId($conn, $Request[0]->meno, $Request[1]->priezvisko  );
 $selectedData = mysqli_fetch_assoc($user_id);
 
 for ($i = 2; $i < count($Request); $i++) {
-//        $zaznam = $Request[i]->zaznam;
-//        $questionId = $zaznam->id;
-//        $value = $zaznam->data;
+        // type setnuty zatial iba pri checked
+        if (isset($Request[$i]->zaznam[2]->type)){
+            var_dump($Request[$i]->zaznam[0]->id);// option_id
+            var_dump($Request[$i]->zaznam[1]->data);// checked
+
+        }
           var_dump($Request[$i]->zaznam[0]->id);// id
           var_dump($Request[$i]->zaznam[1]->data);// value
         insertAnswer( $conn ,

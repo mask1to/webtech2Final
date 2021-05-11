@@ -55,7 +55,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
         }
         if ($questions['type'] == 'short') {
             echo '<p class="text-muted"><b>Otázka s krátkou odpoveďou</b></p>
-                   <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
+                   <p class="text-muted""><b>Body: ' .   $questions['total_points'] . '</b></p>
                    <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>';
             while ($option = $selectOptions->fetch_assoc()) {
                 if ($option['question_id'] == $questionId) {
@@ -287,6 +287,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
                             "id": $(this).attr("id") + ""
                         }, {
                             data: $(this)[0].checked
+                        },{
+                            "type": "checked"
                         }]
                     })
                 }
