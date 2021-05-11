@@ -96,7 +96,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
         if ($questions['type'] == 'draw') {
             echo '<p class="text-muted"><b>Otázka s nakreslením obrázku</b></p>
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
-                   <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>';
+                   <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>
+                   <div class="testInput draw" name="'. $questionId.'" id="canvasDiv"></div>';
 
 ?>
             <p class="demoToolList"><button onclick="c(clickX,clickY,clickDrag);" id="clearCanvasSimple" type="button">Odznovu</button></p>
@@ -314,6 +315,15 @@ if ($sessionTestCode == $selectedData['test_code']) {
                             "id": $(this).attr("id") + ""
                         }, {
                             data: $(this)[0].value
+                        }]
+                    })
+                }
+                if ($(this)[0].classList.contains('draw')) {
+                    data.push({
+                        "zaznam": [{
+                            "id": $(this).attr("name") + ""
+                        }, {
+                            data: "images/drawing_questions/" + <?php echo $_SESSION['studentName'] ?> +"_" + <?php echo $_SESSION['studentSurname'] ?>+"_"+<?php echo $_SESSION['testCode'] ?> + '.png'"
                         }]
                     })
                 }
