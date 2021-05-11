@@ -55,7 +55,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     {
         header("location: badLoginTeacher.php");
     }
-    
+
 }
 
 include "partials/header.php";
