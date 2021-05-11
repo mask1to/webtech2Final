@@ -282,12 +282,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 "priezvisko": "<?php echo $_SESSION['studentSurname'] ?>"
             })
             $('.testInput').each(function() {
-                console.log($(this).val());
                 if ($(this)[0].classList.contains('math')) {
-                    var str = $(this)[0].innerText
-                    var n = str.search("\n");
-                    var res = str.substr(0, n);
-                    // console.log(res)$(this).attr("id")
+                    var res = $(this).val();
                     data.push({
                         "zaznam": [{
                             "id": $(this).attr("id") + ""
