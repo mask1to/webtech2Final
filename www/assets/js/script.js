@@ -37,6 +37,8 @@ $(document).ready(function ()
         success: function (data) {}
     });
 
+    $('#showModal6').modal({ backdrop: 'static', keyboard: false }, 'show');
+
 
     $('#theButtonTeacher').on('click', function ()
     {

@@ -15,7 +15,6 @@ if(isset($_POST['logOut'])) {
         $studentSurname = $_SESSION['studentSurname'];
         unset($_SESSION['studentName']);
         unset($_SESSION['studentSurname']);
-        unset($_SESSION['testCode']);
         unset($_SESSION['student']);
     }
     else if(isset($_SESSION["loggedin"]))

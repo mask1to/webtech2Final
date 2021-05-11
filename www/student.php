@@ -1,9 +1,6 @@
 <?php
 session_start();
 
-if(!isset($_SESSION['testCode'])){
-    header("location: index.php");
-}
 
 if(!isset($_SESSION["student"]))
 {
@@ -15,9 +12,9 @@ include "queries/queries.php";
 require_once("config/config.php");
 include "uploadFile.php";
 
-$sessionTestCode = $_SESSION['testCode'];
-
 $link = $conn;
+
+$sessionTestCode = $_SESSION['testCode'];
 $row = mysqli_fetch_assoc(getTestTime($link,$_SESSION['testCode']));
 $time = $row['total_time'];
 
@@ -27,7 +24,7 @@ $selectedData = mysqli_fetch_assoc($selectTestCode);
 //test id for entered test code
 $testId = $selectedData['id'];
 
-$selectTypeOfQuestion = $link->query("SELECT * FROM question WHERE test_id = $testId");
+$selectTypeOfQuestion = $link->query("SELECT * FROM question WHERE test_id = '$testId'");
 
 if($sessionTestCode == $selectedData['test_code'])
 {

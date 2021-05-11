@@ -28,32 +28,66 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     $selectTestCode = $link->query("SELECT test_code, isActive FROM test WHERE test_code = '$testCode'");
 
+    $selectUserStatus = $link->query
+    ("SELECT name, surname, isWritingExam, currentTestCode 
+            FROM user WHERE name = '$studentName' AND 
+                            surname = '$studentSurname'"
+    );
+    $selectedUserStatus = mysqli_fetch_assoc($selectUserStatus);
+
     if($selectTestCode->num_rows > 0)
     {
         $selectedTestCode = mysqli_fetch_assoc($selectTestCode);
+        $dbTestCode = $selectedUserStatus['currentTestCode'];
+
         if($selectedTestCode['isActive'] == 1)
         {
-            $dbTestCode = $selectedTestCode['test_code'];
-            $_SESSION['studentName'] = $studentName;
-            $_SESSION['studentSurname'] = $studentSurname;
-            $_SESSION['testCode'] = $testCode;
-            $_SESSION['student'] = true;
-
-            if(isset($_SESSION["student"]) && $_SESSION["student"] === true)
+            $isWriting = $selectedUserStatus['isWritingExam'];
+            if($isWriting == 0)
             {
-                if($isWriting == 0)
+                $_SESSION['studentName'] = $studentName;
+                $_SESSION['studentSurname'] = $studentSurname;
+                $isWriting = 1;
+                insertNewStudent($link, $type, $studentName, $studentSurname, $isWriting, $testCode);
+                $_SESSION['student'] = true;
+                if(isset($_SESSION["student"]) && $_SESSION["student"] === true)
                 {
-                    $isWriting = 1;
-                    insertNewStudent($link, $type, $studentName, $studentSurname, $isWriting, $testCode);
-                    header("location: student.php");
-                    exit;
-                }
-                else if($isWriting == 1 && $testCode == $dbTestCode)
-                {
+                    $_SESSION['testCode'] = $testCode;
                     header("location: student.php");
                     exit;
                 }
             }
+            else if($isWriting == 1 && !strcmp($testCode, $dbTestCode))
+            {
+                $_SESSION['studentName'] = $studentName;
+                $_SESSION['studentSurname'] = $studentSurname;
+                $_SESSION['student'] = true;
+                $_SESSION['testCode'] = $testCode;
+                header("location: student.php");
+                exit;
+            }
+            else
+            {
+                echo '<div id="showModal6" class="modal fade text-center">
+	            <div class="modal-dialog modal-confirm text-center">
+		            <div class="modal-content text-center">
+			            <div class="modal-header text-center">
+				            <div class="icon-box">
+					            <i class="bi bi-emoji-dizzy"></i>
+				            </div>				
+				            <h4 class="modal-title text-center">Nastala chyba !</h4>	
+			            </div>
+			        <div class="modal-body text-center">
+				        <p class="text-center">Už píšete jeden test ! <br> Musíte ho dokončiť a potom môžete spustiť ďalší.</p>
+			        </div>
+			        <div class="modal-footer text-center">
+				    <button class="btn btn-success btn-block" id="theButton" data-dismiss="modal">Rozumiem</button>
+			        </div>
+		        </div>
+	           </div>
+            </div>';
+            }
+
         }
         else
         {
@@ -138,5 +172,3 @@ include "partials/header.php";
 include "partials/footer.php";
 
 ?>
-
-
