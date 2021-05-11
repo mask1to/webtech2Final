@@ -6,7 +6,7 @@ if (!isset($_SESSION["loggedin"])) {
 }
 
 include "partials/header.php";
-include "config/config.php";
+require_once("config/config.php");
 
 ?>
 

@@ -7,8 +7,6 @@ $(document).ready(function() {
             check = 1;
         }
 
-        console.log(id);
-
         $.ajax({
             url: 'controllers/updateActive.php',
             method: 'POST',

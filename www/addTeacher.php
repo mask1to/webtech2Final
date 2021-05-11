@@ -1,10 +1,10 @@
 <?php
 
 include "partials/header.php";
-include "config/config.php";
+require_once("config/config.php");
 include "queries/queries.php";
 
-$link = new mysqli(servername, username, password, database);
+$link = $conn;
 
 /*
  * VYHODNOTENIE REGISTRÁCIE

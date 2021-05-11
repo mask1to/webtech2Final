@@ -7,10 +7,10 @@ if(isset($_SESSION["loggedin"]))
     exit;
 }
 
-include "config/config.php";
+require_once("config/config.php");
 include "queries/queries.php";
 
-$link = new mysqli(servername, username, password, database);
+$link = $conn;
 $teacherEmail = $teacherPassword = "";
 
 if($_SERVER["REQUEST_METHOD"] == "POST")

@@ -1,6 +1,6 @@
 <?php
 
-include "config/config.php";
+require_once("config/config.php");
 $link = new mysqli(servername, username, password, database);
 
 if (!isset($_SESSION)) {

@@ -4,7 +4,7 @@ if (!isset($_SESSION["loggedin"])) {
     header("location: index.php");
 }
 include "partials/header.php";
-include "config/config.php";
+require_once("config/config.php");
 ?>
 
 <main class="pt-4 pb-4">

@@ -11,10 +11,10 @@ else if(isset($_SESSION["loggedin"]))
     header("Location: admin.php");
 }
 
-include "config/config.php";
+require_once("config/config.php");
 include "queries/queries.php";
 
-$link = new mysqli(servername, username, password, database);
+$link = $conn;
 
 $studentName = $studentSurname = $testCode = "";
 $isWriting = 0;

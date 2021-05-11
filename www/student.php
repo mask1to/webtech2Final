@@ -12,12 +12,12 @@ if(!isset($_SESSION["student"]))
 
 include "partials/header.php";
 include "queries/queries.php";
-include "config/config.php";
+require_once("config/config.php");
 include "uploadFile.php";
 
 $sessionTestCode = $_SESSION['testCode'];
 
-$link = new mysqli(servername, username, password, database);
+$link = $conn;
 $row = mysqli_fetch_assoc(getTestTime($link,$_SESSION['testCode']));
 $time = $row['total_time'];
 
