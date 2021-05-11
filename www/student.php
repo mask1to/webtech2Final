@@ -7,10 +7,10 @@ if(!isset($_SESSION["student"]))
     header("location: index.php");
 }
 
+
 include "partials/header.php";
 include "queries/queries.php";
 require_once("config/config.php");
-include "uploadFile.php";
 
 $link = $conn;
 
@@ -117,8 +117,10 @@ if($sessionTestCode == $selectedData['test_code'])
             ?>
             <p class="demoToolList"><button onclick="c(clickX,clickY,clickDrag);" id="clearCanvasSimple" type="button">Odznovu</button></p>
             <div id="canvasDiv"></div>
-            <script>
+            <button id="download">Download</button>
+                <script>
                 build_canvas();
+
 
                 var clickX = new Array();
                 var clickY = new Array();
@@ -172,6 +174,40 @@ if($sessionTestCode == $selectedData['test_code'])
                     paint = false;
                 });
 
+                /*$('#download').click(function(e) {
+                    var dataURL = canvas.toDataURL();
+                    var ferko = "dw";
+                    $.ajax({
+                      type: "POST",
+                      url: "uploadFile.php",
+                      data: {
+                         base64Img: dataURL
+                      }
+                      ,
+                      success:function(data){
+                          console.log('saved');
+                            console.log(dataURL);
+                      }
+                    })
+                });*/
+
+                $('#download').on('click', function (event) {
+                    event.preventDefault();
+                    var dataURL = canvas.toDataURL();
+                    $.ajax({
+                        type: "post",
+                        url: "uploadFile.php",
+                        data:{
+                            img_draw: dataURL
+                        },
+                        success:function (data) {
+                            console.log(data);
+                        }
+
+                    })
+                })
+
+
 
 
                 function addClick(x, y, dragging)
@@ -200,6 +236,10 @@ if($sessionTestCode == $selectedData['test_code'])
                         context.stroke();
                     }
                 }
+
+
+                context.save();
+
             </script>
 
             <?php
@@ -222,7 +262,7 @@ if($sessionTestCode == $selectedData['test_code'])
             </script>   
                ';
             ?>
-            <form action="" method="POST" enctype="multipart/form-data" id="typ-odpovede" style="display:none">
+            <form action="uploadFile.php" method="POST" enctype="multipart/form-data" id="typ-odpovede" style="display:none">
                 <p><input type="submit" name="upload" value="Vložiť"></p>
                 <label class="upload-label" for="file-btn">Vybrať súbor na upload</label>
                 <p><input type="file" id="file-btn" name="file" /hidden></p>
@@ -360,6 +400,12 @@ if($sessionTestCode == $selectedData['test_code'])
     </script>
 
     <div id="fixedTimer" class="fancy"></div>
+
+<script>
+
+
+
+</script>
 
 <?php
 
