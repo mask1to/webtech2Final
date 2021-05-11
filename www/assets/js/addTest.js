@@ -22,7 +22,7 @@ $(document).ready(function () {
                         option = 0;
                     }
                 })
-                if(option == 1) {
+                if (option == 1) {
                     addTest();
                 }
             }
@@ -106,7 +106,23 @@ $(document).ready(function () {
                     if (result > 0) {
                         addQuestion(result);
                     }
+                    else {
+                        $("html, body").animate({
+                            scrollTop: 0
+                        }, "slow");
+                        $(".alert-error").fadeTo(2000, 500).slideUp(500, function () {
+                            $(".alert-error").slideUp(500);
+                        })
+                    }
                 },
+                error: function () {
+                    $("html, body").animate({
+                        scrollTop: 0
+                    }, "slow");
+                    $(".alert-error").fadeTo(2000, 500).slideUp(500, function () {
+                        $(".alert-error").slideUp(500);
+                    })
+                }
             });
         }
         else {
@@ -138,41 +154,52 @@ $(document).ready(function () {
                 },
                 success: function (result) {
                     if (result > 0) {
-                        $this.find('.form-option').each(function () {
-                            var $this1 = $(this),
-                                $option = $this1.find('.answer').val();
-                            if (($this1.find('.correctAnswer').hasClass('active')) || ($this1.find('.answer').hasClass('spravna'))) {
-                                var $correct = 1;
-                            } else {
-                                var $correct = 0;
-                            }
-
-                            $.ajax({
-                                url: "controllers/addOptionController.php",
-                                method: "POST",
-                                cache: false,
-                                data: {
-                                    questionId: result,
-                                    option: $option,
-                                    correct: $correct
-                                },
-                                success: function (result) {
-                                    $("html, body").animate({
-                                        scrollTop: 0
-                                    }, "slow");
-                                    if (result > 0) {
-                                        $(".alert-success").fadeTo(2000, 500).slideUp(500, function () {
-                                            $(".alert-success").slideUp(500);
-                                            window.location.replace('admin.php');
-                                        })
-                                    } else {
-                                        $(".alert-error").fadeTo(2000, 500).slideUp(500, function () {
-                                            $(".alert-error").slideUp(500);
-                                        });
-                                    }
+                        if ($('.form-option').length) {
+                            $this.find('.form-option').each(function () {
+                                var $this1 = $(this),
+                                    $option = $this1.find('.answer').val();
+                                if (($this1.find('.correctAnswer').hasClass('active')) || ($this1.find('.answer').hasClass('spravna'))) {
+                                    var $correct = 1;
+                                } else {
+                                    var $correct = 0;
                                 }
-                            });
-                        })
+
+                                $.ajax({
+                                    url: "controllers/addOptionController.php",
+                                    method: "POST",
+                                    cache: false,
+                                    data: {
+                                        questionId: result,
+                                        option: $option,
+                                        correct: $correct
+                                    },
+                                    success: function (result) {
+                                        $("html, body").animate({
+                                            scrollTop: 0
+                                        }, "slow");
+                                        if (result > 0) {
+                                            $(".alert-success").fadeTo(2000, 500).slideUp(500, function () {
+                                                $(".alert-success").slideUp(500);
+                                                window.location.replace('admin.php');
+                                            })
+                                        } else {
+                                            $(".alert-error").fadeTo(2000, 500).slideUp(500, function () {
+                                                $(".alert-error").slideUp(500);
+                                            });
+                                        }
+                                    }
+                                });
+                            })
+                        }
+                        else {
+                            $("html, body").animate({
+                                scrollTop: 0
+                            }, "slow");
+                            $(".alert-success").fadeTo(2000, 500).slideUp(500, function () {
+                                $(".alert-success").slideUp(500);
+                                window.location.replace('admin.php');
+                            })
+                        }
                     } else {
                         $("html, body").animate({
                             scrollTop: 0
