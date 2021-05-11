@@ -8,6 +8,7 @@ if(!isset($_SESSION['testCode'])){
 include "partials/header.php";
 include "queries/queries.php";
 include "config/config.php";
+include "uploadFile.php";
 
 $sessionTestCode = $_SESSION['testCode'];
 
@@ -125,7 +126,7 @@ if($sessionTestCode == $selectedData['test_code'])
                 function build_canvas() {
                     var canvasDiv = document.getElementById('canvasDiv');
                     canvas = document.createElement('canvas');
-                    canvas.setAttribute('width', 490);
+                    canvas.setAttribute('width', 550);
                     canvas.setAttribute('height', 220);
                     canvas.setAttribute('id', 'canvas');
                     canvas.style = "border:thin solid black";
@@ -218,6 +219,33 @@ if($sessionTestCode == $selectedData['test_code'])
             });
             </script>   
                ';
+            ?>
+            <form action="" method="POST" enctype="multipart/form-data" id="typ-odpovede" style="display:none">
+                <p><input type="submit" name="upload" value="Vložiť"></p>
+                <label class="upload-label" for="file-btn">Vybrať súbor na upload</label>
+                <p><input type="file" id="file-btn" name="file" /hidden></p>
+            </form>
+
+            <div class="dropdown show">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Typ odpovede
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" id="nahrat-subor" href="#">Nahranim suboru</a>
+                    <a class="dropdown-item" href="#">bla</a>
+                    <a class="dropdown-item" href="#">bla</a>
+                </div>
+            </div>
+
+            <script>
+                document.getElementById('nahrat-subor').onclick = function(){
+                    document.getElementById('typ-odpovede').style.display = "block";
+                };
+            </script>
+
+            <?php
+
             echo '<hr>';
         }
 
@@ -326,7 +354,7 @@ if($sessionTestCode == $selectedData['test_code'])
         }
 
         countdown();
-        <?php session_destroy(); ?>
+        <?php //toto bude treba poriesit, pretoze toto vypne session, teda sa obrazok neuploadne session_destroy(); ?>
     </script>
 
     <div id="fixedTimer" class="fancy"></div>
