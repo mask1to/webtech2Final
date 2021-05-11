@@ -48,9 +48,9 @@ if($sessionTestCode == $selectedData['test_code'])
             {
                 if($option['question_id'] == $questionId)
                 {
-                    echo '<div class="options py-3"> 
+                    echo '<div class="options py-3 "> 
                      <label class="rounded p-2 option"> '.$option['name'].'
-                     <input type="checkbox" name="radio">
+                     <input id="'. $questionId .'" type="checkbox" name="radio" class="testInput checkbox">
                      <span class="crossmark"></span>
                      </label>
                      ';
@@ -72,7 +72,7 @@ if($sessionTestCode == $selectedData['test_code'])
 //                    <label class="rounded p-2 option"> '.$option['name'].'
 //                    <span class="crossmark"></span>
                     echo '<div class="options py-3">                    
-                     <input class="testInput short" type="text">   
+                     <input id="'. $questionId . '" class="testInput short" type="text">   
                      </label>
                      ';
                     echo '</div>';
@@ -211,7 +211,7 @@ if($sessionTestCode == $selectedData['test_code'])
             echo '<p class="text-muted"><b>Otázka s matematickou odpoveďou</b></p>
                    <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>  
                       <math-field disabled>'. $questions['name'] .'</math-field>
-                   <div id="mathfield" class="testInput math " >'.  $questions['name'].' </div> 
+                   <div id="'. $questionId .'"  class="testInput math " > </div> 
                 ';
             echo '      <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>
             <script>
@@ -219,8 +219,6 @@ if($sessionTestCode == $selectedData['test_code'])
             var els = document.getElementsByClassName("math");
 
             Array.prototype.forEach.call(els, function(el) {
-                // Do stuff here
-//                console.log(el.tagName);
                  MathLive.makeMathField(el,  {
               virtualKeyboardMode: "manual",
               virtualKeyboards: "numeric symbols"
@@ -268,28 +266,37 @@ if($sessionTestCode == $selectedData['test_code'])
 ?>
 
     <script type="text/javascript">
-        $(document).ready(function(){
-            $(".submit").click(function(){
-
+        $(document).ready(function() {
+            $(".submit").click(function () {
+                var data= new Array()
+                data.push({ "meno":"<?php echo $_SESSION['studentName']?>"})
+                data.push({ "priezvisko":"<?php echo $_SESSION['studentSurname']?>"})
                 $('.testInput').each(function () {
 
-                    if ($(this)[0].classList.contains('math')){
+                    if ($(this)[0].classList.contains('math')) {
                         var str = $(this)[0].innerText
                         var n = str.search("\n");
                         var res = str.substr(0, n);
-                        // console.log(res)
+                        // console.log(res)$(this).attr("id")
+                        data.push( { "zaznam": [{ "id" : $(this).attr("id") +""} , { data: res }]})
                     }
-                    if ($(this)[0].classList.contains('short')){
-                        console.log($(this)[0].value)
-
+                    if ($(this)[0].classList.contains('short')) {
+                        data.push( { "zaznam": [{ "id" : $(this).attr("id") +""} , { data: $(this)[0].value }]})
                     }
 
                 })
-
-
+                console.log(data)
+                $.ajax({
+                    url: "controllers/addTestAnswer.php",
+                    method: "POST",
+                    cache: false,
+                    data: JSON.stringify(data),
+                    success: function (result) {
+                        console.log(result)
+                    }
+                });
             });
         });
-
 
         function checkCookie()
         {

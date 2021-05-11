@@ -74,4 +74,23 @@ function getTestTime($conn, $test_code){
 
     return $result;
 }
+function getUserId($conn, $name, $surname){
+    $getTest = "SELECT id FROM user WHERE name='$name' and surname='$surname'";
+
+    $result = $conn->query($getTest) or die("Chyba vo vykonávaní query" . $conn->error);
+
+    return $result;
+}
+function insertAnswer($conn, $questionId, $text, $isCorrect, $userId, $points)
+{
+    $insertQuery = "INSERT INTO answer(question_id , text , isCorrect , user_id, points) 
+    VALUES ('$questionId', '$text', '$isCorrect', '$userId', '$points')";
+
+    $result = $conn->query($insertQuery) or die("Chyba vo vykonávaní query" . $conn->error);
+    if ($result) {
+        return $conn->insert_id;
+    }
+    return 0;
+}
+
 
