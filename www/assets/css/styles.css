@@ -511,7 +511,6 @@ body {
     margin: 30px auto;
 }
 .modal-confirm .modal-content {
-    padding: 20px;
     border-radius: 5px;
     border: none;
 }
@@ -520,10 +519,8 @@ body {
     position: relative;
 }
 .modal-confirm h4 {
-    text-align: center;
     font-size: 26px;
-    margin-top: 30px;
-    margin-left: 55px;
+    margin: 15px auto;
 }
 .modal-confirm .form-control,
 .modal-confirm .btn, .modal-confirm .btn2 {
@@ -578,7 +575,7 @@ body {
 }
 
 .modal-confirm .icon-box i, .modal-confirm .icon-box2 i {
-    font-size: 58px;
+    font-size: 48px;
     position: relative;
 }
 .modal-confirm.modal-dialog {

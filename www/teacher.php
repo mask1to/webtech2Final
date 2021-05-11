@@ -16,49 +16,12 @@ $teacherEmail = $teacherPassword = "";
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
     /*
-     * Registrácia
-     */
-    if(isset($_POST['registerTeacherBtn']))
-    {
-        $teacherName = $_POST['teacherName'];
-        $teacherSurname = $_POST['teacherSurname'];
-        $teacherEmail = $_POST['teacherEmail'];
-        $teacherPassword = $_POST['teacherPassword'];
-        $userType = 'teacher';
-
-        $teacherPassword = password_hash($teacherPassword, PASSWORD_DEFAULT);
-
-        $result = insertNewTeacher($link, $userType, $teacherName, $teacherSurname, $teacherPassword, $teacherEmail);
-        if($result)
-        {
-            echo '<div id="showModal" class="modal fade text-center">
-	            <div class="modal-dialog modal-confirm text-center">
-		            <div class="modal-content text-center">
-			            <div class="modal-header text-center">
-				            <div class="icon-box2">
-					            <i class="bi bi-check2"></i>
-				            </div>				
-				            <h4 class="modal-title text-center">Vynikajúco !</h4>	
-			            </div>
-			        <div class="modal-body text-center">
-				        <p class="text-center">Registrácia prebehla úspešne.</p>
-			        </div>
-			        <div class="modal-footer text-center">
-				    <a class="btn2 btn-success btn-block" id="theButton" href="teacher.php">Späť na prihlásenie</a>
-			        </div>
-		        </div>
-	           </div>
-            </div>';
-        }
-    }
-
-    /*
      * Overenie údajov pri prihlásení
      */
 
     $teacherEmail = $_POST['loginEmailTeacher'];
     $teacherPassword = $_POST['loginPasswordTeacher'];
-    $selectData = $link->query("SELECT id, name, surname, password FROM user WHERE email = '$teacherEmail'");
+    $selectData = $link->query("SELECT id, name, surname, password, email FROM user WHERE email = '$teacherEmail'");
     $selectedData = mysqli_fetch_assoc($selectData);
 
 
@@ -68,6 +31,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         $dbPassword = $selectedData['password'];
         $dbName = $selectedData['name'];
         $dbSurname = $selectedData['surname'];
+        $dbMail = $selectedData['email'];
+
+        if($dbMail == $teacherEmail && !password_verify($teacherPassword, $dbPassword))
+        {
+            header("location: badLoginTeacher.php");
+        }
 
         if(password_verify($teacherPassword, $dbPassword))
         {
@@ -82,29 +51,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             }
         }
     }
-    else
+    else if(isset($_POST['loginTeacherBtn']) && $selectData->num_rows == 0)
     {
-        echo '<div id="showModal3" class="modal show text-center">
-	            <div class="modal-dialog modal-confirm text-center">
-		            <div class="modal-content text-center">
-			            <div class="modal-header text-center">
-				            <div class="icon-box">
-					            <i class="bi bi-emoji-dizzy"></i>
-				            </div>				
-				            <h4 class="modal-title text-center">Neplatné údaje</h4>	
-			            </div>
-			        <div class="modal-body text-center">
-				        <p class="text-center">Zadali ste neplatné prihlasovacie údaje.</p>
-			        </div>
-			        <div class="modal-footer text-center">
-				    <button class="btn btn-success btn-block" id="theButtonTeacher" data-dismiss="modal">Rozumiem</button>
-			        </div>
-		        </div>
-	           </div>
-            </div>';
+        header("location: badLoginTeacher.php");
     }
-
-
+    
 }
 
 include "partials/header.php";
@@ -134,7 +85,7 @@ include "partials/header.php";
         <h1 class="title">Examify STU | Učiteľ <br> Registrácia
             <div class="close letsClose"></div>
         </h1>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <form action="addTeacher.php" method="post">
             <div class="input-container">
                 <input type="text" id="teacherName" required="required" name="teacherName"/>
                 <label for="teacherName">Meno</label>
