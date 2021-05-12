@@ -171,7 +171,7 @@ $(document).ready(function () {
                                     } else {
                                         var $correct = 0;
                                     }
-
+                                    var question_id=result;
                                     $.ajax({
                                         url: "controllers/addOptionController.php",
                                         method: "POST",
@@ -182,6 +182,20 @@ $(document).ready(function () {
                                             correct: $correct
                                         },
                                         success: function (result) {
+                                            if($this1.find('.pair').length) {
+                                                var $pair = $this1.find('.pair').val();
+                                                $.ajax({
+                                                    url: "controllers/addPairController.php",
+                                                    method: "POST",
+                                                    cache: false,
+                                                    data: {
+                                                        questionId: question_id,
+                                                        option: $pair,
+                                                        questionOptionId: result
+                                                    },
+                                                    success: function (resultt) {}
+                                                });
+                                            }
                                             $("html, body").animate({
                                                 scrollTop: 0
                                             }, "slow");
