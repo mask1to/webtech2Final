@@ -5,7 +5,7 @@ $strRequest = file_get_contents('php://input');
 $Request = json_decode($strRequest);
 
 // Prve dve su meno a priezvisko
-$user_id = getUserId($conn, $Request[0]->meno, $Request[1]->priezvisko  );
+$user_id = getUserId($conn, $Request[0]->meno, $Request[1]->priezvisko);
 $selectedData = mysqli_fetch_assoc($user_id);
 
 for ($i = 2; $i < count($Request); $i++) {
@@ -25,7 +25,7 @@ for ($i = 2; $i < count($Request); $i++) {
                 intval( $questionId),
                 $text,
                 $checked ,
-                intval($selectedData),
+                intval($selectedData['id']),
                 0);
 
         }else{
@@ -35,7 +35,7 @@ for ($i = 2; $i < count($Request); $i++) {
                 intval($Request[$i]->zaznam[0]->id),
                 $Request[$i]->zaznam[1]->data,
                 0 ,
-                intval($selectedData),
+                intval($selectedData['id']),
                 0);
         }
 
