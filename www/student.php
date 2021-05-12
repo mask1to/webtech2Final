@@ -6,6 +6,16 @@ if (!isset($_SESSION["student"])) {
     header("location: index.php");
 }
 
+if(isset($_POST['theModalButton']))
+{
+    echo "<script>console.log(1)</script>";
+    unset($_SESSION['studentName']);
+    unset($_SESSION['studentSurname']);
+    unset($_SESSION['student']);
+    unset($_SESSION['testCode']);
+    session_destroy();
+    header("location: index.php");
+}
 
 include "partials/header.php";
 include "queries/queries.php";
@@ -158,22 +168,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     paint = false;
                 });
 
-                /*$('#download').click(function(e) {
-                    var dataURL = canvas.toDataURL();
-                    var ferko = "dw";
-                    $.ajax({
-                      type: "POST",
-                      url: "uploadFile.php",
-                      data: {
-                         base64Img: dataURL
-                      }
-                      ,
-                      success:function(data){
-                          console.log('saved');
-                            console.log(dataURL);
-                      }
-                    })
-                });*/
 
                 $(document).on('click', '.send_answers',  function(event) {
                     event.preventDefault();
@@ -190,8 +184,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
                     })
                 })
-
-
 
 
                 function addClick(x, y, dragging) {
@@ -266,7 +258,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
             </script>
 
 <?php
-
             echo '<hr>';
         }
     }
@@ -377,8 +368,9 @@ if ($sessionTestCode == $selectedData['test_code']) {
         document.cookie = name + "=" + value + expires + "; path=/";
     }
 
-    var iTimeMinutes = <?php echo $time; ?>;
-    var iTimeSeconds = iTimeMinutes % 60;
+    //var iTimeMinutes = <?php echo $time; ?>;
+    var iTimeMinutes = 0
+    var iTimeSeconds = 5;
 
     if (checkCookie('timerMinutes') && checkCookie("timerSeconds")) {
         iTimeMinutes = parseInt(getCookie('timerMinutes'), 10);
@@ -404,11 +396,10 @@ if ($sessionTestCode == $selectedData['test_code']) {
             }
 
             if ((iTimeMinutes === 0 && iTimeSeconds === 0) || (iTimeMinutes === "0" && iTimeSeconds === "0")) {
-                alert('Cas na test vyprsal!');
+                $('#showModal7').modal({ backdrop: 'static', keyboard: false }, 'show');
                 delete_cookie('timerMinutes');
                 delete_cookie('timerSeconds');
                 clearInterval(i);
-                location.reload();
             } else {
                 if (iTimeSeconds === 0 || iTimeSeconds === "0") {
                     iTimeMinutes--;
@@ -417,21 +408,43 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 iTimeSeconds--;
 
             }
+
+
         }, 1000);
     }
 
     countdown();
-    <?php //toto bude treba poriesit, pretoze toto vypne session, teda sa obrazok neuploadne session_destroy(); 
-    ?>
-</script>
 
-<div id="fixedTimer" class="fancy"></div>
-
-<script>
 
 
 
 </script>
+
+    <div id="fixedTimer" class="fancy"></div>
+
+    <div id="showModal7" class="modal fade text-center">
+        <div class="modal-dialog modal-confirm text-center">
+            <div class="modal-content text-center">
+                <div class="modal-header text-center">
+                    <div class="icon-box">
+                        <i class="bi bi-alarm"></i>
+                    </div>
+                    <h4 class="modal-title text-center">Čas vypršal !</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="text-center">Čas pre test vypršal ! <br> Vaše odpovede boli odoslané.</p>
+                </div>
+                <div class="modal-footer text-center">
+                    <form method="post" action="">
+                        <button class="btn btn-success btn-block" type="submit" id="theModalButton" name="theModalButton">Zavrieť</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php //toto bude treba poriesit, pretoze toto vypne session, teda sa obrazok neuploadne session_destroy();
+
+?>
 
 <?php
 
