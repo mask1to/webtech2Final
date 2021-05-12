@@ -8,87 +8,6 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Pen Title */
-.pen-title {
-    padding: 50px 0;
-    text-align: center;
-    letter-spacing: 2px;
-}
-.pen-title h1 {
-    margin: 0 0 20px;
-    font-size: 48px;
-    font-weight: 300;
-}
-.pen-title span {
-    font-size: 12px;
-}
-.pen-title span .fa {
-    color: #ed2553;
-}
-.pen-title span a {
-    color: #ed2553;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-/* Rerun */
-.rerun {
-    margin: 0 0 30px;
-    text-align: center;
-}
-.rerun a {
-    cursor: pointer;
-    display: inline-block;
-    background: #ed2553;
-    border-radius: 3px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    padding: 10px 20px;
-    color: #ffffff;
-    text-decoration: none;
-    transition: 0.3s ease;
-}
-.rerun a:hover {
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-}
-
-/* Scroll To Bottom */
-#codepen,
-#portfolio {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: #363636;
-    width: 56px;
-    height: 56px;
-    border-radius: 100%;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    transition: 0.3s ease;
-    color: #ffffff;
-    text-align: center;
-}
-#codepen i,
-#portfolio i {
-    line-height: 56px;
-}
-#codepen:hover,
-#portfolio:hover {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-}
-
-/* CodePen */
-#portfolio {
-    bottom: 96px;
-    right: 36px;
-    background: #ed2553;
-    width: 44px;
-    height: 44px;
-    -webkit-animation: buttonFadeInUp 1s ease;
-    animation: buttonFadeInUp 1s ease;
-}
-#portfolio i {
-    line-height: 44px;
-}
-
 /* Container */
 
 .container.active .card:first-child {
@@ -158,11 +77,6 @@ body {
     box-sizing: border-box;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     transition: 0.3s ease;
-    /* Title */
-    /* Inputs */
-    /* Button */
-    /* Footer */
-    /* Alt Card */
 }
 .card:first-child {
     background: #fafafa;
@@ -329,10 +243,6 @@ body {
     box-shadow: none;
     padding: 0;
     transition: 0.3s ease;
-    /* Toggle */
-    /* Title */
-    /* Input */
-    /* Button */
 }
 .card.alt .toggle {
     position: relative;
@@ -633,78 +543,39 @@ body {
     position: fixed;
     right: 20px;
     bottom: 20px;
-    font-family: "Lucida Sans", Arial, sans-serif;
     font-size: 16px;
-
-    /* Same trick as previously used to make circles */
     box-sizing: border-box;
-    width: 150px;
+    width: 160px;
     height: 150px;
     padding: 80px 1em 0 1em;
-
-    /* We make room for the "ears" of our cloud */
     margin: 0 100px;
-
     background-color: #a4c9cf;
-
-    /* Well, actually we are not making a full circle
-       as we want the bottom of our cloud to be flat.
-       Feel free to tweak this example to make a cloud
-       that isn't flat at the bottom ;) */
     border-radius: 100% 100% 0 0;
 }
 
-/* Those are common style that apply to both our ::before
-   and ::after pseudo elements. */
 .fancy::before,
 .fancy::after {
-    /* This is required to be allowed to display the
-       pseudo-elements, event if the value is an empty
-       string */
     content: "";
-
-    /* We position our pseudo-elements on the left and
-       right sides of the box, but always at the bottom */
     position: absolute;
     bottom: 0;
-
-    /* This makes sure our pseudo-elements will be below
-       the box content whatever happens. */
     z-index: -1;
-
     background-color: #a4c9cf;
     border-radius: 100%;
 }
 
 .fancy::before {
-    /* This is the  size of the clouds left ear */
     width: 125px;
     height: 125px;
-
-    /* We slightly move it to the left */
     left: -80px;
-
-    /* To make sure that the bottom of the cloud
-       remains flat, we must make the bottom right
-       corner of the left ear square. */
     border-bottom-right-radius: 0;
 }
 
 .fancy::after {
-    /* This is the size of the clouds left ear */
     width: 100px;
     height: 100px;
-
-    /* We slightly move it to the right */
     right: -60px;
-
-    /* To make sure that the bottom of the cloud
-       remains flat, we must make the bottom left
-       corner of the right ear square. */
     border-bottom-left-radius: 0;
 }
-
-
 
 .fixed-element.fixed {
     background: #343a40 !important;

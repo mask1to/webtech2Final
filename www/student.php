@@ -6,6 +6,13 @@ if (!isset($_SESSION["student"])) {
     header("location: index.php");
 }
 
+if(isset($_POST['sendTheTest']))
+{
+    //TODO: odoslanie odpovedi studenta
+    //TODO: delete cookies z timeru
+    //TODO: vsetko ostatne co treba
+}
+
 include "partials/header.php";
 include "queries/queries.php";
 require_once("config/config.php");
@@ -25,6 +32,7 @@ $testId = $selectedData['id'];
 $selectTypeOfQuestion = $link->query("SELECT * FROM question WHERE test_id = '$testId'");
 
 if ($sessionTestCode == $selectedData['test_code']) {
+    echo '<form method="post" action="">';
     echo '<div class="wrapper bg-white rounded">
             <div class="content">
             <p class="text-muted"><b>Kód testu: ' . $sessionTestCode . '</b></p>
@@ -250,8 +258,9 @@ if ($sessionTestCode == $selectedData['test_code']) {
         }
     }
     echo '</div>
-                <button id="download" class="send_answers odoslat">Odoslať test</button>
+                <button id="sendTheTest" name="sendTheTest" class="send_answers odoslat">Odoslať test</button>
     </div>';
+    echo '</form>';
 }
 
 ?>
@@ -324,6 +333,9 @@ if ($sessionTestCode == $selectedData['test_code']) {
         });
     });
 
+    var iTimeMinutes = <?php echo $time; ?>;
+    var iTimeSeconds = 0;
+
     function checkCookie() {
         var f = getCookie("timerMinutes");
         var g = getCookie("timerSeconds");
@@ -347,20 +359,16 @@ if ($sessionTestCode == $selectedData['test_code']) {
         document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     };
 
-
     function createCookie(name, value) {
         var date = new Date();
-        date.setTime(date.getTime() + (30 * 1000));
+        date.setTime(date.getTime() + ((iTimeMinutes + 10) * 1000));
         var expires = "; expires= " + date.toGMTString();
 
         document.cookie = name + "=" + value + expires + "; path=/";
     }
 
-    //var iTimeMinutes = <?php echo $time; ?>;
-    var iTimeMinutes = 0
-    var iTimeSeconds = 5;
-
-    if (checkCookie('timerMinutes') && checkCookie("timerSeconds")) {
+    if (checkCookie('timerMinutes') && checkCookie("timerSeconds"))
+    {
         iTimeMinutes = parseInt(getCookie('timerMinutes'), 10);
         iTimeSeconds = parseInt(getCookie('timerSeconds'), 10);
     }
@@ -371,14 +379,14 @@ if ($sessionTestCode == $selectedData['test_code']) {
             document.cookie = "timerSeconds=" + encodeURIComponent(iTimeSeconds);
 
             if ((iTimeMinutes < 10 && iTimeSeconds < 10) || (iTimeMinutes < "10" && iTimeSeconds < "10")) {
-                document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + "0" + iTimeMinutes + ":" + "0" + iTimeSeconds;
+                document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + "0" + iTimeMinutes + ":" + "0" + iTimeSeconds;
             } else {
                 if ((iTimeMinutes < 10) || (iTimeMinutes < "10")) {
-                    document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + "0" + iTimeMinutes + ":" + iTimeSeconds;
+                    document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + "0" + iTimeMinutes + ":" + iTimeSeconds;
                 } else if ((iTimeSeconds < 10) || (iTimeSeconds < "10")) {
-                    document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + iTimeMinutes + ":" + "0" + iTimeSeconds;
+                    document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + iTimeMinutes + ":" + "0" + iTimeSeconds;
                 } else {
-                    document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas: " + iTimeMinutes + ":" + iTimeSeconds;
+                    document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + iTimeMinutes + ":" + iTimeSeconds;
                 }
 
             }
