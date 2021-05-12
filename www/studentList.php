@@ -87,7 +87,7 @@ $testCode = $_GET['testCode'];
                         echo '<div class="test-item d-flex align-items-center justify-content-between">
                             <p class="name">' . $rowUser['name'] . ' ' . $rowUser['surname'] . '</p>
                             <div class="d-flex align-items-center">
-                                <a href="studentTestResult.php?testId=' . $testId . '&id=' . $userId . '&name=' . $rowUser['name'] . '&surname=' . $rowUser['surname'] . '" class="mr-4 student-test"><i class="bi bi-list-check"></i></a>
+                                <a href="studentTestResult.php?testId=' . $testId . '&id=' . $userId . '&name=' . $rowUser['name'] . '&surname=' . $rowUser['surname'] . '&testCode=' . $testCode .'" class="mr-4 student-test"><i class="bi bi-list-check"></i></a>
                                 <p class="points-total">' . $resultPoints['points'] . '/' . $totalPointsTest . '</p>';
 
                         if ($resultEx->num_rows > 0) {

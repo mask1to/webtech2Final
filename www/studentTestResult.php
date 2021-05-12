@@ -10,6 +10,7 @@ $id = $_GET['id'];
 $name = $_GET['name'];
 $surname = $_GET['surname'];
 $testId = $_GET['testId'];
+$testCode = $_GET['testCode'];
 
 ?>
 
@@ -178,7 +179,7 @@ $testId = $_GET['testId'];
                     },
                     success: function(result) {
                         if (result == 1) {
-                            window.location.replace('studentList.php?id=<?php echo $testId ?>');
+                            window.location.replace('studentList.php?id=<?php echo $testId ?>&testCode=<?php echo $testCode ?>');
                         }
                         console.log(result);
                     }
