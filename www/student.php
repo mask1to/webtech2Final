@@ -6,17 +6,6 @@ if (!isset($_SESSION["student"])) {
     header("location: index.php");
 }
 
-if(isset($_POST['theModalButton']))
-{
-    echo "<script>console.log(1)</script>";
-    unset($_SESSION['studentName']);
-    unset($_SESSION['studentSurname']);
-    unset($_SESSION['student']);
-    unset($_SESSION['testCode']);
-    session_destroy();
-    header("location: index.php");
-}
-
 include "partials/header.php";
 include "queries/queries.php";
 require_once("config/config.php");
@@ -114,7 +103,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
             <div id="canvasDiv"></div>
             <script>
                 build_canvas();
-
 
                 var clickX = new Array();
                 var clickY = new Array();
@@ -406,7 +394,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     iTimeSeconds = 60;
                 }
                 iTimeSeconds--;
-
             }
 
 
@@ -414,9 +401,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
     }
 
     countdown();
-
-
-
 
 </script>
 

@@ -30,6 +30,16 @@ if(isset($_POST['logOut'])) {
     header("Location: index.php");
 }
 
+if(isset($_POST['theModalButton']))
+{
+    unset($_SESSION['studentName']);
+    unset($_SESSION['studentSurname']);
+    unset($_SESSION['student']);
+    unset($_SESSION['testCode']);
+    session_destroy();
+    echo "<script>location.href = 'index.php'</script>";
+}
+
 ?>
 <!doctype html>
 <html lang="sk">
