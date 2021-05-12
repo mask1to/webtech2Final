@@ -25,9 +25,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $selectTestCode = $link->query("SELECT test_code, isActive FROM test WHERE test_code = '$testCode'");
 
     $selectUserStatus = $link->query(
-            "SELECT name, surname, isWritingExam, currentTestCode 
+            "SELECT id, name, surname, isWritingExam, currentTestCode 
             FROM user WHERE name = '$studentName' AND 
-                            surname = '$studentSurname'"
+                            surname = '$studentSurname'
+                            AND type = 'student'"   
         );
     $selectedUserStatus = mysqli_fetch_assoc($selectUserStatus);
 

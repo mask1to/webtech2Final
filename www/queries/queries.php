@@ -74,8 +74,8 @@ function getTestTime($conn, $test_code){
 
     return $result;
 }
-function getUserId($conn, $name, $surname){
-    $getTest = "SELECT id FROM user WHERE name='$name' and surname='$surname'";
+function getUserId($conn, $name, $surname, $code){
+    $getTest = "SELECT id FROM user WHERE name='$name' and surname='$surname' AND currentTestCode = '$code'";
 
     $result = $conn->query($getTest) or die("Chyba vo vykonávaní query" . $conn->error);
 

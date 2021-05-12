@@ -1,11 +1,12 @@
 <?php
+session_start();
 include "../config/config.php";
 include "../queries/queries.php";
 $strRequest = file_get_contents('php://input');
 $Request = json_decode($strRequest);
 
 // Prve dve su meno a priezvisko
-$user_id = getUserId($conn, $Request[0]->meno, $Request[1]->priezvisko);
+$user_id = getUserId($conn, $Request[0]->meno, $Request[1]->priezvisko, $_SESSION['testCode']);
 $selectedData = mysqli_fetch_assoc($user_id);
 
 for ($i = 2; $i < count($Request); $i++) {
