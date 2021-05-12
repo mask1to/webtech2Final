@@ -271,7 +271,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
         }
     }
     echo '</div>
-                <button id="download" class="send_answers">Odoslať test</button>
+                <button id="download" class="send_answers odoslat">Odoslať test</button>
     </div>';
 }
 
@@ -279,7 +279,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $(".submit").click(function() {
+        $(".odoslat").click(function() {
             var data = new Array()
             data.push({
                 "meno": "<?php echo $_SESSION['studentName'] ?>"
@@ -319,17 +319,18 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     })
                 }
                 if ($(this)[0].classList.contains('draw')) {
+
                     data.push({
                         "zaznam": [{
                             "id": $(this).attr("name") + ""
                         }, {
-                            data: "images/drawing_questions/" + <?php echo $_SESSION['studentName'] ?> +"_" + <?php echo $_SESSION['studentSurname'] ?>+"_"+<?php echo $_SESSION['testCode'] ?> + '.png'"
+                            data: "images/drawing_questions/" + <?php echo  json_encode($_SESSION['studentName']) ?> +"_" + <?php echo json_encode($_SESSION['studentSurname']) ?>+"_"+<?php echo json_encode($_SESSION['testCode']) ?> + ".png"
                         }]
                     })
                 }
 
             })
-            //console.log(data)
+
             $.ajax({
                 url: "controllers/addTestAnswer.php",
                 method: "POST",
