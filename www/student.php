@@ -274,6 +274,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                         },
                         success: function(data) {
                             console.log(data);
+                            console.log(dataURL);
                         }
 
                     })
@@ -318,15 +319,18 @@ if ($sessionTestCode == $selectedData['test_code']) {
             echo '<p class="text-muted"><b>Otázka s matematickou odpoveďou</b></p>
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>  
                       <math-field disabled>' . $questions['name'] . '</math-field>
-                   <math-field id="'. $questions['id'] .'" virtual-keyboard-mode="manual" class="testInput math border mb-3" style="display:none"></math-field>
+                   <math-field id="'. $questions['id'] .'" virtual-keyboard-mode="manual" class="testInput math border mb-3" style="display: none"></math-field>
                 ';
             echo '      <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>';
-            ?>
-            <form action="uploadFile.php" method="POST" enctype="multipart/form-data" id="typ-odpovede" style="display:none">
+            echo '<form action="uploadFile.php" method="POST" enctype="multipart/form-data" id="typ-odpovede">
+                <div id="hideMe" style="display: none">
                 <p><input type="submit" name="upload" value="Vložiť"></p>
                 <label class="upload-label" for="file-btn">Vybrať súbor na upload</label>
-                <p><input type="file" id="file-btn" name="file" hidden></p>
+                <p><input type="file" id="file-btn" name="file"></p>
+                </div>
             </form>
+';
+            ?>
 
             <div class="dropdown show">
                 <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -342,11 +346,11 @@ if ($sessionTestCode == $selectedData['test_code']) {
             <script>
                 document.getElementById('nahrat-subor').onclick = function() {
                     document.getElementById(<?php echo $questionT?>).style.display = "none";
-                    document.getElementById('typ-odpovede').style.display = "block";
+                    document.getElementById('hideMe').style.display = "block";
                 };
 
                 document.getElementById('vyraz').onclick = function() {
-                    document.getElementById('typ-odpovede').style.display = "none";
+                    document.getElementById('hideMe').style.display = "none";
                     document.getElementById(<?php echo $questionT?>).style.display = "block";
                 };
             </script>
