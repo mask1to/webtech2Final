@@ -174,7 +174,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
             {
                 if($option['question_id'] == $questionId)
                 {
-                    echo "<input type='hidden' name='left[]' class='connect_left'>";
+                    echo "<input id=".$questionId ." type='hidden' name='left[]' class='connect_left testInput connect '>";
                     $opname=$option['name'];
                     ?>
                     <script>
@@ -377,6 +377,15 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 data.push({
                     "priezvisko": "<?php echo $_SESSION['studentSurname'] ?>"
                 })
+                var left = new Array()
+                var right = new Array()
+                $('.connect_left').each(function() {
+                     left.push( $(this)[0].value)
+                })
+
+                $('.connect_right').each(function() {
+                    right.push( $(this)[0].value)
+                })
                 $('.testInput').each(function() {
                     if ($(this)[0].classList.contains('checkbox')) {
                         data.push({
@@ -391,8 +400,27 @@ if ($sessionTestCode == $selectedData['test_code']) {
                             }]
                         })
                     }
+                    let i = 0
+                    if ($(this)[0].classList.contains('connect')) {
+
+                        data.push({
+                            "zaznam": [{
+                                "id": $(this).attr("id") + ""
+                            }, {
+                                "left": left[i]
+                            },{
+                                "right": right[i]
+                            }]
+                        })
+                        i++
+                    }
+
+
                     if ($(this)[0].classList.contains('math')) {
                         var res = $(this).val();
+                        var regex = /\\/g;
+                        res = res.replace(regex, "\\\\");
+
                         data.push({
                             "zaznam": [{
                                 "id": $(this).attr("id") + ""
