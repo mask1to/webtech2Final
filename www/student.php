@@ -44,7 +44,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 if ($option['question_id'] == $questionId) {
                     echo '<div class="options py-3 "> 
                      <label class="rounded p-2 option"> ' . $option['name'] . '
-                     <input id="' . $option['id'] . '" type="checkbox" name="radio" class="testInput checkbox">
+                     <input id="' . $option['name'] . '" type="checkbox" name="'. $questionId  .' " class="testInput checkbox">
                      <span class="crossmark"></span>
                      </label>
                      ';
@@ -291,11 +291,13 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 if ($(this)[0].classList.contains('checkbox')) {
                     data.push({
                         "zaznam": [{
-                            "id": $(this).attr("id") + ""
+                            "text": $(this).attr("id") + ""
                         }, {
                             data: $(this)[0].checked
                         },{
                             "type": "checked"
+                        },{
+                            "questionId": $(this).attr("name") + ""
                         }]
                     })
                 }
