@@ -850,3 +850,21 @@ input:checked + .slider:before {
     font-size: 1.5rem;
     color: red;
 }
+
+.connect_ul_left,.connect_ul_right {
+    width: 150px;
+    padding: 0;
+    margin-left: 100px;
+    float: left;
+}
+.connect_ul_left>li,.connect_ul_right>li {
+    margin-bottom: 20px;
+    list-style: none;
+    background-color: #ededed;
+    height: 40px;
+    padding: 5px;
+}
+
+.page_connections{
+    overflow: hidden;
+}

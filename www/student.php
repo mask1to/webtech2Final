@@ -78,26 +78,124 @@ if ($sessionTestCode == $selectedData['test_code']) {
             echo '<hr>';
         }
 
-        if ($questions['type'] == 'connect') {
-            echo '<link rel="stylesheet" href="assets/css/fieldsLinker.css">';
-            echo '<script src="assets/js/fieldsLinker.js"></script>';
+        if($questions['type'] == 'connect')
+        {
+            echo ' <script type="text/javascript" src="assets/js/jsplumb.min.js"></script>';
             echo '<p class="text-muted"><b>Otázka s párovaním správnych odpovedí</b></p>
-                   <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
-                   <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>';
-            while ($option = $selectOptions->fetch_assoc()) {
-                if ($option['question_id'] == $questionId) {
-                    $opname = $option['name'];
-                    echo "<p>$opname";
-                    $optionpairId = $option['id'];
-                    $pairOptions = $link->query("SELECT * FROM OptionsPair WHERE questionOption_id = '$optionpairId'");
-                    while ($pair = $pairOptions->fetch_assoc()) {
+                   <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>
+                   <p class="text-justify h5 pb-2 font-weight-bold">'.$questions['name'].'</p>';
 
-                        $pname = $pair['name'];
-                        echo "   $pname</p>";
+            echo'<div class="page_connections">
+              <div id="select_list_left">
+                <ul class="connect_ul_left">                  
+                </ul>
+              </div>
+              <div id="select_list_right">
+                <ul class="connect_ul_right">                 
+                </ul>
+              </div>
+            </div>';
+            ?>
+            <script>
+                $(document).ready(function() {
+                    var targetOption = {
+                        anchor: "LeftMiddle",
+                        maxConnections: 1,
+                        isSource: false,
+                        isTarget: true,
+                        reattach: true,
+                        endpoint: "Dot",
+                        connector: [ "Bezier", { curviness: 50 } ],
+                        setDragAllowedWhenFull: true
+                    };
+                    var sourceOption = {
+                        tolerance: "touch",
+                        anchor: "RightMiddle",
+                        maxConnections: 1,
+                        isSource: true,
+                        isTarget: false,
+                        reattach: true,
+                        endpoint: "Dot",
+                        connector: [ "Bezier", { curviness: 50 } ],
+                        setDragAllowedWhenFull: true
+                    };
+
+                    jsPlumb.importDefaults({
+                        ConnectionsDetachable: true,
+                        ReattachConnections: true,
+                        maxConnections: 1,
+                        Container: "page_connections"
+                    });
+
+                    var questionEndpoints = [];
+
+                    $("#select_list_left ul > li").click(function() {
+                        var con=jsPlumb.getConnections({source:$(this)});
+                        if(con.length!==0){
+                            jsPlumb.removeAllEndpoints($(this));
+                        }
+                        con=jsPlumb.getConnections({target:$(this)});
+                        if(con.length!==0){
+                            jsPlumb.removeAllEndpoints($(this));
+                        }
+                        questionEndpoints[0] = jsPlumb.addEndpoint($(this), sourceOption);
+                        connectEndpoints();
+                    });
+                    $("#select_list_right ul > li").click(function() {
+                        if (!questionEndpoints[0]) return;
+                        var con=jsPlumb.getConnections({target:$(this)});
+                        if(con.length!==0){
+                            jsPlumb.removeAllEndpoints($(this));
+                        }
+                        con=jsPlumb.getConnections({source:$(this)});
+                        if(con.length!==0){
+                            jsPlumb.removeAllEndpoints($(this));
+                        }
+                        questionEndpoints[1] = jsPlumb.addEndpoint($(this), targetOption);
+                        connectEndpoints();
+                    });
+
+                    var connectEndpoints = function() {
+                        jsPlumb.connect({
+                            source: questionEndpoints[0],
+                            target: questionEndpoints[1]
+                        });
+                        var xx=jsPlumb.getConnections();
+                        xx.forEach(function(item, index){
+                            $('.connect_left')[index].value=item.source.innerHTML;
+                            $('.connect_right')[index].value=item.target.innerHTML;
+                        })
+                    }
+                });
+
+            </script>
+            <?php
+            while($option = $selectOptions->fetch_assoc())
+            {
+                if($option['question_id'] == $questionId)
+                {
+                    echo "<input type='hidden' name='left[]' class='connect_left'>";
+                    $opname=$option['name'];
+                    ?>
+                    <script>
+                        $(".connect_ul_left").append('<li><?php echo"$opname";?></li>');
+                    </script>
+                    <?php
+                    $optionpairId=$option['id'];
+                    $pairOptions = $link->query("SELECT * FROM OptionsPair WHERE questionOption_id = '$optionpairId'");
+                    while($pair = $pairOptions->fetch_assoc()){
+                        echo "<input type='hidden' name='right[]' class='connect_right'>";
+                        $pname=$pair['name'];
+                        ?>
+                        <script>
+                            $(".connect_ul_right").append('<li><?php echo"$pname";?></li>');
+                        </script>
+                        <?php
                     }
                 }
             }
             echo '<hr>';
+
         }
 
         if ($questions['type'] == 'draw') {
