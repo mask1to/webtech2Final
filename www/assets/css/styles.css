@@ -868,3 +868,13 @@ input:checked + .slider:before {
 .page_connections{
     overflow: hidden;
 }
+
+.correctAnswerCheck {
+    font-size: 1.25rem;
+    color: green;
+}
+
+.wrongAnswerCheck {
+    font-size: 1.25rem;
+    color: red;
+}

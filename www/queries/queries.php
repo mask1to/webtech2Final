@@ -93,4 +93,13 @@ function insertAnswer($conn, $questionId, $text, $isCorrect, $userId, $points)
     return 0;
 }
 
+function insertPoints($conn, $questionId, $userId, $points) {
+    $sqlUpdate = "UPDATE answer SET isCorrect = '1', points = '$points' WHERE question_id = '$questionId' AND user_id = '$userId'";
 
+    if($conn->query($sqlUpdate)) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}

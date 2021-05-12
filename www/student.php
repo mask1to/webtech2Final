@@ -244,7 +244,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     canvas.setAttribute('width', 550);
                     canvas.setAttribute('height', 220);
                     canvas.setAttribute('id', 'canvas');
-                    canvas.style = "border:thin solid black";
+                    canvas.style = "border:thin solid black;";
                     canvasDiv.appendChild(canvas);
                     if (typeof G_vmlCanvasManager != 'undefined') {
                         canvas = G_vmlCanvasManager.initElement(canvas);
