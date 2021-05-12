@@ -2,6 +2,29 @@
 session_start();
 
 
+//file
+$student_name = $_SESSION['studentName'];
+$student_surname = $_SESSION['studentSurname'];
+$test_code = $_SESSION['testCode'];
+
+if(isset($_POST['img_draw']) && $student_name && $student_surname && $test_code){
+    file_put_contents("images/drawing_questions/".$_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'] . '.png', file_get_contents($_POST['img_draw']));
+}
+
+//tuto to este blbne, nechcevojst do funkcie a ulozit obrazok
+if(isset($_FILES['fileSend']) && $student_name && $student_surname && $test_code){
+    $file_name = $_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'];
+    $file_type = $_FILES['fileSend']['type'];
+    $file_size = $_FILES['fileSend']['size'];
+
+    $new_name = strtolower(substr($_FILES['fileSend']['name'], strpos($_FILES['fileSend']['name'], '.')));
+
+    $file_store = "images/math_questions/".$file_name.$new_name;
+    $file_tem_loc = $_FILES['fileSend']['tmp_name'];
+    move_uploaded_file($file_tem_loc, $file_store);
+}
+
+
 if (!isset($_SESSION["student"])) {
     header("location: index.php");
 }
@@ -262,7 +285,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     paint = false;
                 });
 
-
                 $(document).on('click', '.send_answers',  function(event) {
                     event.preventDefault();
                     var dataURL = canvas.toDataURL();
@@ -322,15 +344,11 @@ if ($sessionTestCode == $selectedData['test_code']) {
                    <math-field id="'. $questions['id'] .'" virtual-keyboard-mode="manual" class="testInput math border mb-3" style="display: none"></math-field>
                 ';
             echo '      <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>';
-            echo '<form action="uploadFile.php" method="POST" enctype="multipart/form-data" id="typ-odpovede">
-                <div id="hideMe" style="display: none">
-                <p><input type="submit" name="upload" value="Vložiť"></p>
-                <label class="upload-label" for="file-btn">Vybrať súbor na upload</label>
-                <p><input type="file" id="file-btn" name="file"></p>
-                </div>
-            </form>
-';
-            ?>
+
+            echo '
+            
+            <label id="upload-label" class="upload-label" for="file-btn" style="display: none">Vybrať súbor</label>
+            <p><input type="file" id="file-btn" name="fileSend" /hidden></p>
 
             <div class="dropdown show">
                 <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -342,15 +360,18 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     <a class="dropdown-item" id="vyraz" href="#">Matematickým výrazom</a>
                 </div>
             </div>
+            
+            ';
+            ?>
 
             <script>
                 document.getElementById('nahrat-subor').onclick = function() {
                     document.getElementById(<?php echo $questionT?>).style.display = "none";
-                    document.getElementById('hideMe').style.display = "block";
+                    document.getElementById('upload-label').style.display = "block";
                 };
 
                 document.getElementById('vyraz').onclick = function() {
-                    document.getElementById('hideMe').style.display = "none";
+                    document.getElementById('upload-label').style.display = "none";
                     document.getElementById(<?php echo $questionT?>).style.display = "block";
                 };
             </script>
@@ -360,7 +381,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
         }
     }
     echo '</div>
-                <button id="sendTheTest" name="sendTheTest" class="send_answers odoslat">Odoslať test</button>
+                <button type="submit" id="sendTheTest" name="sendTheTest" class="send_answers odoslat">Odoslať test</button>
     </div>';
     echo '</form>';
 }
