@@ -355,17 +355,15 @@ if ($sessionTestCode == $selectedData['test_code']) {
         return null;
     }
 
+    //SKAP ZABAK
+    function createCookie(name, value) {
+        var expires = (new Date(Date.now()+ 60*iTimeMinutes*1000)).toUTCString();
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
     var delete_cookie = function(name) {
         document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     };
-
-    function createCookie(name, value) {
-        var date = new Date();
-        date.setTime(date.getTime() + ((iTimeMinutes + 10) * 1000));
-        var expires = "; expires= " + date.toGMTString();
-
-        document.cookie = name + "=" + value + expires + "; path=/";
-    }
 
     if (checkCookie('timerMinutes') && checkCookie("timerSeconds"))
     {
@@ -374,6 +372,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
     }
 
     function countdown() {
+
         var i = setInterval(function() {
             document.cookie = "timerMinutes=" + encodeURIComponent(iTimeMinutes);
             document.cookie = "timerSeconds=" + encodeURIComponent(iTimeSeconds);

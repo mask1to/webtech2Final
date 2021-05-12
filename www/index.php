@@ -28,7 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             "SELECT id, name, surname, isWritingExam, currentTestCode 
             FROM user WHERE name = '$studentName' AND 
                             surname = '$studentSurname'
-                            AND type = 'student'"   
+                            AND type = 'student'
+                          "
         );
     $selectedUserStatus = mysqli_fetch_assoc($selectUserStatus);
 
