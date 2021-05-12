@@ -9,6 +9,7 @@ include "partials/header.php";
 require_once("config/config.php");
 
 ?>
+<script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>
 
 <main class="pt-4 pb-4">
     <div class="container">
@@ -61,7 +62,7 @@ require_once("config/config.php");
         </div>
     </div>
 </main>
-    <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>
+
 <script src="assets/js/addTest.js"></script>
 <?php
 include "partials/footer.php";

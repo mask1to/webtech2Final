@@ -964,3 +964,18 @@ input:checked + .slider:before {
     font-weight: 600;
     cursor: pointer;
 }
+
+.student-test {
+    font-size: 2rem;
+    color: #000;
+}
+
+.points-total {
+    font-size: 1.5rem;
+    margin-bottom: 0;
+}
+
+.exclamation {
+    font-size: 1.5rem;
+    color: red;
+}

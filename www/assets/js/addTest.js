@@ -107,24 +107,34 @@ $(document).ready(function () {
     })
 
     function addTest() {
-        var $name = $('#testName').val(),
-            $points = countPoints(),
-            $time = $('#testTime').val();
-        $.ajax({
-            url: "controllers/addTestController.php",
-            method: "POST",
-            cache: false,
-            data: {
-                name: $name,
-                points: $points,
-                time: $time
-            },
-            success: function (result) {
-                if (result > 0) {
-                    addQuestion(result);
-                }
-            },
-        });
+        if ($('.question-container').length) {
+            var $name = $('#testName').val(),
+                $points = countPoints(),
+                $time = $('#testTime').val();
+            $.ajax({
+                url: "controllers/addTestController.php",
+                method: "POST",
+                cache: false,
+                data: {
+                    name: $name,
+                    points: $points,
+                    time: $time
+                },
+                success: function (result) {
+                    if (result > 0) {
+                        addQuestion(result);
+                    }
+                },
+            });
+        }
+        else {
+            $("html, body").animate({
+                scrollTop: 0
+            }, "slow");
+            $(".alert-question").fadeTo(2000, 500).slideUp(500, function () {
+                $(".alert-question").slideUp(500);
+            })
+        }
     }
 
     function addQuestion(testId) {
@@ -134,6 +144,11 @@ $(document).ready(function () {
                     $type = $this.data('type'),
                     $question = $this.find('.questionInput').val(),
                     $points = $this.find('.points').val();
+
+                if ($type === 'math') {
+                    var regex = /\\/g;
+                    var $question = $question.replace(regex, "\\\\");
+                }
 
                 $.ajax({
                     url: "controllers/addQuestionController.php",
@@ -156,7 +171,7 @@ $(document).ready(function () {
                                     } else {
                                         var $correct = 0;
                                     }
-    
+
                                     $.ajax({
                                         url: "controllers/addOptionController.php",
                                         method: "POST",
