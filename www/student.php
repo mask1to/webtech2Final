@@ -12,31 +12,31 @@ if(isset($_POST['img_draw']) && $student_name && $student_surname && $test_code)
     file_put_contents("images/drawing_questions/".$_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'].".jpg", file_get_contents($_POST['img_draw']));
 }
 
-if(isset($_POST['upload']) && $student_name && $student_surname && $test_code){
+if(isset($_POST['sendTheTest']) && $student_name && $student_surname && $test_code){
     //file_put_contents("images/math_questions/".$_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'].".jpg", $_POST['file']);
     $file_name = $_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'];
-    $_FILES["file"]["type"] = "image/jpg";
-    $file_type = $_FILES['file']['type'];
-    $file_size = $_FILES['file']['size'];
+    $_FILES["file-math"]["type"] = "image/jpg";
+    $file_type = $_FILES['file-math']['type'];
+    $file_size = $_FILES['file-math']['size'];
 
-    $new_name = strtolower(substr($_FILES['file']['name'], strpos($_FILES['file']['name'], '.')));
+    $new_name = strtolower(substr($_FILES['file-math']['name'], strpos($_FILES['file-math']['name'], '.')));
 
     $file_store = "images/math_questions/".$file_name.".jpg";
-    $file_tem_loc = $_FILES['file']['tmp_name'];
+    $file_tem_loc = $_FILES['file-math']['tmp_name'];
     move_uploaded_file($file_tem_loc, $file_store);
 }
 
-if(isset($_POST['upload-draw']) && $student_name && $student_surname && $test_code){
+if(isset($_POST['sendTheTest']) && $student_name && $student_surname && $test_code){
     //file_put_contents("images/math_questions/".$_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'].".jpg", $_POST['file']);
     $file_name = $_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'];
-    $_FILES["file"]["type"] = "image/jpg";
-    $file_type = $_FILES['file']['type'];
-    $file_size = $_FILES['file']['size'];
+    $_FILES["file-draw"]["type"] = "image/jpg";
+    $file_type = $_FILES['file-draw']['type'];
+    $file_size = $_FILES['file-draw']['size'];
 
-    $new_name = strtolower(substr($_FILES['file']['name'], strpos($_FILES['file']['name'], '.')));
+    $new_name = strtolower(substr($_FILES['file-draw']['name'], strpos($_FILES['file-draw']['name'], '.')));
 
     $file_store = "images/drawing_questions/".$file_name.".jpg";
-    $file_tem_loc = $_FILES['file']['tmp_name'];
+    $file_tem_loc = $_FILES['file-draw']['tmp_name'];
     move_uploaded_file($file_tem_loc, $file_store);
 }
 
@@ -64,7 +64,9 @@ $testId = $selectedData['id'];
 $selectTypeOfQuestion = $link->query("SELECT * FROM question WHERE test_id = '$testId'");
 
 if ($sessionTestCode == $selectedData['test_code']) {
-    echo '<div class="wrapper bg-white rounded">
+    echo '
+<form action="" method="POST" enctype="multipart/form-data">
+<div class="wrapper bg-white rounded">
             <div class="content">
             <p class="text-muted"><b>Kód testu: ' . $sessionTestCode . '</b></p>
             <p class="text-muted"><b>Počet bodov v teste: ' . $selectedData["total_points"] . '</b></p>
@@ -236,11 +238,10 @@ if ($sessionTestCode == $selectedData['test_code']) {
                    <div class="testInput draw" name="'. $questionId.'" id="canvasDiv"></div>';
 
             echo '
-            <form action="" method="POST" enctype="multipart/form-data" id="upl-draw" style="display: none">
-                <p><input type="submit" name="upload-draw" value="Vložiť"></p>
-                <label class="upload-label" for="file-btn-draw">Vybrať súbor na upload</label>
-                <p><input type="file" id="file-btn-draw" name="file" /hidden></p>
-            </form>
+
+                <label id="upl-draw" class="upload-label" for="file-btn-draw" style="display: none">Vybrať súbor na upload</label>
+                <p><input class="file-btn-draw" type="file" id="file-btn-draw" name="file-draw" /hidden></p>
+                
             
             <div class="dropdown show">
                 <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -324,7 +325,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 });
 
                 $(document).on('click', '.send_answers',  function(event) {
-                    event.preventDefault();
                     var dataURL = canvas.toDataURL("image/jpeg", 1);
                     $.ajax({
                         type: "post",
@@ -383,12 +383,9 @@ if ($sessionTestCode == $selectedData['test_code']) {
             echo '
             
             <label id="upload-label" class="upload-label" for="file-btn" style="display: none">Vybrať súbor</label>
-            <form action="" method="POST" enctype="multipart/form-data" id="upl" style="display: none">
-                <p><input type="submit" name="upload" value="Vložiť"></p>
-                <label class="upload-label" for="file-btn">Vybrať súbor na upload</label>
-                <p><input type="file" id="file-btn" name="file" /hidden></p>
-            </form>
-            
+
+                <label id="upl" class="upload-label" for="file-btn" style="display: none">Vybrať súbor na upload</label>
+                <p><input type="file" id="file-btn" name="file-math" /hidden></p>
 
             <div class="dropdown show">
                 <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -423,7 +420,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
     }
     echo '</div>
                 <button type="submit" id="sendTheTest" name="sendTheTest" class="send_answers odoslat">Odoslať test</button>
-    </div>';
+    </div>
+    </form>';
 }
 
 ?>
@@ -625,11 +623,16 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     iTimeSeconds--;
                 }
 
-
             }, 1000);
         }
 
         countdown();
+
+        $('.file-btn-draw input').change(function() {
+            $('#upload-btn').prop(
+                'disabled',
+                !($('.upload-block :checked').length && $('#InputFile').val()));
+        });
 
     </script>
 
