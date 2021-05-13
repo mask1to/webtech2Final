@@ -35,11 +35,13 @@ if(isset($_POST['theModalButton']) || isset($_POST['theModalButtonTest']))
     $testCode = $_SESSION['testCode'];
     $updateQuery = "UPDATE user SET isWritingExam = '0' WHERE name = '$name' AND surname = '$surname' AND currentTestCode = '$testCode'";
     $conn->query($updateQuery);
+
     unset($_SESSION['studentName']);
     unset($_SESSION['studentSurname']);
     unset($_SESSION['student']);
     unset($_SESSION['testCode']);
     session_destroy();
+    header("location: index.php");
 }
 
 ?>
