@@ -14,7 +14,7 @@ include "queries/queries.php";
 $link = $conn;
 
 $studentName = $studentSurname = $testCode = "";
-$isWriting = 0;
+$isWriting = null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $studentName = $_POST['studentName'];
@@ -40,28 +40,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         if ($selectedTestCode['isActive'] == 1) {
-            if (isset($selectedUserStatus['isWritingExam'])) {
+            if (isset($selectedUserStatus['isWritingExam']))
+            {
                 $isWriting = $selectedUserStatus['isWritingExam'];
             }
-            if ($isWriting == 0) {
+            if ($isWriting == null)
+            {
                 $_SESSION['studentName'] = $studentName;
                 $_SESSION['studentSurname'] = $studentSurname;
                 $isWriting = 1;
                 insertNewStudent($link, $type, $studentName, $studentSurname, $isWriting, $testCode);
                 $_SESSION['student'] = true;
-                if (isset($_SESSION["student"]) && $_SESSION["student"] === true) {
+                if (isset($_SESSION["student"]) && $_SESSION["student"] === true)
+                {
                     $_SESSION['testCode'] = $testCode;
                     header("location: student.php");
                     exit;
                 }
-            } else if ($isWriting == 1 && !strcmp($testCode, $dbTestCode)) {
+            }
+            else if($isWriting == 0 && !strcmp($testCode, $dbTestCode))
+            {
+                echo '<div id="showModal9" class="modal fade text-center">
+                        <div class="modal-dialog modal-confirm text-center">
+                            <div class="modal-content text-center">
+                                <div class="modal-header text-center">
+                                    <div class="icon-box">
+                                        <i class="bi bi-emoji-dizzy"></i>
+                                    </div>				
+                                    <h4 class="modal-title text-center">Nastala chyba !</h4>	
+                                </div>
+                            <div class="modal-body text-center">
+                                <p class="text-center">Zadaný test ste už písali.<br>Nie je možné ho písať znovu.</p>
+                            </div>
+                            <div class="modal-footer text-center">
+                            <button class="btn btn-success btn-block" id="theButton" data-dismiss="modal">Rozumiem</button>
+                            </div>
+                        </div>
+                       </div>
+                     </div>';
+            }
+            else if ($isWriting == 1 && !strcmp($testCode, $dbTestCode))
+            {
                 $_SESSION['studentName'] = $studentName;
                 $_SESSION['studentSurname'] = $studentSurname;
                 $_SESSION['student'] = true;
                 $_SESSION['testCode'] = $testCode;
                 header("location: student.php");
                 exit;
-            } else {
+            }
+            else {
                 echo '<div id="showModal6" class="modal fade text-center">
 	            <div class="modal-dialog modal-confirm text-center">
 		            <div class="modal-content text-center">
