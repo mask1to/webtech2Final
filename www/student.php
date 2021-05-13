@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+if (!isset($_SESSION["student"])) {
+    header("location: index.php");
+}
 
 //file
 $student_name = $_SESSION['studentName'];
@@ -10,10 +13,6 @@ $test_code = $_SESSION['testCode'];
 
 if (isset($_POST['img_draw']) && $student_name && $student_surname && $test_code) {
     file_put_contents("images/drawing_questions/" . $_SESSION['studentName'] . "_" . $_SESSION['studentSurname'] . "_" . $_SESSION['testCode'] . '_' . $_POST['id'] .".jpg", file_get_contents($_POST['img_draw']));
-}
-
-if (!isset($_SESSION["student"])) {
-    header("location: index.php");
 }
 
 
