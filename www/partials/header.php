@@ -24,37 +24,22 @@ if(isset($_POST['logOut'])) {
         unset($_SESSION["lastName"]);
         unset($_SESSION["loggedin"]);
     }
-
     session_destroy();
-
     header("Location: index.php");
 }
 
-if(isset($_POST['theModalButton']))
-{
-    unset($_SESSION['studentName']);
-    unset($_SESSION['studentSurname']);
-    unset($_SESSION['student']);
-    unset($_SESSION['testCode']);
-    session_destroy();
-    echo "<script>location.href = 'index.php'</script>";
-}
-
-if(isset($_POST['theModalButtonTest']))
+if(isset($_POST['theModalButton']) || isset($_POST['theModalButtonTest']))
 {
     $name = $_SESSION['studentName'];
     $surname = $_SESSION['studentSurname'];
     $testCode = $_SESSION['testCode'];
-
     $updateQuery = "UPDATE user SET isWritingExam = '0' WHERE name = '$name' AND surname = '$surname' AND currentTestCode = '$testCode'";
     $conn->query($updateQuery);
-
     unset($_SESSION['studentName']);
     unset($_SESSION['studentSurname']);
     unset($_SESSION['student']);
     unset($_SESSION['testCode']);
     session_destroy();
-    echo "<script>location.href = 'index.php'</script>";
 }
 
 ?>

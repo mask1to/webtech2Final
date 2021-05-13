@@ -426,14 +426,16 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('.nahrat-subor').on('click', function(e) {
+        $('.nahrat-subor').on('click', function(e)
+        {
             e.preventDefault();
             console.log($(this));
             $(this).parents('.math-parent').find('.upl').show();
             $(this).parents('.math-parent').find('.testInput').hide();
         });
 
-        $('.vyraz').on('click', function(e) {
+        $('.vyraz').on('click', function(e)
+        {
             e.preventDefault();
             $(this).parents('.math-parent').find('.upl').hide();
             $(this).parents('.math-parent').find('.testInput').show();
@@ -451,7 +453,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 console.log(checkCookie("timerSeconds"));
                 delete_cookie('timerMinutes');
                 delete_cookie('timerSeconds');
-                $('#showModal8').modal({
+                $('#showModal8').modal
+                ({
                     backdrop: 'static',
                     keyboard: false
                 }, 'show');
@@ -470,9 +473,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
             })
             var left = new Array()
             var right = new Array()
-            // $('.connect_left').each(function() {
-            //      left.push( $(this)[0].value)
-            // })
 
             $('.connect_right').each(function() {
                 right.push($(this).val())
@@ -480,7 +480,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
             })
             let i = 0
             $('.testInput').each(function() {
-                if ($(this)[0].classList.contains('checkbox')) {
+                if ($(this)[0].classList.contains('checkbox'))
+                {
                     data.push({
                         "zaznam": [{
                             "text": $(this).attr("id") + ""
@@ -493,7 +494,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
                         }]
                     })
                 }
-                if ($(this)[0].classList.contains('connect')) {
+                if ($(this)[0].classList.contains('connect'))
+                {
 
                     data.push({
                         "zaznam": [{
@@ -508,10 +510,10 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     })
                     i++
                 }
-
-                if ($(this)[0].classList.contains('math')) {
-
-                    if ($(this).css('display') == 'block') {
+                if ($(this)[0].classList.contains('math'))
+                {
+                    if ($(this).css('display') == 'block')
+                    {
                         var res = $(this).val();
                         var regex = /\\/g;
                         res = res.replace(regex, "\\\\");
@@ -523,9 +525,9 @@ if ($sessionTestCode == $selectedData['test_code']) {
                                 data: res
                             }]
                         })
-                    } else {
-
-                        // treba questionId a img_path
+                    }
+                    else
+                    {
                         data.push({
                             "zaznam": [{
                                 "id": $(this).attr("id") + ""
@@ -536,15 +538,15 @@ if ($sessionTestCode == $selectedData['test_code']) {
                                 "type": "img"
                             }]
                         })
-
                         var math = $('#mathUp').prop('files')[0];
-                        if (math) {
+                        if (math)
+                        {
                             var form_data_math = new FormData();
                             form_data_math.append('file', math);
                             form_data_math.append('id', $(this).attr("id"));
                         }
-
-                        if (form_data_math) {
+                        if (form_data_math)
+                        {
                             $.ajax({
                                 url: 'uploadFileMath.php',
                                 method: "POST",
@@ -558,7 +560,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
                         }
                     }
                 }
-                if ($(this)[0].classList.contains('short')) {
+                if ($(this)[0].classList.contains('short'))
+                {
                     data.push({
                         "zaznam": [{
                             "id": $(this).attr("id") + ""
@@ -567,8 +570,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
                         }]
                     })
                 }
-                if ($(this)[0].classList.contains('draw')) {
-
+                if ($(this)[0].classList.contains('draw'))
+                {
                     data.push({
                         "zaznam": [{
                             "id": $(this).attr("name") + ""
@@ -578,13 +581,15 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     })
 
                     var draw = $('#drawUp').prop('files')[0];
-                    if (draw) {
+                    if (draw)
+                    {
                         var form_data_draw = new FormData();
                         form_data_draw.append('file', draw);
                         form_data_draw.append('id', $(this).attr("name"));
                     }
 
-                    if (form_data_draw) {
+                    if (form_data_draw)
+                    {
                         $.ajax({
                             url: 'uploadFileDraw.php',
                             method: "POST",
@@ -609,64 +614,62 @@ if ($sessionTestCode == $selectedData['test_code']) {
             });
         }
 
-
-
     var iTimeMinutes = <?php echo $time; ?>;
     var iTimeSeconds = 0;
 
-    function checkCookie() {
+    function checkCookie()
+    {
         var f = getCookie("timerMinutes");
         var g = getCookie("timerSeconds");
         return f !== null && g !== null;
     }
 
-    function getCookie(name) {
+    function getCookie(name)
+    {
         var cookieArr = document.cookie.split(";");
-
-        for (var i = 0; i < cookieArr.length; i++) {
+        for (var i = 0; i < cookieArr.length; i++)
+        {
             var cookiePair = cookieArr[i].split("=");
-
-            if (name === cookiePair[0].trim()) {
+            if (name === cookiePair[0].trim())
+            {
                 return decodeURIComponent(cookiePair[1]);
             }
         }
         return null;
     }
 
-    var delete_cookie = function(name) {
+    var delete_cookie = function(name)
+    {
         document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     };
 
-    function createCookie(name, value) {
+    function createCookie(name, value)
+    {
         var date = new Date();
         date.setTime(date.getTime() + (iTimeMinutes + 10) * 60 * 1000);
         var expires = "; expires= " + date.toGMTString();
-
         document.cookie = name + "=" + value + expires + "; path=/";
     }
 
-    if (checkCookie('timerMinutes') && checkCookie("timerSeconds")) {
+    if (checkCookie('timerMinutes') && checkCookie("timerSeconds"))
+    {
         iTimeMinutes = parseInt(getCookie('timerMinutes'), 10);
         iTimeSeconds = parseInt(getCookie('timerSeconds'), 10);
     }
 
-    function setTimer() {
-        var now = new Date();
-        var time = now.getTime();
-        var expireTime = time + 10 * 36000;
-        now.setTime(expireTime);
-        return now;
-    }
-
-    function countdown() {
-
-        var i = setInterval(function() {
+    function countdown()
+    {
+        var i = setInterval(function()
+        {
             createCookie("timerMinutes", iTimeMinutes);
             createCookie("timerSeconds", iTimeSeconds);
 
-            if ((iTimeMinutes < 10 && iTimeSeconds < 10) || (iTimeMinutes < "10" && iTimeSeconds < "10")) {
+            if ((iTimeMinutes < 10 && iTimeSeconds < 10) || (iTimeMinutes < "10" && iTimeSeconds < "10"))
+            {
                 document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + "0" + iTimeMinutes + ":" + "0" + iTimeSeconds;
-            } else {
+            }
+            else
+            {
                 if ((iTimeMinutes < 10) || (iTimeMinutes < "10")) {
                     document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + "0" + iTimeMinutes + ":" + iTimeSeconds;
                 } else if ((iTimeSeconds < 10) || (iTimeSeconds < "10")) {
@@ -675,7 +678,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + iTimeMinutes + ":" + iTimeSeconds;
                 }
             }
-
             if ((iTimeMinutes === 0 && iTimeSeconds === 0))
             {
                 sendTheTest();
@@ -703,20 +705,23 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
     countdown();
 
-        $(document).on('change', '.up', function() {
+        $(document).on('change', '.up', function()
+        {
             var names = [];
             var length = $(this).get(0).files.length;
             for (var i = 0; i < $(this).get(0).files.length; ++i) {
                 names.push($(this).get(0).files[i].name);
             }
-            // $("input[name=file]").val(names);
-            if (length > 2) {
+            if (length > 2)
+            {
                 var fileName = names.join(', ');
                 $(this).closest('.form-group').find('.form-control').attr("value", length + " files selected");
-            } else {
+            }
+            else
+            {
                 $(this).closest('.form-group').find('.form-control').attr("value", names);
             }
-            });
+        });
     });
 </script>
 
@@ -736,7 +741,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
             </div>
             <div class="modal-footer text-center">
                 <form method="post" action="">
-                    <button class="btn btn-success btn-block" type="submit" id="theModalButton" name="theModalButton">Zavrieť</button>
+                    <button class="btn btn-success btn-block text-center bestModalBtn" type="submit" id="theModalButton" name="theModalButton">Zavrieť</button>
                 </form>
             </div>
         </div>
@@ -757,15 +762,12 @@ if ($sessionTestCode == $selectedData['test_code']) {
             </div>
             <div class="modal-footer text-center">
                 <form method="post" action="">
-                    <button class="btn btn-success btn-block" type="submit" id="theModalButtonTest" name="theModalButtonTest">Zavrieť</button>
+                    <button class="btn btn-success btn-block bestModalBtn" type="submit" id="theModalButtonTest" name="theModalButtonTest">Zavrieť</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-<?php //toto bude treba poriesit, pretoze toto vypne session, teda sa obrazok neuploadne session_destroy();
-
-?>
 
 <?php
 

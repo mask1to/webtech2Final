@@ -921,3 +921,8 @@ input:checked + .slider:before {
     filter: alpha(opacity=0);
 }
 
+.bestModalBtn
+{
+    margin-right: 215px;
+}
+
