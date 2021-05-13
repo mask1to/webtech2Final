@@ -28,17 +28,10 @@ if(isset($_POST['upload']) && $student_name && $student_surname && $test_code){
 
 }
 
-
 if (!isset($_SESSION["student"])) {
     header("location: index.php");
 }
 
-if(isset($_POST['sendTheTest']))
-{
-    //TODO: odoslanie odpovedi studenta
-    //TODO: delete cookies z timeru
-    //TODO: vsetko ostatne co treba
-}
 
 include "partials/header.php";
 include "queries/queries.php";
@@ -302,29 +295,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
                     })
                 })
-
-                $('.send_answers').click(function() {
-
-                    var data = new FormData();
-
-                    //Append files infos
-                    jQuery.each($(this)[0].files, function(i, file) {
-                        data.append('file-'+i, file);
-                    });
-
-                    $.ajax({
-                        url: "student.php",
-                        type: "POST",
-                        data: data,
-                        cache: false,
-                        processData: false,
-                        contentType: false,
-                        context: this,
-                        success: function (msg) {
-                            alert(msg);
-                        }
-                    });
-                });
 
 
                 function addClick(x, y, dragging) {
