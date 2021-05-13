@@ -250,6 +250,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 </div>
                 <br>
             </div></div>
+            <p class="demoToolList"><button onclick="c'.$questionId.'('.$questionId.')" id="clearCanvasSimple" type="button">Odznovu</button></p>
             ';
         ?>
             <script>
@@ -265,7 +266,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     document.getElementById('drawUp').value = '';
                 });
             </script>
-            <p class="demoToolList"><button onclick="c(clickX<?php echo $questionId ?>,clickY<?php echo $questionId ?>,clickDrag<?php echo $questionId ?>, <?php echo $questionId ?>);" id="clearCanvasSimple" type="button">Odznovu</button></p>
+
             <script>
                 build_canvas();
 
@@ -273,6 +274,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 var clickY<?php echo $questionId ?> = new Array();
                 var clickDrag<?php echo $questionId ?> = new Array();
                 var paint<?php echo $questionId ?>;
+
 
                 function build_canvas() {
                     var canvasDiv = document.getElementById('<?php echo $questionId ?>');
@@ -287,14 +289,17 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     }
                 }
 
-                function c(clickX<?php echo $questionId ?>,clickY<?php echo $questionId ?>,clickDrag<?php echo $questionId ?>, id) {
+                function c<?php echo $questionId ?>(id) {
                     var context = document.getElementById('canvas-' + id).getContext('2d');
                     context.clearRect(0, 0, canvas<?php echo $questionId ?>.width, canvas<?php echo $questionId ?>.height);
-                    context.closePath();
+                    //context.closePath();
 
                     clickX<?php echo $questionId ?> = new Array();
                     clickY<?php echo $questionId ?> = new Array();
                     clickDrag<?php echo $questionId ?> = new Array();
+
+                    console.log(clickX<?php echo $questionId ?>);
+                    context.save();
                 }
 
                 $('#<?php echo $questionId ?>').mousedown(function(e) {
@@ -342,11 +347,12 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     clickX<?php echo $questionId ?>.push(x);
                     clickY<?php echo $questionId ?>.push(y);
                     clickDrag<?php echo $questionId ?>.push(dragging);
+                    console.log(clickX<?php echo $questionId ?>);
                 }
 
                 function redraw<?php echo $questionId ?>(id) {
                     var context = document.getElementById('canvas-' + id).getContext('2d');
-                    context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
+                    context.clearRect(0, 0, canvas<?php echo $questionId ?>.width, canvas<?php echo $questionId ?>.height); // Clears the canvas
 
                     context.strokeStyle = "#df4b26";
                     context.lineJoin = "round";
