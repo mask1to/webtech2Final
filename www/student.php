@@ -220,10 +220,10 @@ if ($sessionTestCode == $selectedData['test_code']) {
         }
 
         if ($questions['type'] == 'draw') {
-            echo '<p class="text-muted"><b>Otázka s nakreslením obrázku</b></p>
+            echo '<div class="draw-parent"><p class="text-muted"><b>Otázka s nakreslením obrázku</b></p>
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
                    <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>
-                   <div class="testInput draw" name="' . $questionId . '" id="canvasDiv"></div>';
+                   <div class="testInput draw canvasDiv" name="' . $questionId . '"></div>';
 
             echo '
                 
@@ -246,28 +246,27 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 <br>
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" id="nahrat-subor-draw" href="#">Nahrat subor</a>
-                    <a class="dropdown-item" id="skryt" href="#">Skryt nahranie suboru</a>
+                    <a class="dropdown-item nahrat-subor-draw" href="#">Nahrat subor</a>
+                    <a class="dropdown-item skryt" href="#">Skryt nahranie suboru</a>
                 </div>
                 <br>
-            </div>
+            </div></div>
             ';
         ?>
             <script>
-                document.getElementById('nahrat-subor-draw').onclick = function(e) {
+                $('.nahrat-subor-draw').on('click', function(e) {
                     e.preventDefault();
-                    document.getElementById('upl-draw').style.display = "block";
-                    document.getElementById('canvasDiv').style.display = "none";
-                };
-                document.getElementById('skryt').onclick = function(e) {
+                    $(this).parents('.draw-parent').find('#upl-draw').show();
+                    $(this).parents('.draw-parent').find('.canvas').hide();
+                });
+                $('.skryt').on('click', function(e) {
                     e.preventDefault();
-                    document.getElementById('upl-draw').style.display = "none";
-                    document.getElementById('canvasDiv').style.display = "block";
+                    $(this).parents('.draw-parent').find('#upl-draw').hide();
+                    $(this).parents('.draw-parent').find('.canvas').show();
                     document.getElementById('drawUp').value = '';
-                };
+                });
             </script>
             <p class="demoToolList"><button onclick="c(clickX,clickY,clickDrag);" id="clearCanvasSimple" type="button">Odznovu</button></p>
-            <div id="canvasDiv"></div>
             <script>
                 build_canvas();
 
@@ -277,13 +276,15 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 var paint;
 
                 function build_canvas() {
-                    var canvasDiv = document.getElementById('canvasDiv');
+                    var canvasDiv = document.getElementsByClassName('canvasDiv');
                     canvas = document.createElement('canvas');
                     canvas.setAttribute('width', 550);
                     canvas.setAttribute('height', 220);
-                    canvas.setAttribute('id', 'canvas');
+                    canvas.setAttribute('class', 'canvas');
                     canvas.style = "border:thin solid black;";
-                    canvasDiv.appendChild(canvas);
+                    for (let item of canvasDiv) {
+                        item.appendChild(canvas);
+                    }
                     if (typeof G_vmlCanvasManager != 'undefined') {
                         canvas = G_vmlCanvasManager.initElement(canvas);
                     }
@@ -299,7 +300,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     clickDrag = new Array();
                 }
 
-                $('#canvas').mousedown(function(e) {
+                $('.canvas').mousedown(function(e) {
                     var mouseX = e.pageX - this.offsetLeft;
                     var mouseY = e.pageY - this.offsetTop;
 
@@ -308,18 +309,18 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     redraw();
                 });
 
-                $('#canvas').mousemove(function(e) {
+                $('.canvas').mousemove(function(e) {
                     if (paint) {
                         addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
                         redraw();
                     }
                 });
 
-                $('#canvas').mouseup(function(e) {
+                $('.canvas').mouseup(function(e) {
                     paint = false;
                 });
 
-                $('#canvas').mouseleave(function(e) {
+                $('.canvas').mouseleave(function(e) {
                     paint = false;
                 });
 
@@ -372,7 +373,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
         }
         if ($questions['type'] == 'math') {
             $questionT = $questions['id'];
-            echo '<p class="text-muted"><b>Otázka s matematickou odpoveďou</b></p>
+            echo '<div class="math-parent"><p class="text-muted"><b>Otázka s matematickou odpoveďou</b></p>
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>  
                       <math-field disabled>' . $questions['name'] . '</math-field>
                    <math-field id="' . $questions['id'] . '" virtual-keyboard-mode="manual" class="testInput math border mb-3" style="display: none"></math-field>
@@ -380,7 +381,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
             echo '      <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>';
             echo '
             
-<div id="upl" class="form-group" style="display: none">
+<div class="form-group upl" style="display: none">
 <div class="input-group">
   <input type="text" class="form-control" readonly>
 <div class="input-group-btn">
@@ -398,27 +399,13 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 </a>
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" id="nahrat-subor" href="#">Nahranim suboru</a>
-                    <a class="dropdown-item" id="vyraz" href="#">Matematickým výrazom</a>
+                    <a class="dropdown-item nahrat-subor" href="#">Nahranim suboru</a>
+                    <a class="dropdown-item vyraz" href="#">Matematickým výrazom</a>
                 </div>
+            </div>
             </div>
             ';
         ?>
-
-            <script>
-                document.getElementById('nahrat-subor').onclick = function(e) {
-                    e.preventDefault();
-                    document.getElementById(<?php echo $questionT ?>).style.display = "none";
-                    document.getElementById('upl').style.display = "block";
-                };
-
-                document.getElementById('vyraz').onclick = function(e) {
-                    e.preventDefault();
-                    document.getElementById('upl').style.display = "none";
-                    document.getElementById(<?php echo $questionT ?>).style.display = "block";
-                    document.getElementById('mathUp').value = '';
-                };
-            </script>
 
 <?php
             echo '<hr>';
@@ -432,8 +419,26 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
 ?>
 
+<script>
+
+</script>
+
 <script type="text/javascript">
     $(document).ready(function() {
+        $('.nahrat-subor').on('click', function(e) {
+            e.preventDefault();
+            console.log($(this));
+            $(this).parents('.math-parent').find('.upl').show();
+            $(this).parents('.math-parent').find('.testInput').hide();
+        });
+
+        $('.vyraz').on('click', function(e) {
+            e.preventDefault();
+            $(this).parents('.math-parent').find('.upl').hide();
+            $(this).parents('.math-parent').find('.testInput').show();
+            document.getElementById('mathUp').value = '';
+        });
+
         $(".odoslat").click(function(e) {
             e.preventDefault();
             var data = new Array()
@@ -512,6 +517,23 @@ if ($sessionTestCode == $selectedData['test_code']) {
                             }]
                         })
                     }
+
+                    var math = $('#mathUp').prop('files')[0];
+                    if (math) {
+                        var form_data_math = new FormData();
+                        form_data_math.append('file', math);
+                    }
+
+                    if (form_data_math) {
+                        $.ajax({
+                            url: 'uploadFileMath.php',
+                            method: "POST",
+                            contentType: false,
+                            processData: false,
+                            data: form_data_math,
+                            success: function(data) {}
+                        })
+                    }
                 }
                 if ($(this)[0].classList.contains('short')) {
                     data.push({
@@ -531,45 +553,26 @@ if ($sessionTestCode == $selectedData['test_code']) {
                             data: "images/drawing_questions/" + <?php echo  json_encode($_SESSION['studentName']) ?> + "_" + <?php echo json_encode($_SESSION['studentSurname']) ?> + "_" + <?php echo json_encode($_SESSION['testCode']) ?> + ".jpg"
                         }]
                     })
+
+                    var draw = $('#drawUp').prop('files')[0];
+                    if (draw) {
+                        var form_data_draw = new FormData();
+                        form_data_draw.append('file', draw);
+                    }
+
+                    if (form_data_draw) {
+                        $.ajax({
+                            url: 'uploadFileDraw.php',
+                            method: "POST",
+                            contentType: false,
+                            processData: false,
+                            data: form_data_draw,
+                            success: function(data) {}
+                        })
+                    }
                 }
 
             })
-
-            var draw = $('#drawUp').prop('files')[0];
-            if (draw) {
-                var form_data_draw = new FormData();
-                form_data_draw.append('file', draw);
-            }
-
-            if (form_data_draw) {
-                $.ajax({
-                    url: 'uploadFileDraw.php',
-                    method: "POST",
-                    contentType: false,
-                    processData: false,
-                    data: form_data_draw,
-                    success: function(data) {
-                    }
-                })
-            }
-
-            var math = $('#mathUp').prop('files')[0];
-            if (math) {
-                var form_data_math = new FormData();
-                form_data_math.append('file', math);
-            }
-
-            if (form_data_math) {
-                $.ajax({
-                    url: 'uploadFileMath.php',
-                    method: "POST",
-                    contentType: false,
-                    processData: false,
-                    data: form_data_math,
-                    success: function(data) {
-                    }
-                })
-            }
 
             $.ajax({
                 url: "controllers/addTestAnswer.php",
