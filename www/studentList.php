@@ -146,7 +146,8 @@ $testCode = $_GET['testCode'];
                             echo '</div>
                         </div>';
                         } else {
-                            echo '<div class="test-item d-flex align-items-center justify-content-between">
+                            echo '<div class="test-item">
+                                <p class="name mb-3">' . $rowUser['name'] . ' ' . $rowUser['surname'] . '</p>
                                 <p class="name">Študent odovzdal prázdny test</p>
                                 
                             </div>';
