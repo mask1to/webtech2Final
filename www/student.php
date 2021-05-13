@@ -413,7 +413,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
         }
     }
     echo '</div>
-                <button type="submit" id="sendTheTest" name="sendTheTest" class="send_answers odoslat">Odoslať test</button>
+                <button data-clicked="false" type="submit" id="sendTheTest" name="sendTheTest" class="send_answers odoslat">Odoslať test</button>
     </div>
     </form>';
 }
@@ -440,8 +440,27 @@ if ($sessionTestCode == $selectedData['test_code']) {
             document.getElementById('mathUp').value = '';
         });
 
-        $(".odoslat").click(function(e) {
+        $(".odoslat").click(function(e)
+        {
+            $(this).attr('data-clicked', 'true');
             e.preventDefault();
+            if($(".odoslat").attr('data-clicked') === 'true')
+            {
+                sendTheTest();
+                console.log(checkCookie("timerMinutes"));
+                console.log(checkCookie("timerSeconds"));
+                delete_cookie('timerMinutes');
+                delete_cookie('timerSeconds');
+                $('#showModal8').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                }, 'show');
+            }
+
+        });
+
+        function sendTheTest()
+        {
             var data = new Array()
             data.push({
                 "meno": "<?php echo $_SESSION['studentName'] ?>"
@@ -588,13 +607,9 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     //console.log(result)
                 }
             });
+        }
 
-            $('#showModal8').modal({
-                backdrop: 'static',
-                keyboard: false
-            }, 'show');
-        });
-    });
+
 
     var iTimeMinutes = <?php echo $time; ?>;
     var iTimeSeconds = 0;
@@ -661,16 +676,22 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 }
             }
 
-            if ((iTimeMinutes === 0 && iTimeSeconds === 0) || (iTimeMinutes === "0" && iTimeSeconds === "0")) {
-                $('#showModal7').modal({
+            if ((iTimeMinutes === 0 && iTimeSeconds === 0))
+            {
+                sendTheTest();
+                $('#showModal7').modal
+                ({
                     backdrop: 'static',
                     keyboard: false
                 }, 'show');
                 delete_cookie('timerMinutes');
                 delete_cookie('timerSeconds');
                 clearInterval(i);
-            } else {
-                if (iTimeSeconds === 0 || iTimeSeconds === "0") {
+            }
+            else
+            {
+                if (iTimeSeconds === 0)
+                {
                     iTimeMinutes--;
                     iTimeSeconds = 60;
                 }
@@ -682,19 +703,20 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
     countdown();
 
-    $(document).on('change', '.up', function() {
-        var names = [];
-        var length = $(this).get(0).files.length;
-        for (var i = 0; i < $(this).get(0).files.length; ++i) {
-            names.push($(this).get(0).files[i].name);
-        }
-        // $("input[name=file]").val(names);
-        if (length > 2) {
-            var fileName = names.join(', ');
-            $(this).closest('.form-group').find('.form-control').attr("value", length + " files selected");
-        } else {
-            $(this).closest('.form-group').find('.form-control').attr("value", names);
-        }
+        $(document).on('change', '.up', function() {
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+            // $("input[name=file]").val(names);
+            if (length > 2) {
+                var fileName = names.join(', ');
+                $(this).closest('.form-group').find('.form-control').attr("value", length + " files selected");
+            } else {
+                $(this).closest('.form-group').find('.form-control').attr("value", names);
+            }
+            });
     });
 </script>
 
