@@ -12,7 +12,7 @@ if(isset($_POST['img_draw']) && $student_name && $student_surname && $test_code)
     file_put_contents("images/drawing_questions/".$_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'].".jpg", file_get_contents($_POST['img_draw']));
 }
 
-if(isset($_POST['sendTheTest']) && $student_name && $student_surname && $test_code){
+if(isset($_POST['sendTheTest']) && isset($_FILES["file-math"]) && $student_name && $student_surname && $test_code){
     //file_put_contents("images/math_questions/".$_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'].".jpg", $_POST['file']);
     $file_name = $_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'];
     $_FILES["file-math"]["type"] = "image/jpg";
@@ -26,7 +26,7 @@ if(isset($_POST['sendTheTest']) && $student_name && $student_surname && $test_co
     move_uploaded_file($file_tem_loc, $file_store);
 }
 
-if(isset($_POST['sendTheTest']) && $student_name && $student_surname && $test_code){
+if(isset($_POST['sendTheTest']) && isset($_FILES["file-draw"]) && $student_name && $student_surname && $test_code){
     //file_put_contents("images/math_questions/".$_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'].".jpg", $_POST['file']);
     $file_name = $_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'];
     $_FILES["file-draw"]["type"] = "image/jpg";
