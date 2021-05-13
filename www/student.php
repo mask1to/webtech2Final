@@ -238,10 +238,18 @@ if ($sessionTestCode == $selectedData['test_code']) {
                    <div class="testInput draw" name="'. $questionId.'" id="canvasDiv"></div>';
 
             echo '
-
-                <label id="upl-draw" class="upload-label" for="file-btn-draw" style="display: none">Vybrať súbor na upload</label>
-                <p><input class="file-btn-draw" type="file" id="file-btn-draw" name="file-draw" /hidden></p>
                 
+                <div id="upl-draw" class="form-group" style="display: none">
+<div class="input-group">
+  <input type="text" class="form-control" readonly>
+<div class="input-group-btn">
+  <span class="fileUpload">
+      <span class="upl" id="upload">Upload file</span>
+      <input name="file-draw" type="file" class="upload up file-btn-draw " id="up" onchange="readURL(this);" />
+    </span><!-- btn-orange -->
+ </div><!-- btn -->
+ </div><!-- group -->
+ </div><!-- form-group -->
             
             <div class="dropdown show">
                 <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -382,10 +390,17 @@ if ($sessionTestCode == $selectedData['test_code']) {
             echo '      <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>';
             echo '
             
-            <label id="upload-label" class="upload-label" for="file-btn" style="display: none">Vybrať súbor</label>
-
-                <label id="upl" class="upload-label" for="file-btn" style="display: none">Vybrať súbor na upload</label>
-                <p><input type="file" id="file-btn" name="file-math" /hidden></p>
+<div id="upl" class="form-group" style="display: none">
+<div class="input-group">
+  <input type="text" class="form-control" readonly>
+<div class="input-group-btn">
+  <span class="fileUpload">
+      <span class="upl" id="upload">Upload file</span>
+      <input name="file-math" type="file" class="upload up file-btn-math" id="up" onchange="readURL(this);" />
+    </span><!-- btn-orange -->
+ </div><!-- btn -->
+ </div><!-- group -->
+ </div><!-- form-group -->
 
             <div class="dropdown show">
                 <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -626,10 +641,20 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
         countdown();
 
-        $('.file-btn-draw input').change(function() {
-            $('#upload-btn').prop(
-                'disabled',
-                !($('.upload-block :checked').length && $('#InputFile').val()));
+        $(document).on('change','.up', function(){
+            var names = [];
+            var length = $(this).get(0).files.length;
+            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+                names.push($(this).get(0).files[i].name);
+            }
+            // $("input[name=file]").val(names);
+            if(length>2){
+                var fileName = names.join(', ');
+                $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
+            }
+            else{
+                $(this).closest('.form-group').find('.form-control').attr("value",names);
+            }
         });
 
     </script>
