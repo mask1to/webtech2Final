@@ -104,7 +104,7 @@ $testCode = $_GET['testCode'];
                                 <label class="d-block col-form-label col-form-label-lg">' . $rowQuestion['name'] . '</label>
                                 <div class="form-group">
                                     <label>Študentova odpoveď</label>
-                                    <img src="' . $row['text'] . '">
+                                    <img src="' . $row['text'] . '" width="100%">
                                 </div>
                                 <div class="form-group">
                                     <label>Body na udelenie</label>
@@ -125,7 +125,7 @@ $testCode = $_GET['testCode'];
                                 <div class="form-group">
                                     <label>Študentova odpoveď</label>';
                             if ($row['text'] == NULL) {
-                                echo '<img src="' . $row['image_path'] . '">';
+                                echo '<img src="' . $row['image_path'] . '" width="100%">';
                             } else {
                                 echo '<math-field disabled>' . $row['text'] . '</math-field>';
                             }

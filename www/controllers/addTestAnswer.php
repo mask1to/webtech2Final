@@ -49,7 +49,7 @@ for ($i = 2; $i < count($Request); $i++) {
 
                 insertAnswerMathImg( $conn ,
                     intval( $questionId),
-                    data,
+                    $data,
                     0 ,
                     intval($selectedData['id']),
                     0

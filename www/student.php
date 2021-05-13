@@ -9,7 +9,7 @@ $test_code = $_SESSION['testCode'];
 
 
 if (isset($_POST['img_draw']) && $student_name && $student_surname && $test_code) {
-    file_put_contents("images/drawing_questions/" . $_SESSION['studentName'] . "_" . $_SESSION['studentSurname'] . "_" . $_SESSION['testCode'] . ".jpg", file_get_contents($_POST['img_draw']));
+    file_put_contents("images/drawing_questions/" . $_SESSION['studentName'] . "_" . $_SESSION['studentSurname'] . "_" . $_SESSION['testCode'] . '_' . $_POST['id'] .".jpg", file_get_contents($_POST['img_draw']));
 }
 
 if (!isset($_SESSION["student"])) {
@@ -223,7 +223,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
             echo '<div class="draw-parent"><p class="text-muted"><b>Otázka s nakreslením obrázku</b></p>
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
                    <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>
-                   <div class="testInput draw canvasDiv" name="' . $questionId . '"></div>';
+                   <div id="' . $questionId . '" class="testInput draw canvasDiv canvas" name="' . $questionId . '"></div>';
 
             echo '
                 
@@ -247,7 +247,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item nahrat-subor-draw" href="#">Nahrat subor</a>
-                    <a class="dropdown-item skryt" href="#">Skryt nahranie suboru</a>
+                    <a class="dropdown-item skryt" href="#">Kreslenie</a>
                 </div>
                 <br>
             </div></div>
@@ -266,106 +266,106 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     document.getElementById('drawUp').value = '';
                 });
             </script>
-            <p class="demoToolList"><button onclick="c(clickX,clickY,clickDrag);" id="clearCanvasSimple" type="button">Odznovu</button></p>
+            <p class="demoToolList"><button onclick="c(clickX<?php echo $questionId ?>,clickY<?php echo $questionId ?>,clickDrag<?php echo $questionId ?>, <?php echo $questionId ?>);" id="clearCanvasSimple" type="button">Odznovu</button></p>
             <script>
                 build_canvas();
 
-                var clickX = new Array();
-                var clickY = new Array();
-                var clickDrag = new Array();
-                var paint;
+                var clickX<?php echo $questionId ?> = new Array();
+                var clickY<?php echo $questionId ?> = new Array();
+                var clickDrag<?php echo $questionId ?> = new Array();
+                var paint<?php echo $questionId ?>;
 
                 function build_canvas() {
-                    var canvasDiv = document.getElementsByClassName('canvasDiv');
-                    canvas = document.createElement('canvas');
-                    canvas.setAttribute('width', 550);
-                    canvas.setAttribute('height', 220);
-                    canvas.setAttribute('class', 'canvas');
-                    canvas.style = "border:thin solid black;";
-                    for (let item of canvasDiv) {
-                        item.appendChild(canvas);
-                    }
+                    var canvasDiv = document.getElementById('<?php echo $questionId ?>');
+                    canvas<?php echo $questionId ?> = document.createElement('canvas');
+                    canvas<?php echo $questionId ?>.setAttribute('width', 550);
+                    canvas<?php echo $questionId ?>.setAttribute('height', 220);
+                    canvas<?php echo $questionId ?>.setAttribute('id', 'canvas-' + <?php echo $questionId ?>);
+                    canvas<?php echo $questionId ?>.style = "border:thin solid black;";
+                    canvasDiv.appendChild(canvas<?php echo $questionId ?>);
                     if (typeof G_vmlCanvasManager != 'undefined') {
-                        canvas = G_vmlCanvasManager.initElement(canvas);
+                        canvas<?php echo $questionId ?> = G_vmlCanvasManager.initElement(canvas);
                     }
-                    context = canvas.getContext("2d");
-                    console.log(context);
                 }
 
-                function c() {
-                    context.clearRect(0, 0, canvas.width, canvas.height);
+                function c(clickX<?php echo $questionId ?>,clickY<?php echo $questionId ?>,clickDrag<?php echo $questionId ?>, id) {
+                    var context = document.getElementById('canvas-' + id).getContext('2d');
+                    context.clearRect(0, 0, canvas<?php echo $questionId ?>.width, canvas<?php echo $questionId ?>.height);
                     context.closePath();
 
-                    clickX = new Array();
-                    clickY = new Array();
-                    clickDrag = new Array();
+                    clickX<?php echo $questionId ?> = new Array();
+                    clickY<?php echo $questionId ?> = new Array();
+                    clickDrag<?php echo $questionId ?> = new Array();
                 }
 
-                $('.canvas').mousedown(function(e) {
+                $('#<?php echo $questionId ?>').mousedown(function(e) {
                     var mouseX = e.pageX - this.offsetLeft;
                     var mouseY = e.pageY - this.offsetTop;
+                    var id = <?php echo $questionId ?>;
 
-                    paint = true;
-                    addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
-                    redraw();
+                    paint<?php echo $questionId ?> = true;
+                    addClick<?php echo $questionId ?>(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+                    redraw<?php echo $questionId ?>(id);
                 });
 
-                $('.canvas').mousemove(function(e) {
-                    if (paint) {
-                        addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
-                        redraw();
+                $('#<?php echo $questionId ?>').mousemove(function(e) {
+                    var id = <?php echo $questionId ?>;
+                    if (paint<?php echo $questionId ?>) {
+                        addClick<?php echo $questionId ?>(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+                        redraw<?php echo $questionId ?>(id);
                     }
                 });
 
-                $('.canvas').mouseup(function(e) {
-                    paint = false;
+                $('#<?php echo $questionId ?>').mouseup(function(e) {
+                    paint<?php echo $questionId ?> = false;
                 });
 
-                $('.canvas').mouseleave(function(e) {
-                    paint = false;
+                $('#<?php echo $questionId ?>').mouseleave(function(e) {
+                    paint<?php echo $questionId ?> = false;
                 });
 
                 $(document).on('click', '.send_answers', function(event) {
-                    var dataURL = canvas.toDataURL("image/jpeg", 1);
+                    var dataURL = canvas<?php echo $questionId ?>.toDataURL("image/jpeg", 1);
+                    var id = <?php echo $questionId ?>;
                     $.ajax({
                         type: "post",
                         url: "student.php",
                         data: {
-                            img_draw: dataURL
+                            img_draw: dataURL,
+                            id: id
                         },
                         success: function(data) {}
 
                     })
                 })
 
-
-                function addClick(x, y, dragging) {
-                    clickX.push(x);
-                    clickY.push(y);
-                    clickDrag.push(dragging);
+                function addClick<?php echo $questionId ?>(x, y, dragging) {
+                    clickX<?php echo $questionId ?>.push(x);
+                    clickY<?php echo $questionId ?>.push(y);
+                    clickDrag<?php echo $questionId ?>.push(dragging);
                 }
 
-                function redraw() {
+                function redraw<?php echo $questionId ?>(id) {
+                    var context = document.getElementById('canvas-' + id).getContext('2d');
                     context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
 
                     context.strokeStyle = "#df4b26";
                     context.lineJoin = "round";
                     context.lineWidth = 5;
 
-                    for (var i = 0; i < clickX.length; i++) {
+                    for (var i = 0; i < clickX<?php echo $questionId ?>.length; i++) {
                         context.beginPath();
-                        if (clickDrag[i] && i) {
-                            context.moveTo(clickX[i - 1], clickY[i - 1]);
+                        if (clickDrag<?php echo $questionId ?>[i] && i) {
+                            context.moveTo(clickX<?php echo $questionId ?>[i - 1], clickY<?php echo $questionId ?>[i - 1]);
                         } else {
-                            context.moveTo(clickX[i] - 1, clickY[i]);
+                            context.moveTo(clickX<?php echo $questionId ?>[i] - 1, clickY<?php echo $questionId ?>[i]);
                         }
-                        context.lineTo(clickX[i], clickY[i]);
+                        context.lineTo(clickX<?php echo $questionId ?>[i], clickY<?php echo $questionId ?>[i]);
                         context.closePath();
                         context.stroke();
                     }
+                    context.save();
                 }
-
-                context.save();
             </script>
 
         <?php
