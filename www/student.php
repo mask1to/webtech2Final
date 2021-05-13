@@ -24,8 +24,20 @@ if(isset($_POST['upload']) && $student_name && $student_surname && $test_code){
     $file_store = "images/math_questions/".$file_name.".jpg";
     $file_tem_loc = $_FILES['file']['tmp_name'];
     move_uploaded_file($file_tem_loc, $file_store);
+}
 
+if(isset($_POST['upload-draw']) && $student_name && $student_surname && $test_code){
+    //file_put_contents("images/math_questions/".$_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'].".jpg", $_POST['file']);
+    $file_name = $_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'];
+    $_FILES["file"]["type"] = "image/jpg";
+    $file_type = $_FILES['file']['type'];
+    $file_size = $_FILES['file']['size'];
 
+    $new_name = strtolower(substr($_FILES['file']['name'], strpos($_FILES['file']['name'], '.')));
+
+    $file_store = "images/drawing_questions/".$file_name.".jpg";
+    $file_tem_loc = $_FILES['file']['tmp_name'];
+    move_uploaded_file($file_tem_loc, $file_store);
 }
 
 if (!isset($_SESSION["student"])) {
@@ -223,7 +235,35 @@ if ($sessionTestCode == $selectedData['test_code']) {
                    <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>
                    <div class="testInput draw" name="'. $questionId.'" id="canvasDiv"></div>';
 
+            echo '
+            <form action="" method="POST" enctype="multipart/form-data" id="upl-draw" style="display: none">
+                <p><input type="submit" name="upload-draw" value="Vložiť"></p>
+                <label class="upload-label" for="file-btn-draw">Vybrať súbor na upload</label>
+                <p><input type="file" id="file-btn-draw" name="file" /hidden></p>
+            </form>
+            
+            <div class="dropdown show">
+                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Typ odpovede
+                </a>
+                <br>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" id="nahrat-subor-draw" href="#">Nahrat subor</a>
+                    <a class="dropdown-item" id="skryt" href="#">Skryt nahranie suboru</a>
+                </div>
+                <br>
+            </div>
+            ';
             ?>
+            <script>
+                document.getElementById('nahrat-subor-draw').onclick = function() {
+                    document.getElementById('upl-draw').style.display = "block";
+                };
+                document.getElementById('skryt').onclick = function() {
+                    document.getElementById('upl-draw').style.display = "none";
+                };
+            </script>
             <p class="demoToolList"><button onclick="c(clickX,clickY,clickDrag);" id="clearCanvasSimple" type="button">Odznovu</button></p>
             <div id="canvasDiv"></div>
             <script>
