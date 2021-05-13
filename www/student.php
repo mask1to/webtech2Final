@@ -495,14 +495,14 @@ if ($sessionTestCode == $selectedData['test_code']) {
                                 }]
                             })
                         }else{
-                            console.log()
 
                             // treba questionId a img_path
                             data.push({
                                 "zaznam": [{
                                     "id": $(this).attr("id") + ""
                                 }, {
-                                    data: <?php echo $file_store ?>
+                                    data: "images/math_questions/" + <?php echo  json_encode($_SESSION['studentName']) ?> +"_" + <?php echo json_encode($_SESSION['studentSurname']) ?>+"_"+<?php echo json_encode($_SESSION['testCode']) ?> + ".png"
+
                                 },{
                                     "type": "img"
                                 }]
