@@ -98,10 +98,7 @@ if(isset($_POST['theModalButton']) || isset($_POST['theModalButtonTest']))
                     }
                     else {
                         echo '<li class="nav-item">
-                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
+                            <a class="nav-link" href="index.php">Prihlásenie / registrácia</a>
                         </li>';
                     }
                     ?>
