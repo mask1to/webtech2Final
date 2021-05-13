@@ -7,21 +7,25 @@ $student_name = $_SESSION['studentName'];
 $student_surname = $_SESSION['studentSurname'];
 $test_code = $_SESSION['testCode'];
 
+
 if(isset($_POST['img_draw']) && $student_name && $student_surname && $test_code){
-    file_put_contents("images/drawing_questions/".$_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'] . '.png', file_get_contents($_POST['img_draw']));
+    file_put_contents("images/drawing_questions/".$_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'].".jpg", file_get_contents($_POST['img_draw']));
 }
 
-//tuto to este blbne, nechcevojst do funkcie a ulozit obrazok
-if(isset($_FILES['fileSend']) && $student_name && $student_surname && $test_code){
+if(isset($_POST['upload']) && $student_name && $student_surname && $test_code){
+    //file_put_contents("images/math_questions/".$_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'].".jpg", $_POST['file']);
     $file_name = $_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'];
-    $file_type = $_FILES['fileSend']['type'];
-    $file_size = $_FILES['fileSend']['size'];
+    $_FILES["file"]["type"] = "image/jpg";
+    $file_type = $_FILES['file']['type'];
+    $file_size = $_FILES['file']['size'];
 
-    $new_name = strtolower(substr($_FILES['fileSend']['name'], strpos($_FILES['fileSend']['name'], '.')));
+    $new_name = strtolower(substr($_FILES['file']['name'], strpos($_FILES['file']['name'], '.')));
 
-    $file_store = "images/math_questions/".$file_name.$new_name;
-    $file_tem_loc = $_FILES['fileSend']['tmp_name'];
+    $file_store = "images/math_questions/".$file_name.".jpg";
+    $file_tem_loc = $_FILES['file']['tmp_name'];
     move_uploaded_file($file_tem_loc, $file_store);
+
+
 }
 
 
@@ -55,7 +59,6 @@ $testId = $selectedData['id'];
 $selectTypeOfQuestion = $link->query("SELECT * FROM question WHERE test_id = '$testId'");
 
 if ($sessionTestCode == $selectedData['test_code']) {
-    echo '<form method="post" action="">';
     echo '<div class="wrapper bg-white rounded">
             <div class="content">
             <p class="text-muted"><b>Kód testu: ' . $sessionTestCode . '</b></p>
@@ -287,20 +290,41 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
                 $(document).on('click', '.send_answers',  function(event) {
                     event.preventDefault();
-                    var dataURL = canvas.toDataURL();
+                    var dataURL = canvas.toDataURL("image/jpeg", 1);
                     $.ajax({
                         type: "post",
-                        url: "uploadFile.php",
+                        url: "student.php",
                         data: {
                             img_draw: dataURL
                         },
                         success: function(data) {
-                            console.log(data);
-                            console.log(dataURL);
                         }
 
                     })
                 })
+
+                $('.send_answers').click(function() {
+
+                    var data = new FormData();
+
+                    //Append files infos
+                    jQuery.each($(this)[0].files, function(i, file) {
+                        data.append('file-'+i, file);
+                    });
+
+                    $.ajax({
+                        url: "student.php",
+                        type: "POST",
+                        data: data,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        context: this,
+                        success: function (msg) {
+                            alert(msg);
+                        }
+                    });
+                });
 
 
                 function addClick(x, y, dragging) {
@@ -344,11 +368,15 @@ if ($sessionTestCode == $selectedData['test_code']) {
                    <math-field id="'. $questions['id'] .'" virtual-keyboard-mode="manual" class="testInput math border mb-3" style="display: none"></math-field>
                 ';
             echo '      <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>';
-
             echo '
             
             <label id="upload-label" class="upload-label" for="file-btn" style="display: none">Vybrať súbor</label>
-            <p><input type="file" id="file-btn" name="fileSend" /hidden></p>
+            <form action="" method="POST" enctype="multipart/form-data" id="upl" style="display: none">
+                <p><input type="submit" name="upload" value="Vložiť"></p>
+                <label class="upload-label" for="file-btn">Vybrať súbor na upload</label>
+                <p><input type="file" id="file-btn" name="file" /hidden></p>
+            </form>
+            
 
             <div class="dropdown show">
                 <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -360,18 +388,17 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     <a class="dropdown-item" id="vyraz" href="#">Matematickým výrazom</a>
                 </div>
             </div>
-            
             ';
             ?>
 
             <script>
                 document.getElementById('nahrat-subor').onclick = function() {
                     document.getElementById(<?php echo $questionT?>).style.display = "none";
-                    document.getElementById('upload-label').style.display = "block";
+                    document.getElementById('upl').style.display = "block";
                 };
 
                 document.getElementById('vyraz').onclick = function() {
-                    document.getElementById('upload-label').style.display = "none";
+                    document.getElementById('upl').style.display = "none";
                     document.getElementById(<?php echo $questionT?>).style.display = "block";
                 };
             </script>
@@ -383,7 +410,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
     echo '</div>
                 <button type="submit" id="sendTheTest" name="sendTheTest" class="send_answers odoslat">Odoslať test</button>
     </div>';
-    echo '</form>';
 }
 
 ?>
