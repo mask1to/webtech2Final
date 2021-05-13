@@ -2,11 +2,11 @@
 
 ## Contributors
 Examify has following contributors: 
-> **Jakub "kubo12312" Rosina**
-> **Samuel "mask1to" Adler**
-> **Dávid "Ezzekieqt" Zabák**
-> **Juraj "rakis10" Rak**
-> **Martin "basaraa" Pač**
+ - [x] **Jakub "kubo12312" Rosina**
+ - [x] **Samuel "mask1to" Adler** 
+ - [x] **Dávid "Ezzekieqt" Zabák**
+ - [x] **Juraj "rakis10" Rak**
+ - [x]  **Martin "basaraa" Pač**
 
 ## About 
 
