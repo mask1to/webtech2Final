@@ -257,10 +257,12 @@ if ($sessionTestCode == $selectedData['test_code']) {
             ';
             ?>
             <script>
-                document.getElementById('nahrat-subor-draw').onclick = function() {
+                document.getElementById('nahrat-subor-draw').onclick = function(e) {
+                    e.preventDefault();
                     document.getElementById('upl-draw').style.display = "block";
                 };
-                document.getElementById('skryt').onclick = function() {
+                document.getElementById('skryt').onclick = function(e) {
+                    e.preventDefault();
                     document.getElementById('upl-draw').style.display = "none";
                 };
             </script>
@@ -402,12 +404,14 @@ if ($sessionTestCode == $selectedData['test_code']) {
             ?>
 
             <script>
-                document.getElementById('nahrat-subor').onclick = function() {
+                document.getElementById('nahrat-subor').onclick = function(e) {
+                    e.preventDefault();
                     document.getElementById(<?php echo $questionT?>).style.display = "none";
                     document.getElementById('upl').style.display = "block";
                 };
 
-                document.getElementById('vyraz').onclick = function() {
+                document.getElementById('vyraz').onclick = function(e) {
+                    e.preventDefault();
                     document.getElementById('upl').style.display = "none";
                     document.getElementById(<?php echo $questionT?>).style.display = "block";
                 };
