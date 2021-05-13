@@ -446,7 +446,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
                 $('.connect_right').each(function() {
                     right.push( $(this)[0].value)
-                    left.push($(this)[0].attr("id"))
+                    left.push($(this).attr("id"))
                 })
                 $('.testInput').each(function() {
                     if ($(this)[0].classList.contains('checkbox')) {
@@ -471,9 +471,9 @@ if ($sessionTestCode == $selectedData['test_code']) {
                             }, {
                                 "left": left[i]
                             },{
-                                "right": right[i]
-                            },{
                                 "type":"connect"
+                            },{
+                                "right": right[i]
                             }]
                         })
                         i++

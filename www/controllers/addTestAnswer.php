@@ -28,10 +28,10 @@ for ($i = 2; $i < count($Request); $i++) {
                     $checked ,
                     intval($selectedData['id']),
                     0);
-            }elseif (strcmp($Request[$i]->zaznam[3]->type,'connect')==0){
+            }elseif (strcmp($Request[$i]->zaznam[2]->type,'connect')==0){
                 $questionId = $Request[$i]->zaznam[0]->id;// text
                 $left = $Request[$i]->zaznam[1]->left;// option_id
-                $right = $Request[$i]->zaznam[2]->right; // text
+                $right = $Request[$i]->zaznam[3]->right; // text
 
 
                 insertAnswerConnect( $conn ,
