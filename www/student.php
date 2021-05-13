@@ -289,6 +289,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                         canvas = G_vmlCanvasManager.initElement(canvas);
                     }
                     context = canvas.getContext("2d");
+                    console.log(context);
                 }
 
                 function c() {
@@ -510,29 +511,32 @@ if ($sessionTestCode == $selectedData['test_code']) {
                             "zaznam": [{
                                 "id": $(this).attr("id") + ""
                             }, {
-                                data: "images/math_questions/" + <?php echo  json_encode($_SESSION['studentName']) ?> + "_" + <?php echo json_encode($_SESSION['studentSurname']) ?> + "_" + <?php echo json_encode($_SESSION['testCode']) ?> + ".jpg"
+                                data: "images/math_questions/" + <?php echo  json_encode($_SESSION['studentName']) ?> + "_" + <?php echo json_encode($_SESSION['studentSurname']) ?> + "_" + <?php echo json_encode($_SESSION['testCode']) ?> + '_' + $(this).attr("id") + ".jpg"
 
                             }, {
                                 "type": "img"
                             }]
                         })
-                    }
 
-                    var math = $('#mathUp').prop('files')[0];
-                    if (math) {
-                        var form_data_math = new FormData();
-                        form_data_math.append('file', math);
-                    }
+                        var math = $('#mathUp').prop('files')[0];
+                        if (math) {
+                            var form_data_math = new FormData();
+                            form_data_math.append('file', math);
+                            form_data_math.append('id', $(this).attr("id"));
+                        }
 
-                    if (form_data_math) {
-                        $.ajax({
-                            url: 'uploadFileMath.php',
-                            method: "POST",
-                            contentType: false,
-                            processData: false,
-                            data: form_data_math,
-                            success: function(data) {}
-                        })
+                        if (form_data_math) {
+                            $.ajax({
+                                url: 'uploadFileMath.php',
+                                method: "POST",
+                                contentType: false,
+                                processData: false,
+                                data: form_data_math,
+                                success: function(data) {
+                                    console.log(data);
+                                }
+                            })
+                        }
                     }
                 }
                 if ($(this)[0].classList.contains('short')) {
@@ -550,7 +554,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                         "zaznam": [{
                             "id": $(this).attr("name") + ""
                         }, {
-                            data: "images/drawing_questions/" + <?php echo  json_encode($_SESSION['studentName']) ?> + "_" + <?php echo json_encode($_SESSION['studentSurname']) ?> + "_" + <?php echo json_encode($_SESSION['testCode']) ?> + ".jpg"
+                            data: "images/drawing_questions/" + <?php echo  json_encode($_SESSION['studentName']) ?> + "_" + <?php echo json_encode($_SESSION['studentSurname']) ?> + "_" + <?php echo json_encode($_SESSION['testCode']) ?> + '_' + $(this).attr("name") +".jpg"
                         }]
                     })
 
@@ -558,6 +562,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     if (draw) {
                         var form_data_draw = new FormData();
                         form_data_draw.append('file', draw);
+                        form_data_draw.append('id', $(this).attr("name"));
                     }
 
                     if (form_data_draw) {
