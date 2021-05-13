@@ -29,18 +29,22 @@ for ($i = 2; $i < count($Request); $i++) {
                     $checked ,
                     intval($selectedData['id']),
                     0);
-            }elseif (!strcmp($Request[$i]->zaznam[2]->type,'connect')){
+            }elseif (!strcmp($Request[$i]->zaznam[3]->type,'connect')){
                 $questionId = $Request[$i]->zaznam[0]->id;// text
-                $left = $Request[$i]->zaznam[1]->left;// checked
-                $right = $Request[$i]->zaznam[2]->right;
+                $left = $Request[$i]->zaznam[1]->left;// option_id
+                $right = $Request[$i]->zaznam[2]->right; // text
 
 
-//                insertAnswer( $conn ,
-//                    intval( $questionId),
-//                    $text,
-//                    $checked ,
-//                    intval($selectedData['id']),
-//                    0);
+                insertAnswerConnect( $conn ,
+                    intval( $questionId),
+                    $right,
+                    0 ,
+                    intval($selectedData['id']),
+                    0,
+                    $left
+                );
+            }elseif (!strcmp($Request[$i]->zaznam[2]->type,'img')){
+
             }
 
 

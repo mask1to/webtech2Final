@@ -103,3 +103,14 @@ function insertPoints($conn, $questionId, $userId, $points) {
         return 0;
     }
 }
+function insertAnswerConnect($conn, $questionId, $text, $isCorrect, $userId, $points, $questionOption)
+{
+    $insertQuery = "INSERT INTO answer(question_id , text , isCorrect , user_id, points, question_option_id) 
+    VALUES ('$questionId', '$text', '$isCorrect', '$userId', '$points', '$questionOption ')";
+
+    $result = $conn->query($insertQuery) or die("Chyba vo vykonávaní query" . $conn->error);
+    if ($result) {
+        return $conn->insert_id;
+    }
+    return 0;
+}

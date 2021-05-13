@@ -215,7 +215,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     $optionpairId=$option['id'];
                     $pairOptions = $link->query("SELECT * FROM OptionsPair WHERE questionOption_id = '$optionpairId'");
                     while($pair = $pairOptions->fetch_assoc()){
-                        echo "<input type='hidden' name='right[]' class='connect_right'>";
+                        echo "<input id=". $optionpairId."  type='hidden' name='right[]' class='connect_right'>";
                         $pname=$pair['name'];
                         ?>
                         <script>
@@ -440,12 +440,13 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 })
                 var left = new Array()
                 var right = new Array()
-                $('.connect_left').each(function() {
-                     left.push( $(this)[0].value)
-                })
+                // $('.connect_left').each(function() {
+                //      left.push( $(this)[0].value)
+                // })
 
                 $('.connect_right').each(function() {
                     right.push( $(this)[0].value)
+                    left.push($(this)[0].attr("id"))
                 })
                 $('.testInput').each(function() {
                     if ($(this)[0].classList.contains('checkbox')) {
@@ -471,6 +472,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
                                 "left": left[i]
                             },{
                                 "right": right[i]
+                            },{
+                                "type":"connect"
                             }]
                         })
                         i++
@@ -478,17 +481,32 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
 
                     if ($(this)[0].classList.contains('math')) {
-                        var res = $(this).val();
-                        var regex = /\\/g;
-                        res = res.replace(regex, "\\\\");
 
-                        data.push({
-                            "zaznam": [{
-                                "id": $(this).attr("id") + ""
-                            }, {
-                                data: res
-                            }]
-                        })
+                        if ($(this).css('display')=='block'){
+                            var res = $(this).val();
+                            var regex = /\\/g;
+                            res = res.replace(regex, "\\\\");
+
+                            data.push({
+                                "zaznam": [{
+                                    "id": $(this).attr("id") + ""
+                                }, {
+                                    data: res
+                                }]
+                            })
+                        }else{
+
+                            // treba questionId a img_path
+                            data.push({
+                                "zaznam": [{
+                                    "id": $(this).attr("id") + ""
+                                }, {
+                                    data: res
+                                },{
+                                    "type": "img"
+                                }]
+                            })
+                        }
                     }
                     if ($(this)[0].classList.contains('short')) {
                         data.push({
