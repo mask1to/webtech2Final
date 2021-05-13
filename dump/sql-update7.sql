@@ -1,0 +1,2 @@
+ALTER TABLE `answer` ADD `question_option_id` INT NULL AFTER `image_path`;
+ALTER TABLE `answer` ADD FOREIGN KEY (`question_option_id`) REFERENCES `questionOption`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
