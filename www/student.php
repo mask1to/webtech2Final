@@ -428,7 +428,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $(".odoslat").click(function() {
+            $(".odoslat").click(function(e) {
+                e.preventDefault();
                 var data = new Array()
                 data.push({
                     "meno": "<?php echo $_SESSION['studentName'] ?>"
@@ -443,9 +444,10 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 // })
 
                 $('.connect_right').each(function() {
-                    right.push( $(this)[0].value)
+                    right.push( $(this).val())
                     left.push($(this).attr("id"))
                 })
+                let i = 0
                 $('.testInput').each(function() {
                     if ($(this)[0].classList.contains('checkbox')) {
                         data.push({
@@ -460,7 +462,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
                             }]
                         })
                     }
-                    let i = 0
                     if ($(this)[0].classList.contains('connect')) {
 
                         data.push({
