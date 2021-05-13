@@ -53,7 +53,6 @@ $(document).ready(function ()
         $('.container').stop().removeClass('active');
     });
 
-
 });
 
 

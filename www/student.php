@@ -479,7 +479,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
                         i++
                     }
 
-
                     if ($(this)[0].classList.contains('math')) {
 
                         if ($(this).css('display')=='block'){
@@ -540,6 +539,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
                         //console.log(result)
                     }
                 });
+
+                $('#showModal8').modal({ backdrop: 'static', keyboard: false }, 'show');
             });
         });
 
@@ -571,7 +572,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
         function createCookie(name, value) {
             var date = new Date();
-            // zivotnost cookie nastavena na dlzku testu + 10 minut
             date.setTime(date.getTime() + (iTimeMinutes + 10) * 60 * 1000);
             var expires = "; expires= " + date.toGMTString();
 
@@ -595,8 +595,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
         function countdown() {
 
             var i = setInterval(function() {
-                //document.cookie = "timerMinutes=" + encodeURIComponent(iTimeMinutes);
-                //document.cookie = "timerSeconds=" + encodeURIComponent(iTimeSeconds);
                 createCookie("timerMinutes", iTimeMinutes);
                 createCookie("timerSeconds", iTimeSeconds);
 
@@ -650,6 +648,27 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 <div class="modal-footer text-center">
                     <form method="post" action="">
                         <button class="btn btn-success btn-block" type="submit" id="theModalButton" name="theModalButton">Zavrieť</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="showModal8" class="modal fade text-center">
+        <div class="modal-dialog modal-confirm text-center">
+            <div class="modal-content text-center">
+                <div class="modal-header text-center">
+                    <div class="icon-box2">
+                        <i class="bi bi-check2"></i>
+                    </div>
+                    <h4 class="modal-title text-center">Test bol odoslaný !</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="text-center">Váš test s odpoveďami bol odoslaný !</p>
+                </div>
+                <div class="modal-footer text-center">
+                    <form method="post" action="">
+                        <button class="btn btn-success btn-block" type="submit" id="theModalButtonTest" name="theModalButtonTest">Zavrieť</button>
                     </form>
                 </div>
             </div>
