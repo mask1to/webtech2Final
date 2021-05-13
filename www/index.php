@@ -60,7 +60,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             else if($isWriting == 0 && !strcmp($testCode, $dbTestCode))
             {
-                echo '<div id="showModal9" class="modal fade text-center">
+                if(isset($_POST['launchTestBtn']))
+                {
+                    echo '<div id="showModal9" class="modal fade text-center">
                         <div class="modal-dialog modal-confirm text-center">
                             <div class="modal-content text-center">
                                 <div class="modal-header text-center">
@@ -78,6 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                        </div>
                      </div>';
+                }
             }
             else if ($isWriting == 1 && !strcmp($testCode, $dbTestCode))
             {
@@ -181,6 +184,17 @@ include "partials/header.php";
         </form>
     </div>
 </div>
+
+<script>
+    $.ajax({
+        type: "post",
+        url: "index.php",
+        success: function()
+        {
+            $('#showModal9').modal({ backdrop: 'static', keyboard: false }, 'show');
+        }
+    })
+</script>
 
 <?php
 
