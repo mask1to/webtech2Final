@@ -11,7 +11,7 @@ $selectedData = mysqli_fetch_assoc($user_id);
 
 for ($i = 2; $i < count($Request); $i++) {
         if (isset($Request[$i]->zaznam[2]->type)){
-            if (!strcmp($Request[$i]->zaznam[2]->type,'checked')){
+            if (strcmp($Request[$i]->zaznam[2]->type,'checked')==0){
                 $text = $Request[$i]->zaznam[0]->text;// text
                 $checked = $Request[$i]->zaznam[1]->data;// checked
 
@@ -21,7 +21,6 @@ for ($i = 2; $i < count($Request); $i++) {
                     $checked =0;
                 }
                 $questionId = $Request[$i]->zaznam[3]->questionId;// checked
-//            var_dump($Request);
 
                 insertAnswer( $conn ,
                     intval( $questionId),
@@ -29,7 +28,7 @@ for ($i = 2; $i < count($Request); $i++) {
                     $checked ,
                     intval($selectedData['id']),
                     0);
-            }elseif (!strcmp($Request[$i]->zaznam[3]->type,'connect')){
+            }elseif (strcmp($Request[$i]->zaznam[3]->type,'connect')==0){
                 $questionId = $Request[$i]->zaznam[0]->id;// text
                 $left = $Request[$i]->zaznam[1]->left;// option_id
                 $right = $Request[$i]->zaznam[2]->right; // text
@@ -43,14 +42,22 @@ for ($i = 2; $i < count($Request); $i++) {
                     0,
                     $left
                 );
-            }elseif (!strcmp($Request[$i]->zaznam[2]->type,'img')){
+            }elseif (strcmp($Request[$i]->zaznam[2]->type,'img')== 0){
+                $questionId = $Request[$i]->zaznam[0]->id;// question_id
+                $data = $Request[$i]->zaznam[1]->data;// value
 
+
+                insertAnswerMathImg( $conn ,
+                    intval( $questionId),
+                    data,
+                    0 ,
+                    intval($selectedData['id']),
+                    0
+                );
             }
 
 
         }else{
-            var_dump($Request[$i]->zaznam[0]->id);// id
-            var_dump($Request[$i]->zaznam[1]->data);// value
             insertAnswer( $conn ,
                 intval($Request[$i]->zaznam[0]->id),
                 $Request[$i]->zaznam[1]->data,

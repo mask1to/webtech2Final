@@ -495,13 +495,14 @@ if ($sessionTestCode == $selectedData['test_code']) {
                                 }]
                             })
                         }else{
+                            console.log()
 
                             // treba questionId a img_path
                             data.push({
                                 "zaznam": [{
                                     "id": $(this).attr("id") + ""
                                 }, {
-                                    data: res
+                                    data: <?php echo $file_store ?>
                                 },{
                                     "type": "img"
                                 }]

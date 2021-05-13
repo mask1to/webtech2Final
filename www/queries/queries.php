@@ -114,3 +114,14 @@ function insertAnswerConnect($conn, $questionId, $text, $isCorrect, $userId, $po
     }
     return 0;
 }
+function insertAnswerMathImg($conn, $questionId, $image_path, $isCorrect, $userId, $points)
+{
+    $insertQuery = "INSERT INTO answer(question_id , image_path , isCorrect , user_id, points) 
+    VALUES ('$questionId', '$image_path', '$isCorrect', '$userId', '$points')";
+
+    $result = $conn->query($insertQuery) or die("Chyba vo vykonávaní query" . $conn->error);
+    if ($result) {
+        return $conn->insert_id;
+    }
+    return 0;
+}
