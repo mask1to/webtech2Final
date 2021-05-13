@@ -8,36 +8,8 @@ $student_surname = $_SESSION['studentSurname'];
 $test_code = $_SESSION['testCode'];
 
 
-if(isset($_POST['img_draw']) && $student_name && $student_surname && $test_code){
-    file_put_contents("images/drawing_questions/".$_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'].".jpg", file_get_contents($_POST['img_draw']));
-}
-
-if(isset($_POST['sendTheTest']) && isset($_FILES["file-math"]) && $student_name && $student_surname && $test_code){
-    //file_put_contents("images/math_questions/".$_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'].".jpg", $_POST['file']);
-    $file_name = $_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'];
-    $_FILES["file-math"]["type"] = "image/jpg";
-    $file_type = $_FILES['file-math']['type'];
-    $file_size = $_FILES['file-math']['size'];
-
-    $new_name = strtolower(substr($_FILES['file-math']['name'], strpos($_FILES['file-math']['name'], '.')));
-
-    $file_store = "images/math_questions/".$file_name.".jpg";
-    $file_tem_loc = $_FILES['file-math']['tmp_name'];
-    move_uploaded_file($file_tem_loc, $file_store);
-}
-
-if(isset($_POST['sendTheTest']) && isset($_FILES["file-draw"]) && $student_name && $student_surname && $test_code){
-    //file_put_contents("images/math_questions/".$_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'].".jpg", $_POST['file']);
-    $file_name = $_SESSION['studentName']."_".$_SESSION['studentSurname']."_".$_SESSION['testCode'];
-    $_FILES["file-draw"]["type"] = "image/jpg";
-    $file_type = $_FILES['file-draw']['type'];
-    $file_size = $_FILES['file-draw']['size'];
-
-    $new_name = strtolower(substr($_FILES['file-draw']['name'], strpos($_FILES['file-draw']['name'], '.')));
-
-    $file_store = "images/drawing_questions/".$file_name.".jpg";
-    $file_tem_loc = $_FILES['file-draw']['tmp_name'];
-    move_uploaded_file($file_tem_loc, $file_store);
+if (isset($_POST['img_draw']) && $student_name && $student_surname && $test_code) {
+    file_put_contents("images/drawing_questions/" . $_SESSION['studentName'] . "_" . $_SESSION['studentSurname'] . "_" . $_SESSION['testCode'] . ".jpg", file_get_contents($_POST['img_draw']));
 }
 
 if (!isset($_SESSION["student"])) {
@@ -84,7 +56,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 if ($option['question_id'] == $questionId) {
                     echo '<div class="options py-3 "> 
                      <label class="rounded p-2 option"> ' . $option['name'] . '
-                     <input id="' . $option['name'] . '" type="checkbox" name="'. $questionId  .' " class="testInput checkbox">
+                     <input id="' . $option['name'] . '" type="checkbox" name="' . $questionId  . ' " class="testInput checkbox">
                      <span class="crossmark"></span>
                      </label>
                      ';
@@ -111,14 +83,13 @@ if ($sessionTestCode == $selectedData['test_code']) {
             echo '<hr>';
         }
 
-        if($questions['type'] == 'connect')
-        {
+        if ($questions['type'] == 'connect') {
             echo ' <script type="text/javascript" src="assets/js/jsplumb.min.js"></script>';
             echo '<p class="text-muted"><b>Otázka s párovaním správnych odpovedí</b></p>
-                   <p class="text-muted""><b>Body: '.$questions['total_points'].'</b></p>
-                   <p class="text-justify h5 pb-2 font-weight-bold">'.$questions['name'].'</p>';
+                   <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
+                   <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>';
 
-            echo'<div class="page_connections">
+            echo '<div class="page_connections">
               <div id="select_list_left">
                 <ul class="connect_ul_left">                  
                 </ul>
@@ -128,7 +99,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 </ul>
               </div>
             </div>';
-            ?>
+?>
             <script>
                 $(document).ready(function() {
                     var targetOption = {
@@ -138,7 +109,9 @@ if ($sessionTestCode == $selectedData['test_code']) {
                         isTarget: true,
                         reattach: true,
                         endpoint: "Dot",
-                        connector: [ "Bezier", { curviness: 50 } ],
+                        connector: ["Bezier", {
+                            curviness: 50
+                        }],
                         setDragAllowedWhenFull: true
                     };
                     var sourceOption = {
@@ -149,7 +122,9 @@ if ($sessionTestCode == $selectedData['test_code']) {
                         isTarget: false,
                         reattach: true,
                         endpoint: "Dot",
-                        connector: [ "Bezier", { curviness: 50 } ],
+                        connector: ["Bezier", {
+                            curviness: 50
+                        }],
                         setDragAllowedWhenFull: true
                     };
 
@@ -163,12 +138,16 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     var questionEndpoints = [];
 
                     $("#select_list_left ul > li").click(function() {
-                        var con=jsPlumb.getConnections({source:$(this)});
-                        if(con.length!==0){
+                        var con = jsPlumb.getConnections({
+                            source: $(this)
+                        });
+                        if (con.length !== 0) {
                             jsPlumb.removeAllEndpoints($(this));
                         }
-                        con=jsPlumb.getConnections({target:$(this)});
-                        if(con.length!==0){
+                        con = jsPlumb.getConnections({
+                            target: $(this)
+                        });
+                        if (con.length !== 0) {
                             jsPlumb.removeAllEndpoints($(this));
                         }
                         questionEndpoints[0] = jsPlumb.addEndpoint($(this), sourceOption);
@@ -176,12 +155,16 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     });
                     $("#select_list_right ul > li").click(function() {
                         if (!questionEndpoints[0]) return;
-                        var con=jsPlumb.getConnections({target:$(this)});
-                        if(con.length!==0){
+                        var con = jsPlumb.getConnections({
+                            target: $(this)
+                        });
+                        if (con.length !== 0) {
                             jsPlumb.removeAllEndpoints($(this));
                         }
-                        con=jsPlumb.getConnections({source:$(this)});
-                        if(con.length!==0){
+                        con = jsPlumb.getConnections({
+                            source: $(this)
+                        });
+                        if (con.length !== 0) {
                             jsPlumb.removeAllEndpoints($(this));
                         }
                         questionEndpoints[1] = jsPlumb.addEndpoint($(this), targetOption);
@@ -193,58 +176,54 @@ if ($sessionTestCode == $selectedData['test_code']) {
                             source: questionEndpoints[0],
                             target: questionEndpoints[1]
                         });
-                        var xx=jsPlumb.getConnections();
-                        xx.forEach(function(item, index){
-                            $('.connect_left')[index].value=item.source.innerHTML;
-                            $('.connect_right')[index].value=item.target.innerHTML;
+                        var xx = jsPlumb.getConnections();
+                        xx.forEach(function(item, index) {
+                            $('.connect_left')[index].value = item.source.innerHTML;
+                            $('.connect_right')[index].value = item.target.innerHTML;
                         })
                     }
                 });
-
             </script>
             <?php
-            while($option = $selectOptions->fetch_assoc())
-            {
-                if($option['question_id'] == $questionId)
-                {
-                    echo "<input id=".$questionId ." type='hidden' name='left[]' class='connect_left testInput connect '>";
-                    $opname=$option['name'];
-                    ?>
+            while ($option = $selectOptions->fetch_assoc()) {
+                if ($option['question_id'] == $questionId) {
+                    echo "<input id=" . $questionId . " type='hidden' name='left[]' class='connect_left testInput connect '>";
+                    $opname = $option['name'];
+            ?>
                     <script>
-                        $(".connect_ul_left").append('<li><?php echo"$opname";?></li>');
+                        $(".connect_ul_left").append('<li><?php echo "$opname"; ?></li>');
                     </script>
                     <?php
-                    $optionpairId=$option['id'];
+                    $optionpairId = $option['id'];
                     $pairOptions = $link->query("SELECT * FROM OptionsPair WHERE questionOption_id = '$optionpairId'");
-                    while($pair = $pairOptions->fetch_assoc()){
-                        echo "<input id=". $optionpairId."  type='hidden' name='right[]' class='connect_right'>";
-                        $pname=$pair['name'];
-                        ?>
+                    while ($pair = $pairOptions->fetch_assoc()) {
+                        echo "<input id=" . $optionpairId . "  type='hidden' name='right[]' class='connect_right'>";
+                        $pname = $pair['name'];
+                    ?>
                         <script>
-                            $(".connect_ul_right").append('<li><?php echo"$pname";?></li>');
+                            $(".connect_ul_right").append('<li><?php echo "$pname"; ?></li>');
                         </script>
-                        <?php
+            <?php
                     }
                 }
             }
             ?>
-                <script>
-                    var parent = $(".connect_ul_right");
-                    var divs = parent.children();
-                    while (divs.length) {
-                        parent.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]);
-                    }
-                </script>
-            <?php
+            <script>
+                var parent = $(".connect_ul_right");
+                var divs = parent.children();
+                while (divs.length) {
+                    parent.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]);
+                }
+            </script>
+        <?php
             echo '<hr>';
-
         }
 
         if ($questions['type'] == 'draw') {
             echo '<p class="text-muted"><b>Otázka s nakreslením obrázku</b></p>
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
                    <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>
-                   <div class="testInput draw" name="'. $questionId.'" id="canvasDiv"></div>';
+                   <div class="testInput draw" name="' . $questionId . '" id="canvasDiv"></div>';
 
             echo '
                 
@@ -254,7 +233,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
 <div class="input-group-btn">
   <span class="fileUpload">
       <span class="upl" id="upload">Upload file</span>
-      <input name="file-draw" type="file" class="upload up file-btn-draw " id="up" onchange="readURL(this);" />
+      <input name="file-draw" type="file" class="upload up file-btn-draw " id="drawUp" accept="image/jpeg" />
     </span><!-- btn-orange -->
  </div><!-- btn -->
  </div><!-- group -->
@@ -273,15 +252,18 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 <br>
             </div>
             ';
-            ?>
+        ?>
             <script>
                 document.getElementById('nahrat-subor-draw').onclick = function(e) {
                     e.preventDefault();
                     document.getElementById('upl-draw').style.display = "block";
+                    document.getElementById('canvasDiv').style.display = "none";
                 };
                 document.getElementById('skryt').onclick = function(e) {
                     e.preventDefault();
                     document.getElementById('upl-draw').style.display = "none";
+                    document.getElementById('canvasDiv').style.display = "block";
+                    document.getElementById('drawUp').value = '';
                 };
             </script>
             <p class="demoToolList"><button onclick="c(clickX,clickY,clickDrag);" id="clearCanvasSimple" type="button">Odznovu</button></p>
@@ -341,7 +323,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     paint = false;
                 });
 
-                $(document).on('click', '.send_answers',  function(event) {
+                $(document).on('click', '.send_answers', function(event) {
                     var dataURL = canvas.toDataURL("image/jpeg", 1);
                     $.ajax({
                         type: "post",
@@ -349,8 +331,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                         data: {
                             img_draw: dataURL
                         },
-                        success: function(data) {
-                        }
+                        success: function(data) {}
 
                     })
                 })
@@ -385,7 +366,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 context.save();
             </script>
 
-            <?php
+        <?php
 
             echo '<hr>';
         }
@@ -394,7 +375,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
             echo '<p class="text-muted"><b>Otázka s matematickou odpoveďou</b></p>
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>  
                       <math-field disabled>' . $questions['name'] . '</math-field>
-                   <math-field id="'. $questions['id'] .'" virtual-keyboard-mode="manual" class="testInput math border mb-3" style="display: none"></math-field>
+                   <math-field id="' . $questions['id'] . '" virtual-keyboard-mode="manual" class="testInput math border mb-3" style="display: none"></math-field>
                 ';
             echo '      <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>';
             echo '
@@ -405,7 +386,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
 <div class="input-group-btn">
   <span class="fileUpload">
       <span class="upl" id="upload">Upload file</span>
-      <input name="file-math" type="file" class="upload up file-btn-math" id="up" onchange="readURL(this);" />
+      <input name="file-math" type="file" class="upload up file-btn-math" id="mathUp" accept="image/jpeg" />
     </span><!-- btn-orange -->
  </div><!-- btn -->
  </div><!-- group -->
@@ -422,23 +403,24 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 </div>
             </div>
             ';
-            ?>
+        ?>
 
             <script>
                 document.getElementById('nahrat-subor').onclick = function(e) {
                     e.preventDefault();
-                    document.getElementById(<?php echo $questionT?>).style.display = "none";
+                    document.getElementById(<?php echo $questionT ?>).style.display = "none";
                     document.getElementById('upl').style.display = "block";
                 };
 
                 document.getElementById('vyraz').onclick = function(e) {
                     e.preventDefault();
                     document.getElementById('upl').style.display = "none";
-                    document.getElementById(<?php echo $questionT?>).style.display = "block";
+                    document.getElementById(<?php echo $questionT ?>).style.display = "block";
+                    document.getElementById('mathUp').value = '';
                 };
             </script>
 
-            <?php
+<?php
             echo '<hr>';
         }
     }
@@ -450,268 +432,307 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
 ?>
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $(".odoslat").click(function(e) {
-                e.preventDefault();
-                var data = new Array()
-                data.push({
-                    "meno": "<?php echo $_SESSION['studentName'] ?>"
-                })
-                data.push({
-                    "priezvisko": "<?php echo $_SESSION['studentSurname'] ?>"
-                })
-                var left = new Array()
-                var right = new Array()
-                // $('.connect_left').each(function() {
-                //      left.push( $(this)[0].value)
-                // })
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".odoslat").click(function(e) {
+            e.preventDefault();
+            var data = new Array()
+            data.push({
+                "meno": "<?php echo $_SESSION['studentName'] ?>"
+            })
+            data.push({
+                "priezvisko": "<?php echo $_SESSION['studentSurname'] ?>"
+            })
+            var left = new Array()
+            var right = new Array()
+            // $('.connect_left').each(function() {
+            //      left.push( $(this)[0].value)
+            // })
 
-                $('.connect_right').each(function() {
-                    right.push( $(this).val())
-                    left.push($(this).attr("id"))
-                })
-                let i = 0
-                $('.testInput').each(function() {
-                    if ($(this)[0].classList.contains('checkbox')) {
-                        data.push({
-                            "zaznam": [{
-                                "text": $(this).attr("id") + ""
-                            }, {
-                                data: $(this)[0].checked
-                            },{
-                                "type": "checked"
-                            },{
-                                "questionId": $(this).attr("name") + ""
-                            }]
-                        })
-                    }
-                    if ($(this)[0].classList.contains('connect')) {
-
-                        data.push({
-                            "zaznam": [{
-                                "id": $(this).attr("id") + ""
-                            }, {
-                                "left": left[i]
-                            },{
-                                "type":"connect"
-                            },{
-                                "right": right[i]
-                            }]
-                        })
-                        i++
-                    }
-
-                    if ($(this)[0].classList.contains('math')) {
-
-                        if ($(this).css('display')=='block'){
-                            var res = $(this).val();
-                            var regex = /\\/g;
-                            res = res.replace(regex, "\\\\");
-
-                            data.push({
-                                "zaznam": [{
-                                    "id": $(this).attr("id") + ""
-                                }, {
-                                    data: res
-                                }]
-                            })
-                        }else{
-
-                            // treba questionId a img_path
-                            data.push({
-                                "zaznam": [{
-                                    "id": $(this).attr("id") + ""
-                                }, {
-                                    data: "images/math_questions/" + <?php echo  json_encode($_SESSION['studentName']) ?> +"_" + <?php echo json_encode($_SESSION['studentSurname']) ?>+"_"+<?php echo json_encode($_SESSION['testCode']) ?> + ".png"
-
-                                },{
-                                    "type": "img"
-                                }]
-                            })
-                        }
-                    }
-                    if ($(this)[0].classList.contains('short')) {
-                        data.push({
-                            "zaznam": [{
-                                "id": $(this).attr("id") + ""
-                            }, {
-                                data: $(this)[0].value
-                            }]
-                        })
-                    }
-                    if ($(this)[0].classList.contains('draw')) {
-
-                        data.push({
-                            "zaznam": [{
-                                "id": $(this).attr("name") + ""
-                            }, {
-                                data: "images/drawing_questions/" + <?php echo  json_encode($_SESSION['studentName']) ?> +"_" + <?php echo json_encode($_SESSION['studentSurname']) ?>+"_"+<?php echo json_encode($_SESSION['testCode']) ?> + ".png"
-                            }]
-                        })
-                    }
-
-                })
-
-                $.ajax({
-                    url: "controllers/addTestAnswer.php",
-                    method: "POST",
-                    cache: false,
-                    data: JSON.stringify(data),
-                    success: function(result) {
-                        //console.log(result)
-                    }
-                });
-
-                $('#showModal8').modal({ backdrop: 'static', keyboard: false }, 'show');
-            });
-        });
-
-        var iTimeMinutes = <?php echo $time; ?>;
-        var iTimeSeconds = 0;
-
-        function checkCookie() {
-            var f = getCookie("timerMinutes");
-            var g = getCookie("timerSeconds");
-            return f !== null && g !== null;
-        }
-
-        function getCookie(name) {
-            var cookieArr = document.cookie.split(";");
-
-            for (var i = 0; i < cookieArr.length; i++) {
-                var cookiePair = cookieArr[i].split("=");
-
-                if (name === cookiePair[0].trim()) {
-                    return decodeURIComponent(cookiePair[1]);
+            $('.connect_right').each(function() {
+                right.push($(this).val())
+                left.push($(this).attr("id"))
+            })
+            let i = 0
+            $('.testInput').each(function() {
+                if ($(this)[0].classList.contains('checkbox')) {
+                    data.push({
+                        "zaznam": [{
+                            "text": $(this).attr("id") + ""
+                        }, {
+                            data: $(this)[0].checked
+                        }, {
+                            "type": "checked"
+                        }, {
+                            "questionId": $(this).attr("name") + ""
+                        }]
+                    })
                 }
-            }
-            return null;
-        }
+                if ($(this)[0].classList.contains('connect')) {
 
-        var delete_cookie = function(name) {
-            document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-        };
+                    data.push({
+                        "zaznam": [{
+                            "id": $(this).attr("id") + ""
+                        }, {
+                            "left": left[i]
+                        }, {
+                            "type": "connect"
+                        }, {
+                            "right": right[i]
+                        }]
+                    })
+                    i++
+                }
 
-        function createCookie(name, value) {
-            var date = new Date();
-            date.setTime(date.getTime() + (iTimeMinutes + 10) * 60 * 1000);
-            var expires = "; expires= " + date.toGMTString();
+                if ($(this)[0].classList.contains('math')) {
 
-            document.cookie = name + "=" + value + expires + "; path=/";
-        }
+                    if ($(this).css('display') == 'block') {
+                        var res = $(this).val();
+                        var regex = /\\/g;
+                        res = res.replace(regex, "\\\\");
 
-        if (checkCookie('timerMinutes') && checkCookie("timerSeconds"))
-        {
-            iTimeMinutes = parseInt(getCookie('timerMinutes'), 10);
-            iTimeSeconds = parseInt(getCookie('timerSeconds'), 10);
-        }
-
-        function setTimer() {
-            var now = new Date();
-            var time = now.getTime();
-            var expireTime = time + 10*36000;
-            now.setTime(expireTime);
-            return now;
-        }
-
-        function countdown() {
-
-            var i = setInterval(function() {
-                createCookie("timerMinutes", iTimeMinutes);
-                createCookie("timerSeconds", iTimeSeconds);
-
-                if ((iTimeMinutes < 10 && iTimeSeconds < 10) || (iTimeMinutes < "10" && iTimeSeconds < "10")) {
-                    document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + "0" + iTimeMinutes + ":" + "0" + iTimeSeconds;
-                } else {
-                    if ((iTimeMinutes < 10) || (iTimeMinutes < "10")) {
-                        document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + "0" + iTimeMinutes + ":" + iTimeSeconds;
-                    } else if ((iTimeSeconds < 10) || (iTimeSeconds < "10")) {
-                        document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + iTimeMinutes + ":" + "0" + iTimeSeconds;
+                        data.push({
+                            "zaznam": [{
+                                "id": $(this).attr("id") + ""
+                            }, {
+                                data: res
+                            }]
+                        })
                     } else {
-                        document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + iTimeMinutes + ":" + iTimeSeconds;
+
+                        // treba questionId a img_path
+                        data.push({
+                            "zaznam": [{
+                                "id": $(this).attr("id") + ""
+                            }, {
+                                data: "images/math_questions/" + <?php echo  json_encode($_SESSION['studentName']) ?> + "_" + <?php echo json_encode($_SESSION['studentSurname']) ?> + "_" + <?php echo json_encode($_SESSION['testCode']) ?> + ".png"
+
+                            }, {
+                                "type": "img"
+                            }]
+                        })
                     }
                 }
+                if ($(this)[0].classList.contains('short')) {
+                    data.push({
+                        "zaznam": [{
+                            "id": $(this).attr("id") + ""
+                        }, {
+                            data: $(this)[0].value
+                        }]
+                    })
+                }
+                if ($(this)[0].classList.contains('draw')) {
 
-                if ((iTimeMinutes === 0 && iTimeSeconds === 0) || (iTimeMinutes === "0" && iTimeSeconds === "0")) {
-                    $('#showModal7').modal({ backdrop: 'static', keyboard: false }, 'show');
-                    delete_cookie('timerMinutes');
-                    delete_cookie('timerSeconds');
-                    clearInterval(i);
-                } else {
-                    if (iTimeSeconds === 0 || iTimeSeconds === "0") {
-                        iTimeMinutes--;
-                        iTimeSeconds = 60;
-                    }
-                    iTimeSeconds--;
+                    data.push({
+                        "zaznam": [{
+                            "id": $(this).attr("name") + ""
+                        }, {
+                            data: "images/drawing_questions/" + <?php echo  json_encode($_SESSION['studentName']) ?> + "_" + <?php echo json_encode($_SESSION['studentSurname']) ?> + "_" + <?php echo json_encode($_SESSION['testCode']) ?> + ".png"
+                        }]
+                    })
                 }
 
-            }, 1000);
-        }
+            })
 
-        countdown();
+            var draw = $('#drawUp').prop('files')[0];
+            if (draw) {
+                var form_data_draw = new FormData();
+                form_data_draw.append('file', draw);
+            }
 
-        $(document).on('change','.up', function(){
-            var names = [];
-            var length = $(this).get(0).files.length;
-            for (var i = 0; i < $(this).get(0).files.length; ++i) {
-                names.push($(this).get(0).files[i].name);
+            if (form_data_draw) {
+                $.ajax({
+                    url: 'uploadFileDraw.php',
+                    method: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: form_data_draw,
+                    success: function(data) {
+                    }
+                })
             }
-            // $("input[name=file]").val(names);
-            if(length>2){
-                var fileName = names.join(', ');
-                $(this).closest('.form-group').find('.form-control').attr("value",length+" files selected");
+
+            var math = $('#mathUp').prop('files')[0];
+            if (math) {
+                var form_data_math = new FormData();
+                form_data_math.append('file', math);
             }
-            else{
-                $(this).closest('.form-group').find('.form-control').attr("value",names);
+
+            if (form_data_math) {
+                $.ajax({
+                    url: 'uploadFileMath.php',
+                    method: "POST",
+                    contentType: false,
+                    processData: false,
+                    data: form_data_math,
+                    success: function(data) {
+                    }
+                })
             }
+
+            $.ajax({
+                url: "controllers/addTestAnswer.php",
+                method: "POST",
+                cache: false,
+                data: JSON.stringify(data),
+                success: function(result) {
+                    //console.log(result)
+                }
+            });
+
+            $('#showModal8').modal({
+                backdrop: 'static',
+                keyboard: false
+            }, 'show');
         });
+    });
 
-    </script>
+    var iTimeMinutes = <?php echo $time; ?>;
+    var iTimeSeconds = 0;
 
-    <div id="fixedTimer" class="fancy"></div>
+    function checkCookie() {
+        var f = getCookie("timerMinutes");
+        var g = getCookie("timerSeconds");
+        return f !== null && g !== null;
+    }
 
-    <div id="showModal7" class="modal fade text-center">
-        <div class="modal-dialog modal-confirm text-center">
-            <div class="modal-content text-center">
-                <div class="modal-header text-center">
-                    <div class="icon-box">
-                        <i class="bi bi-alarm"></i>
-                    </div>
-                    <h4 class="modal-title text-center">Čas vypršal !</h4>
+    function getCookie(name) {
+        var cookieArr = document.cookie.split(";");
+
+        for (var i = 0; i < cookieArr.length; i++) {
+            var cookiePair = cookieArr[i].split("=");
+
+            if (name === cookiePair[0].trim()) {
+                return decodeURIComponent(cookiePair[1]);
+            }
+        }
+        return null;
+    }
+
+    var delete_cookie = function(name) {
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    };
+
+    function createCookie(name, value) {
+        var date = new Date();
+        date.setTime(date.getTime() + (iTimeMinutes + 10) * 60 * 1000);
+        var expires = "; expires= " + date.toGMTString();
+
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+
+    if (checkCookie('timerMinutes') && checkCookie("timerSeconds")) {
+        iTimeMinutes = parseInt(getCookie('timerMinutes'), 10);
+        iTimeSeconds = parseInt(getCookie('timerSeconds'), 10);
+    }
+
+    function setTimer() {
+        var now = new Date();
+        var time = now.getTime();
+        var expireTime = time + 10 * 36000;
+        now.setTime(expireTime);
+        return now;
+    }
+
+    function countdown() {
+
+        var i = setInterval(function() {
+            createCookie("timerMinutes", iTimeMinutes);
+            createCookie("timerSeconds", iTimeSeconds);
+
+            if ((iTimeMinutes < 10 && iTimeSeconds < 10) || (iTimeMinutes < "10" && iTimeSeconds < "10")) {
+                document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + "0" + iTimeMinutes + ":" + "0" + iTimeSeconds;
+            } else {
+                if ((iTimeMinutes < 10) || (iTimeMinutes < "10")) {
+                    document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + "0" + iTimeMinutes + ":" + iTimeSeconds;
+                } else if ((iTimeSeconds < 10) || (iTimeSeconds < "10")) {
+                    document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + iTimeMinutes + ":" + "0" + iTimeSeconds;
+                } else {
+                    document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + iTimeMinutes + ":" + iTimeSeconds;
+                }
+            }
+
+            if ((iTimeMinutes === 0 && iTimeSeconds === 0) || (iTimeMinutes === "0" && iTimeSeconds === "0")) {
+                $('#showModal7').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                }, 'show');
+                delete_cookie('timerMinutes');
+                delete_cookie('timerSeconds');
+                clearInterval(i);
+            } else {
+                if (iTimeSeconds === 0 || iTimeSeconds === "0") {
+                    iTimeMinutes--;
+                    iTimeSeconds = 60;
+                }
+                iTimeSeconds--;
+            }
+
+        }, 1000);
+    }
+
+    countdown();
+
+    $(document).on('change', '.up', function() {
+        var names = [];
+        var length = $(this).get(0).files.length;
+        for (var i = 0; i < $(this).get(0).files.length; ++i) {
+            names.push($(this).get(0).files[i].name);
+        }
+        // $("input[name=file]").val(names);
+        if (length > 2) {
+            var fileName = names.join(', ');
+            $(this).closest('.form-group').find('.form-control').attr("value", length + " files selected");
+        } else {
+            $(this).closest('.form-group').find('.form-control').attr("value", names);
+        }
+    });
+</script>
+
+<div id="fixedTimer" class="fancy"></div>
+
+<div id="showModal7" class="modal fade text-center">
+    <div class="modal-dialog modal-confirm text-center">
+        <div class="modal-content text-center">
+            <div class="modal-header text-center">
+                <div class="icon-box">
+                    <i class="bi bi-alarm"></i>
                 </div>
-                <div class="modal-body text-center">
-                    <p class="text-center">Čas pre test vypršal ! <br> Vaše odpovede boli odoslané.</p>
-                </div>
-                <div class="modal-footer text-center">
-                    <form method="post" action="">
-                        <button class="btn btn-success btn-block" type="submit" id="theModalButton" name="theModalButton">Zavrieť</button>
-                    </form>
-                </div>
+                <h4 class="modal-title text-center">Čas vypršal !</h4>
+            </div>
+            <div class="modal-body text-center">
+                <p class="text-center">Čas pre test vypršal ! <br> Vaše odpovede boli odoslané.</p>
+            </div>
+            <div class="modal-footer text-center">
+                <form method="post" action="">
+                    <button class="btn btn-success btn-block" type="submit" id="theModalButton" name="theModalButton">Zavrieť</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
-    <div id="showModal8" class="modal fade text-center">
-        <div class="modal-dialog modal-confirm text-center">
-            <div class="modal-content text-center">
-                <div class="modal-header text-center">
-                    <div class="icon-box2">
-                        <i class="bi bi-check2"></i>
-                    </div>
-                    <h4 class="modal-title text-center">Test bol odoslaný !</h4>
+<div id="showModal8" class="modal fade text-center">
+    <div class="modal-dialog modal-confirm text-center">
+        <div class="modal-content text-center">
+            <div class="modal-header text-center">
+                <div class="icon-box2">
+                    <i class="bi bi-check2"></i>
                 </div>
-                <div class="modal-body text-center">
-                    <p class="text-center">Váš test s odpoveďami bol odoslaný !</p>
-                </div>
-                <div class="modal-footer text-center">
-                    <form method="post" action="">
-                        <button class="btn btn-success btn-block" type="submit" id="theModalButtonTest" name="theModalButtonTest">Zavrieť</button>
-                    </form>
-                </div>
+                <h4 class="modal-title text-center">Test bol odoslaný !</h4>
+            </div>
+            <div class="modal-body text-center">
+                <p class="text-center">Váš test s odpoveďami bol odoslaný !</p>
+            </div>
+            <div class="modal-footer text-center">
+                <form method="post" action="">
+                    <button class="btn btn-success btn-block" type="submit" id="theModalButtonTest" name="theModalButtonTest">Zavrieť</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 <?php //toto bude treba poriesit, pretoze toto vypne session, teda sa obrazok neuploadne session_destroy();
 
 ?>

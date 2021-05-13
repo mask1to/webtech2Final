@@ -24,18 +24,18 @@ $testCode = $_GET['testCode'];
                 $totalPointsTest = $rowTest['total_points'];
 
                 echo '<h2 class="mb-5">Zoznam študentov pre test ' . $testCode . '</h2>';
-                echo '<div class="d-flex align-items-center mb-4">
+
+                $sqlUsers = "SELECT * FROM user WHERE currentTestCode = '$testCode' AND isWritingExam = 0";
+                $resultUsers = $conn->query($sqlUsers);
+
+                if ($resultUsers->num_rows > 0 && $resultUsers) {
+                    echo '<div class="d-flex align-items-center mb-4">
                 <form class="form-inline" method="post" action="pdfExport.php?testCode=' . $testCode . '">
                     <button type="submit" id="pdf" name="generate_pdf" class="btn btn-primary"><i class="fa fa-pdf" aria-hidden=" true"></i>
                         Export pdf</button>
                 </form>
                 <a href="csvExport.php?testCode=' . $testCode . '" class="btn btn-primary ml-3">Export cvs</a>
             </div>';
-
-                $sqlUsers = "SELECT * FROM user WHERE currentTestCode = '$testCode' AND isWritingExam = 0";
-                $resultUsers = $conn->query($sqlUsers);
-
-                if ($resultUsers->num_rows > 0 && $resultUsers) {
                     while ($rowUser = $resultUsers->fetch_assoc()) {
                         $userId = $rowUser['id'];
 
