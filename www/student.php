@@ -505,7 +505,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                             "zaznam": [{
                                 "id": $(this).attr("id") + ""
                             }, {
-                                data: "images/math_questions/" + <?php echo  json_encode($_SESSION['studentName']) ?> + "_" + <?php echo json_encode($_SESSION['studentSurname']) ?> + "_" + <?php echo json_encode($_SESSION['testCode']) ?> + ".png"
+                                data: "images/math_questions/" + <?php echo  json_encode($_SESSION['studentName']) ?> + "_" + <?php echo json_encode($_SESSION['studentSurname']) ?> + "_" + <?php echo json_encode($_SESSION['testCode']) ?> + ".jpg"
 
                             }, {
                                 "type": "img"
@@ -528,7 +528,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                         "zaznam": [{
                             "id": $(this).attr("name") + ""
                         }, {
-                            data: "images/drawing_questions/" + <?php echo  json_encode($_SESSION['studentName']) ?> + "_" + <?php echo json_encode($_SESSION['studentSurname']) ?> + "_" + <?php echo json_encode($_SESSION['testCode']) ?> + ".png"
+                            data: "images/drawing_questions/" + <?php echo  json_encode($_SESSION['studentName']) ?> + "_" + <?php echo json_encode($_SESSION['studentSurname']) ?> + "_" + <?php echo json_encode($_SESSION['testCode']) ?> + ".jpg"
                         }]
                     })
                 }
