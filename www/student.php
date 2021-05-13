@@ -227,6 +227,15 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     }
                 }
             }
+            ?>
+                <script>
+                    var parent = $(".connect_ul_right");
+                    var divs = parent.children();
+                    while (divs.length) {
+                        parent.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]);
+                    }
+                </script>
+            <?php
             echo '<hr>';
 
         }
