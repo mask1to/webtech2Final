@@ -18,8 +18,10 @@ if ($result->num_rows > 0) {
     }
 }
 
-header('Content-Type: text/csv; charset=utf-8');
-header('Content-Disposition: attachment; filename=Users.csv');
+header('Content-Encoding: UTF-8');
+header('Content-type: text/csv; charset=UTF-8');
+header('Content-Disposition: attachment; filename=Výsledky_' . $testCode . '.csv');
+echo "\xEF\xBB\xBF";
 $output = fopen('php://output', 'w');
 fputcsv($output, array('ID', 'Meno', 'Priezvisko', 'Body'));
 

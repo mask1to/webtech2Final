@@ -30,7 +30,7 @@ require_once("config/config.php");
                         <div class="d-flex align-items-center">
                             <label class="switch">' . ($row['isActive'] ? ('<input type="checkbox" checked>') : ('<input type="checkbox">')) . '<span class="slider round"></span>
                             </label>
-                            <a href="WritingStudents.php?id=' . $row['id'] . '&testCode=' .$row['test_code'] .'" class="ml-4 mr-4 student-list"><i class="bi bi-pencil"></i></a>
+                            <a href="WritingStudents.php?id=' . $row['id'] . '&testCode=' .$row['test_code'] .'" class="ml-4 student-list"><i class="bi bi-pencil"></i></a>
                             <a href="studentList.php?id=' . $row['id'] . '&testCode=' .$row['test_code'] .'" class="ml-4 mr-4 student-list"><i class="bi bi-person-lines-fill"></i></a>
                             <a href="#" class="delete"><i class="bi bi-trash-fill"></i></a>
                         </div>

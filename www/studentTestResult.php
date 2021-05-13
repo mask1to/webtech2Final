@@ -18,14 +18,17 @@ $testCode = $_GET['testCode'];
     <div class="container">
         <div class="row">
             <div class="col-12 col-sm-10 col-md-8 offset-sm-1 offset-md-2">
-                <div class="alert alert-danger" role="alert" style="display: none">
+                <div class="alert alert-danger alert-max" role="alert" style="display: none">
                     Je zadaných viac bodov ako je maximum
+                </div>
+                <div class="alert alert-danger alert-min" role="alert" style="display: none">
+                    Je zadaných menej bodov ako je minimum
                 </div>
                 <?php
 
-                echo '<h2 class="mb-4">Test pre študenta: ' . $name . ' ' . $surname . '</h2>';
+                echo '<a href="studentList.php?id=' . $testId . '&testCode=' . $testCode . '" class="btn btn-secondary mb-5">Späť na zoznam študentov</a><h2 class="mb-4">Odpovede študenta: ' . $name . ' ' . $surname . '</h2>';
 
-                $sqlQuestion = "SELECT SUM(a.points) as points, q.name, a.question_id, q.type, q.total_points FROM answer a
+                $sqlQuestion = "SELECT ROUND(SUM(a.points), 2) as points, q.name, a.question_id, q.type, q.total_points FROM answer a
                     JOIN question q ON q.id = a.question_id
                     JOIN user u ON u.id = a.user_id
                     WHERE a.user_id = '$id'
@@ -45,7 +48,7 @@ $testCode = $_GET['testCode'];
 
                             $sqlOptions = "SELECT a.question_id, a.text, a.isCorrect as aCorrect, q.isCorrect as qCorrect FROM answer a
                             JOIN questionOption q ON q.question_id = a.question_id
-                            WHERE q.name = a.text AND q.question_id = '$questionId'";
+                            WHERE q.name = a.text AND q.question_id = '$questionId' AND a.user_id = '$id'";
                             $resultOptions = $conn->query($sqlOptions);
                             while ($rowOption = $resultOptions->fetch_assoc()) {
                                 echo '<div class="form-group form-check d-flex align-items-center">';
@@ -56,13 +59,12 @@ $testCode = $_GET['testCode'];
                                 }
                                 echo '<label class="form-check-label">' . $rowOption['text'] . '</label>';
 
-                                if($rowOption['qCorrect'] == 1) {
+                                if ($rowOption['qCorrect'] == 1) {
                                     echo '<i class="bi bi-check-circle-fill correctAnswerCheck ml-3"></i>';
-                                }
-                                else {
+                                } else {
                                     echo '<i class="bi bi-x-circle-fill wrongAnswerCheck ml-3"></i>';
                                 }
-                              echo '</div>';
+                                echo '</div>';
                             }
                             echo '<div class="form-group">
                                 <label>Získané body</label>
@@ -89,8 +91,7 @@ $testCode = $_GET['testCode'];
                                     <input type="number" class="form-control w-50 points" placeholder="Počet bodov" value="' . $row['points'] . '" min="0" max="' . $rowQuestion['total_points'] . '">
                                 </div>
                                 </div>';
-                        }
-                        else if ($rowQuestion['type'] == 'draw') {
+                        } else if ($rowQuestion['type'] == 'draw') {
                             $questionId = $rowQuestion['question_id'];
                             $sqlOptions = "SELECT text, points FROM answer WHERE question_id = '$questionId' AND user_id = '$id'";
                             $questionId = $rowQuestion['question_id'];
@@ -103,15 +104,14 @@ $testCode = $_GET['testCode'];
                                 <label class="d-block col-form-label col-form-label-lg">' . $rowQuestion['name'] . '</label>
                                 <div class="form-group">
                                     <label>Študentova odpoveď</label>
-                                    <img src="'. $row['text'] . '">
+                                    <img src="' . $row['text'] . '">
                                 </div>
                                 <div class="form-group">
                                     <label>Body na udelenie</label>
                                     <input type="number" class="form-control w-50 points" placeholder="Počet bodov" value="' . $row['points'] . '" min="0" max="' . $rowQuestion['total_points'] . '">
                                 </div>
                                 </div>';
-                        }
-                        else {
+                        } else if ($rowQuestion['type'] == 'math') {
                             $questionId = $rowQuestion['question_id'];
                             $sqlOptions = "SELECT text, points, image_path FROM answer WHERE question_id = '$questionId' AND user_id = '$id'";
                             $questionId = $rowQuestion['question_id'];
@@ -124,16 +124,43 @@ $testCode = $_GET['testCode'];
                                 <math-field disabled>' . $rowQuestion['name'] . '</math-field>
                                 <div class="form-group">
                                     <label>Študentova odpoveď</label>';
-                                    if($row['text'] == NULL) {
-                                        echo '<img src="'. $row['image_path'] . '">';
-                                    }
-                                    else {
-                                        echo '<math-field disabled>' . $row['text'] . '</math-field>';
-                                    }   
-                                echo '</div>
+                            if ($row['text'] == NULL) {
+                                echo '<img src="' . $row['image_path'] . '">';
+                            } else {
+                                echo '<math-field disabled>' . $row['text'] . '</math-field>';
+                            }
+                            echo '</div>
                                 <div class="form-group">
                                     <label>Body na udelenie</label>
                                     <input type="number" class="form-control w-50 points" placeholder="Počet bodov" value="' . $row['points'] . '" min="0" max="' . $rowQuestion['total_points'] . '">
+                                </div>
+                                </div>';
+                        } else {
+                            $questionId = $rowQuestion['question_id'];
+                            echo '<div class="form-group question-container" data-type="short" data-id="' . $questionId . '">
+                                <div class="form-group">
+                                    <label class="mb-0">Je možné získať: ' . $rowQuestion['total_points'] . '</label>
+                                </div>
+                                <label class="d-block col-form-label col-form-label-lg">' . $rowQuestion['name'] . '</label>
+                                <div class="form-group">
+                                    <label>Študentova odpoveď</label>';
+
+                            $sqlConnect = "SELECT qo.name, a.text FROM answer a 
+                            JOIN questionOption qo ON qo.question_id = a.question_id
+                            WHERE a.question_id = '$questionId' AND a.user_id = '$id' AND a.question_option_id = qo.id";
+                            $resultConnect = $conn->query($sqlConnect);
+
+                            while ($rowConnect = $resultConnect->fetch_assoc()) {
+                                echo '<div class="d-flex align-items-center align-items-center mb-2">
+                                <input type="text" class="form-control answer" readonly value="' . $rowConnect['name'] . '" >
+                                <input type="text" class="form-control pair" readonly value="' . $rowConnect['text'] . '">
+                                </div>';
+                            }
+
+                            echo '</div>
+                                    <div class="form-group">
+                                    <label>Získané body</label>
+                                    <input type="number" class="form-control w-50"placeholder="Počet bodov" value="' . $rowQuestion['points'] . '" readonly>
                                 </div>
                                 </div>';
                         }
@@ -162,10 +189,20 @@ $testCode = $_GET['testCode'];
                 $points = $(this).find('.points').val();
 
                 if ($points > $(this).find('.points').attr('max')) {
-                    $('.alert-danger').show();
                     $("html, body").animate({
                         scrollTop: 0
                     }, "slow");
+                    $(".alert-max").fadeTo(2000, 500).slideUp(500, function() {
+                        $(".alert-max").slideUp(500);
+                    })
+                    return false;
+                } else if ($points < $(this).find('.points').attr('min')) {
+                    $("html, body").animate({
+                        scrollTop: 0
+                    }, "slow");
+                    $(".alert-min").fadeTo(2000, 500).slideUp(500, function() {
+                        $(".alert-min").slideUp(500);
+                    })
                     return false;
                 }
 
@@ -181,7 +218,6 @@ $testCode = $_GET['testCode'];
                         if (result == 1) {
                             window.location.replace('studentList.php?id=<?php echo $testId ?>&testCode=<?php echo $testCode ?>');
                         }
-                        console.log(result);
                     }
                 })
             })
