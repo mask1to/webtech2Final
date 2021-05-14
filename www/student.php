@@ -177,8 +177,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
                         });
                         var xx = jsPlumb.getConnections();
                         xx.forEach(function(item, index) {
-                            $('#select_list_left-<?php echo $questionId ?> .connect_left')[index].value = item.source.innerHTML;
-                            $('#select_list_right-<?php echo $questionId ?> .connect_right')[index].value = item.target.innerHTML;
+                            $('.connect_left')[index].value = item.source.innerHTML;
+                            $('.connect_right')[index].value = item.target.innerHTML;
                         })
                     }
                 });
