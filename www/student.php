@@ -88,11 +88,11 @@ if ($sessionTestCode == $selectedData['test_code']) {
                    <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>';
 
             echo '<div class="page_connections">
-              <div id="select_list_left-"' . $questionId . '">
+              <div id="select_list_left-' . $questionId . '">
                 <ul class="connect_ul_left">                  
                 </ul>
               </div>
-              <div id="select_list_right-"' . $questionId . '">
+              <div id="select_list_right-' . $questionId . '">
                 <ul class="connect_ul_right">                 
                 </ul>
               </div>
@@ -186,21 +186,21 @@ if ($sessionTestCode == $selectedData['test_code']) {
             <?php
             while ($option = $selectOptions->fetch_assoc()) {
                 if ($option['question_id'] == $questionId) {
-                    echo "<input id=" . $questionId . " type='hidden' name='left[]' class='connect_left testInput connect '>";
+                    echo "<input id=" . $questionId . " type='hidden' name='left[]' class='connect_left testInput connect'>";
                     $opname = $option['name'];
             ?>
                     <script>
-                        $(".connect_ul_left").append('<li><?php echo "$opname"; ?></li>');
+                        $("#select_list_left-<?php echo $questionId ?> .connect_ul_left").append('<li><?php echo "$opname"; ?></li>');
                     </script>
                     <?php
                     $optionpairId = $option['id'];
                     $pairOptions = $link->query("SELECT * FROM OptionsPair WHERE questionOption_id = '$optionpairId'");
                     while ($pair = $pairOptions->fetch_assoc()) {
-                        echo "<input id=" . $optionpairId . "  type='hidden' name='right[]' class='connect_right'>";
+                        echo "<input id=" . $optionpairId . "  type='hidden' name='right[]' class='connect_right' value='" . $pair['name'] . "'>";
                         $pname = $pair['name'];
                     ?>
                         <script>
-                            $(".connect_ul_right").append('<li><?php echo "$pname"; ?></li>');
+                            $("#select_list_right-<?php echo $questionId ?> .connect_ul_right").append('<li><?php echo "$pname"; ?></li>');
                         </script>
             <?php
                     }
@@ -208,7 +208,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
             }
             ?>
             <script>
-                var parent = $(".connect_ul_right");
+                var parent = $("#select_list_right-<?php echo $questionId ?> .connect_ul_right");
                 var divs = parent.children();
                 while (divs.length) {
                     parent.append(divs.splice(Math.floor(Math.random() * divs.length), 1)[0]);
@@ -466,8 +466,9 @@ if ($sessionTestCode == $selectedData['test_code']) {
             data.push({
                 "priezvisko": "<?php echo $_SESSION['studentSurname'] ?>"
             })
-            var left = new Array()
-            var right = new Array()
+            var left = new Array();
+            var right = new Array();
+            var rightText = new Array()
 
             $('.connect_right').each(function() {
                 right.push($(this).val())
@@ -499,7 +500,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
                             "type": "connect"
                         }, {
                             "right": right[i]
-                        }]
+                        }
+                        ]
                     })
                     i++
                 }
