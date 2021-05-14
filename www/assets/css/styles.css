@@ -88,10 +88,10 @@ body {
 .card .title {
     position: relative;
     z-index: 1;
-    border-left: 5px solid #ed2553;
+    border-left: 5px solid #718aab;
     margin: 0 0 35px;
     padding: 10px 0 10px 50px;
-    color: #ed2553;
+    color: #718aab;
     font-size: 32px;
     font-weight: 600;
     text-transform: uppercase;
@@ -146,7 +146,7 @@ body {
 .card .input-container .bar:after {
     content: "";
     position: absolute;
-    background: #ed2553;
+    background: #718aab;
     width: 0;
     height: 2px;
     transition: 0.2s ease;
@@ -189,7 +189,7 @@ body {
     top: 50%;
     left: 50%;
     display: block;
-    background: #ed2553;
+    background: #718aab;
     width: 30px;
     height: 30px;
     border-radius: 100%;
@@ -200,12 +200,12 @@ body {
 .card .button-container button:hover,
 .card .button-container button:active,
 .card .button-container button:focus {
-    border-color: #ed2553;
+    border-color: #718aab;
 }
 .card .button-container button:hover span,
 .card .button-container button:active span,
 .card .button-container button:focus span {
-    color: #ed2553;
+    color: #718aab;
 }
 .card .button-container button:active span,
 .card .button-container button:focus span {
@@ -247,7 +247,7 @@ body {
 .card.alt .toggle {
     position: relative;
     content: "\f040";
-    background: #ed2553;
+    background: #718aab;
     width: 140px;
     height: 140px;
     border-radius: 100%;
@@ -321,7 +321,7 @@ body {
     border-color: #ffffff;
 }
 .card.alt .button-container button span {
-    color: #ed2553;
+    color: #89CFF0;
 }
 .card.alt .button-container button:hover {
     background: rgba(255, 255, 255, 0.9);
@@ -495,7 +495,7 @@ body {
     color: #fff;
     border-radius: 4px;
     /*background: #82ce34;*/
-    background: #2196f3;
+    background: #718aab;
     text-decoration: none;
     transition: all 0.4s;
     border: none;
@@ -513,7 +513,7 @@ body {
 .modal-confirm .btn:hover,
 .modal-confirm .btn:focus {
     /*background: #6fb32b;*/
-    background: #2196f3;
+    background: #718aab;
     outline: none;
 }
 
@@ -549,7 +549,7 @@ body {
     height: 150px;
     padding: 80px 1em 0 1em;
     margin: 0 100px;
-    background-color: #89CFF0;
+    background-color: #718aab;
     border-radius: 100% 100% 0 0;
 }
 
@@ -559,7 +559,7 @@ body {
     position: absolute;
     bottom: 0;
     z-index: -1;
-    background-color: #89CFF0;
+    background-color: #718aab;
     border-radius: 100%;
 }
 
@@ -615,7 +615,7 @@ a,
 span {
     font-size: 15px;
     font-weight: 600;
-    color: rgb(50, 141, 245);
+    color: #718aab;
 }
 
 p.text-muted {
@@ -687,7 +687,7 @@ b {
 
 .crossmark:after {
     content: "\01F818";
-    background-color: #229aeb;
+    background-color: #718aab;
 }
 
 .option input:checked ~ .checkmark:after,
@@ -707,7 +707,7 @@ p.my-2 {
 input[type="submit"] {
     width: 100%;
     height: 50px;
-    background-color: #229aeb;
+    background-color: #718aab;
     border: none;
     outline: none;
     color: #fff;
@@ -718,7 +718,7 @@ input[type="submit"] {
 input[type="submit"]:hover:focus {
     border: none;
     outline: none;
-    background-color: #229bebad;
+    background-color: #718aab;
 }
 
 .switch {
@@ -763,11 +763,11 @@ input[type="submit"]:hover:focus {
 }
 
 input:checked + .slider {
-    background-color: #2196f3;
+    background-color: #718aab;
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px #2196f3;
+    box-shadow: 0 0 1px #718aab;
 }
 
 input:checked + .slider:before {
@@ -802,7 +802,7 @@ input:checked + .slider:before {
     padding: 1em 6em;
     width: 100%;
     height: 50px;
-    background-color: #229aeb;
+    background-color: #718aab;
     border: none;
     outline: none;
     color: #fff;
@@ -813,7 +813,7 @@ input:checked + .slider:before {
 .send_answers, .choose_dropdown{
     width: 100%;
     height: 50px;
-    background-color: #229aeb;
+    background-color: #718aab;
     border: none;
     outline: none;
     color: #fff;
@@ -822,8 +822,8 @@ input:checked + .slider:before {
 }
 
 .dropdown-toggle{
-    background-color: #89CFF0 !important;
-    border-color: #89CFF0 !important;
+    background-color: #718aab !important;
+    border-color: #718aab !important;
 }
 
 
@@ -872,7 +872,7 @@ input:checked + .slider:before {
 
 .it .btn-orange
 {
-    background-color: blue;
+    background-color: #718aab;
     border-color: #777!important;
     color: #777;
     text-align: left;
@@ -899,6 +899,7 @@ input:checked + .slider:before {
     display: flex;
     text-align: center;
     margin-top: 10%;
+    color: #718aab !important;
 }
 .fileUpload input.upload {
     position: absolute;
@@ -919,7 +920,12 @@ input:checked + .slider:before {
 
 #clearCanvasSimple{
     border-radius: .25rem!important;
-    background-color: #89CFF0;
-    border-color: #89CFF0;
+    background-color: #718aab;
+    border-color: #718aab;
 }
 
+#math-q{
+    font-size: 25px;
+    font-weight: bolder;
+    margin-bottom: 5px;
+}
