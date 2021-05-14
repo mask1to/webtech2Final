@@ -350,7 +350,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
                    <p class="text-muted text-justify h5 pb-2 font-weight-bold" /hidden>' . $questions['name'] . '</p>
                       <math-field id="math-q" disabled>' . $questions['name'] . '</math-field>
-                   <math-field id="' . $questions['id'] . '" virtual-keyboard-mode="manual" class="testInput math border mb-3" style="display: none"></math-field>
+                   <math-field id="' . $questions['id'] . '" virtual-keyboard-mode="manual" class="testInput math border mb-3"></math-field>
                 ';
             echo '      <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>';
             echo '<div class="form-group upl" style="display: none">
@@ -580,7 +580,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                             success: function(data) {}
                         })
                     } else {
-                        var dataURL = canvas + $(this).attr("id").toDataURL("image/jpeg", 1);
+                        var dataURL = $('#canvas-'+ $(this).attr("id"))[0].toDataURL("image/jpeg", 1);
                         var id = $(this).attr("id");
                         $.ajax({
                             type: "post",
