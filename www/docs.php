@@ -172,7 +172,7 @@ include "partials/header.php";
 
                     <li class="nav-item"><b>Prístupové údaje do admin prostredia v aplikácii</b></li>
                     <ul>
-                        <li class="nav-item">meno: admin</li>
+                        <li class="nav-item">meno: admin@admin.sk</li>
                         <li class="nav-item">heslo: nknAdmin1kn#</li>
                     </ul>
 
