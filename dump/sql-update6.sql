@@ -1,6 +1,0 @@
-ALTER TABLE
-  answer DROP FOREIGN KEY answer_ibfk_1;
-ALTER TABLE
-  `answer`
-ADD
-  FOREIGN KEY (`question_id`) REFERENCES `question`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;

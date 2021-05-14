@@ -1,1 +1,0 @@
-ALTER TABLE answer MODIFY text varchar(255) null
