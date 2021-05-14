@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hostiteľ: db
--- Čas generovania: Pi 14.Máj 2021, 10:04
+-- Čas generovania: Pi 14.Máj 2021, 18:23
 -- Verzia serveru: 8.0.24
 -- Verzia PHP: 7.4.16
 
@@ -112,6 +112,13 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
+-- Sťahujem dáta pre tabuľku `user`
+--
+
+INSERT INTO `user` (`id`, `type`, `name`, `surname`, `password`, `email`, `isWritingExam`, `currentTestCode`) VALUES
+(1, 'teacher', 'admin', 'admin', '$2y$10$Y0f0EFQP/DZmU/S0M7MEn.OdZKEfwixEETgpO2OmjJLDjbI3wLjT.', 'admin@admin.sk', NULL, NULL);
+
+--
 -- Kľúče pre exportované tabuľky
 --
 
@@ -179,25 +186,25 @@ ALTER TABLE `OptionsPair`
 -- AUTO_INCREMENT pre tabuľku `question`
 --
 ALTER TABLE `question`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pre tabuľku `questionOption`
 --
 ALTER TABLE `questionOption`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pre tabuľku `test`
 --
 ALTER TABLE `test`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pre tabuľku `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Obmedzenie pre exportované tabuľky
