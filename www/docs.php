@@ -146,15 +146,15 @@ include "partials/header.php";
                 <ul>
                     <li class="nav-item"><b>Inštalácia composeru</b></li>
                     <ul>
+                        <li class="nav-item">potreba nainštalovať Composer -> <a target="_blank" href="https://getcomposer.org/">stiahnite tu</a></li>
                         <li class="nav-item">príkaz: <b>composer install</b></li>
-                        <li class="nav-item">inštaláciu je potrebné spustiť v priečinku www</li>
+                        <li class="nav-item">príkaz je potrebné spustiť v priečinku www</li>
                     </ul>
-
                     <li class="nav-item"><b>Spustenie docker balíka</b></li>
                     <ul>
                         <li class="nav-item">ak docker klienta nemáte -> <a target="_blank" href="https://www.docker.com/products/docker-desktop">stiahnite tu</a></li>
                         <li class="nav-item">príkaz: <b>docker-compose up</b></li>
-                        <li class="nav-item">inštaláciu je potrebné spustiť v domovskom adresári projektu</li>
+                        <li class="nav-item">príkaz je potrebné spustiť v domovskom adresári projektu</li>
                         <li class="nav-item"><b>port 8000</b> - phpmyadmin</li>
                         <li class="nav-item"><b>port 8001</b> - webová aplikácia</li>
                     </ul>
