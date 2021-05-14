@@ -357,7 +357,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     var context = document.getElementById('canvas-' + id).getContext('2d');
                     context.clearRect(0, 0, canvas<?php echo $questionId ?>.width, canvas<?php echo $questionId ?>.height); // Clears the canvas
 
-                    context.strokeStyle = "#df4b26";
+                    context.strokeStyle = "#718aab";
                     context.lineJoin = "round";
                     context.lineWidth = 5;
 
