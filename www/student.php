@@ -464,6 +464,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
             if($(".odoslat").attr('data-clicked') === 'true')
             {
                 sendTheTest();
+                clearInterval(i);
                 console.log(checkCookie("timerMinutes"));
                 console.log(checkCookie("timerSeconds"));
                 delete_cookie('timerMinutes');
@@ -474,7 +475,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     keyboard: false
                 }, 'show');
             }
-
         });
 
         function sendTheTest()
@@ -672,8 +672,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
         iTimeSeconds = parseInt(getCookie('timerSeconds'), 10);
     }
 
-    function countdown()
-    {
         var i = setInterval(function()
         {
             createCookie("timerMinutes", iTimeMinutes);
@@ -695,14 +693,15 @@ if ($sessionTestCode == $selectedData['test_code']) {
             }
             if ((iTimeMinutes === 0 && iTimeSeconds === 0))
             {
+                delete_cookie('timerMinutes');
+                delete_cookie('timerSeconds');
                 sendTheTest();
                 $('#showModal7').modal
                 ({
                     backdrop: 'static',
                     keyboard: false
                 }, 'show');
-                delete_cookie('timerMinutes');
-                delete_cookie('timerSeconds');
+
                 clearInterval(i);
             }
             else
@@ -716,9 +715,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
             }
 
         }, 1000);
-    }
 
-    countdown();
 
         $(document).on('change', '.up', function()
         {
