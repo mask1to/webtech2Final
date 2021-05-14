@@ -83,19 +83,20 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
         if ($questions['type'] == 'connect') {
             echo ' <script type="text/javascript" src="assets/js/jsplumb.min.js"></script>';
-            echo '
+            echo '<div class="connect">
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
                    <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>';
 
             echo '<div class="page_connections">
-              <div id="select_list_left">
+              <div id="select_list_left-"' . $questionId . '">
                 <ul class="connect_ul_left">                  
                 </ul>
               </div>
-              <div id="select_list_right">
+              <div id="select_list_right-"' . $questionId . '">
                 <ul class="connect_ul_right">                 
                 </ul>
               </div>
+            </div>
             </div>';
 ?>
             <script>
@@ -135,7 +136,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
                     var questionEndpoints = [];
 
-                    $("#select_list_left ul > li").click(function() {
+                    $("#select_list_left-<?php echo $questionId ?> ul > li").click(function() {
                         var con = jsPlumb.getConnections({
                             source: $(this)
                         });
@@ -151,7 +152,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                         questionEndpoints[0] = jsPlumb.addEndpoint($(this), sourceOption);
                         connectEndpoints();
                     });
-                    $("#select_list_right ul > li").click(function() {
+                    $("#select_list_right-<?php echo $questionId ?> ul > li").click(function() {
                         if (!questionEndpoints[0]) return;
                         var con = jsPlumb.getConnections({
                             target: $(this)
@@ -176,8 +177,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
                         });
                         var xx = jsPlumb.getConnections();
                         xx.forEach(function(item, index) {
-                            $('.connect_left')[index].value = item.source.innerHTML;
-                            $('.connect_right')[index].value = item.target.innerHTML;
+                            $('#select_list_left-<?php echo $questionId ?> .connect_left')[index].value = item.source.innerHTML;
+                            $('#select_list_right-<?php echo $questionId ?> .connect_right')[index].value = item.target.innerHTML;
                         })
                     }
                 });
@@ -224,13 +225,13 @@ if ($sessionTestCode == $selectedData['test_code']) {
                    <div id="' . $questionId . '" class="testInput draw canvasDiv canvas" name="' . $questionId . '"></div>';
 
             echo '
-                <div id="upl-draw" class="form-group" style="display: none">
+                <div class="form-group upl-draw" style="display: none">
                     <div class="input-group">
                       <input type="text" class="form-control" readonly>
                     <div class="input-group-btn">
                       <span class="fileUpload">
                           <span class="upl" id="upload">Upload file</span>
-                          <input name="file-draw" type="file" class="upload up file-btn-draw " id="drawUp" accept="image/jpeg" />
+                          <input name="file-draw" type="file" class="upload up file-btn-draw" id="drawUp" accept="image/jpeg" />
                         </span><!-- btn-orange -->
                      </div><!-- btn -->
                      </div><!-- group -->
@@ -252,24 +253,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 </div>
             ';
         ?>
-            <script>
-                $('.nahrat-subor-draw').on('click', function(e) {
-                    e.preventDefault();
-                    $(this).parents('.draw-parent').find('#upl-draw').show();
-                    $(this).parents('.draw-parent').find('.canvas').hide();
-                    $(this).parents('.draw-parent').find('.demoToolList').hide();
-                    jsPlumb.repaintEverything();
-                });
-                $('.skryt').on('click', function(e) {
-                    e.preventDefault();
-                    $(this).parents('.draw-parent').find('#upl-draw').hide();
-                    $(this).parents('.draw-parent').find('.canvas').show();
-                    $(this).parents('.draw-parent').find('.demoToolList').show();
-                    document.getElementById('drawUp').value = '';
-                    jsPlumb.repaintEverything();
-                });
-            </script>
-
             <script>
                 build_canvas();
                 var clickX<?php echo $questionId ?> = new Array();
@@ -327,21 +310,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 $('#<?php echo $questionId ?>').mouseleave(function() {
                     paint<?php echo $questionId ?> = false;
                 });
-
-                $(document).on('click', '.send_answers', function() {
-                    var dataURL = canvas<?php echo $questionId ?>.toDataURL("image/jpeg", 1);
-                    var id = <?php echo $questionId ?>;
-                    $.ajax({
-                        type: "post",
-                        url: "student.php",
-                        data: {
-                            img_draw: dataURL,
-                            id: id
-                        },
-                        success: function(data) {}
-
-                    })
-                })
 
                 function addClick<?php echo $questionId ?>(x, y, dragging) {
                     clickX<?php echo $questionId ?>.push(x);
@@ -425,22 +393,48 @@ if ($sessionTestCode == $selectedData['test_code']) {
     $(document).ready(function() {
         $('.nahrat-subor').on('click', function(e) {
             e.preventDefault();
-            console.log($(this));
             $(this).parents('.math-parent').find('.upl').show();
             $(this).parents('.math-parent').find('.testInput').hide();
-            jsPlumb.repaintEverything();
+            if ($('.connect').length) {
+                jsPlumb.repaintEverything();
+            }
         });
 
         $('.vyraz').on('click', function(e) {
             e.preventDefault();
             $(this).parents('.math-parent').find('.upl').hide();
             $(this).parents('.math-parent').find('.testInput').show();
-            document.getElementById('mathUp').value = '';
-            jsPlumb.repaintEverything();
+            $(this).parents('math-parent').find('.file-btn-math').val('');
+            if ($('.connect').length) {
+                jsPlumb.repaintEverything();
+            }
+        });
+
+        $('.nahrat-subor-draw').on('click', function(e) {
+            e.preventDefault();
+            $(this).parents('.draw-parent').find('.upl-draw').show();
+            $(this).parents('.draw-parent').find('.canvas').hide();
+            $(this).parents('.draw-parent').find('.demoToolList').hide();
+            if ($('.connect').length) {
+                jsPlumb.repaintEverything();
+            }
+
+        });
+        $('.skryt').on('click', function(e) {
+            e.preventDefault();
+            $(this).parents('.draw-parent').find('.upl-draw').hide();
+            $(this).parents('.draw-parent').find('.canvas').show();
+            $(this).parents('.draw-parent').find('.demoToolList').show();
+            $(this).parents('.draw-parent').find('.file-btn-draw').val('');
+            if ($('.connect').length) {
+                jsPlumb.repaintEverything();
+            }
         });
 
         $(window).on('resize', function() {
-            jsPlumb.repaintEverything();
+            if ($('.connect').length) {
+                jsPlumb.repaintEverything();
+            }
         })
 
         $(".odoslat").click(function(e) {
@@ -452,7 +446,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 }
                 if (!file_exists('images/drawing_questions')) {
                     mkdir('images/drawing_questions', 0777, true);
-                }?>
+                } ?>
                 sendTheTest();
                 clearInterval(i);
                 delete_cookie('timerMinutes');
@@ -533,7 +527,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                                 "type": "img"
                             }]
                         })
-                        var math = $('#mathUp').prop('files')[0];
+                        var math = $(this).parents('.math-parent').find('.file-btn-math').prop('files')[0];
                         if (math) {
                             var form_data_math = new FormData();
                             form_data_math.append('file', math);
@@ -569,11 +563,11 @@ if ($sessionTestCode == $selectedData['test_code']) {
                         }]
                     })
 
-                    var draw = $('#drawUp').prop('files')[0];
+                    var draw = $(this).parents('.draw-parent').find('.file-btn-draw').prop('files')[0];
                     if (draw) {
                         var form_data_draw = new FormData();
                         form_data_draw.append('file', draw);
-                        form_data_draw.append('id', $(this).attr("name"));
+                        form_data_draw.append('id', $(this).attr("id"));
                     }
 
                     if (form_data_draw) {
@@ -583,6 +577,18 @@ if ($sessionTestCode == $selectedData['test_code']) {
                             contentType: false,
                             processData: false,
                             data: form_data_draw,
+                            success: function(data) {}
+                        })
+                    } else {
+                        var dataURL = canvas + $(this).attr("id").toDataURL("image/jpeg", 1);
+                        var id = $(this).attr("id");
+                        $.ajax({
+                            type: "post",
+                            url: "student.php",
+                            data: {
+                                img_draw: dataURL,
+                                id: id
+                            },
                             success: function(data) {}
                         })
                     }
