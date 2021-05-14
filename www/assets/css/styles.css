@@ -549,7 +549,7 @@ body {
     height: 150px;
     padding: 80px 1em 0 1em;
     margin: 0 100px;
-    background-color: #a4c9cf;
+    background-color: #89CFF0;
     border-radius: 100% 100% 0 0;
 }
 
@@ -559,7 +559,7 @@ body {
     position: absolute;
     bottom: 0;
     z-index: -1;
-    background-color: #a4c9cf;
+    background-color: #89CFF0;
     border-radius: 100%;
 }
 
@@ -822,20 +822,10 @@ input:checked + .slider:before {
 }
 
 .dropdown-toggle{
-    background-color: #229aeb !important;
-    border-color: #229aeb !important;
+    background-color: #89CFF0 !important;
+    border-color: #89CFF0 !important;
 }
 
-#clearCanvasSimple{
-    width: 20%;
-    height: 25px;
-    background-color: #229aeb;
-    border: none;
-    outline: none;
-    color: #fff;
-    font-weight: 600;
-    cursor: pointer;
-}
 
 .student-test {
     font-size: 2rem;
@@ -929,5 +919,7 @@ input:checked + .slider:before {
 
 #clearCanvasSimple{
     border-radius: .25rem!important;
+    background-color: #89CFF0;
+    border-color: #89CFF0;
 }
 

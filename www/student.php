@@ -48,7 +48,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
         $selectOptions = $link->query("SELECT * FROM questionOption WHERE question_id = '$questionId'");
         if ($questions['type'] == 'checkbox') {
-            echo '<p class="text-muted"><b>Otázka s možnosťami</b></p>
+            echo '
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
                    <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>';
             while ($option = $selectOptions->fetch_assoc()) {
@@ -65,7 +65,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
             echo '<hr>';
         }
         if ($questions['type'] == 'short') {
-            echo '<p class="text-muted"><b>Otázka s krátkou odpoveďou</b></p>
+            echo '
                    <p class="text-muted""><b>Body: ' .   $questions['total_points'] . '</b></p>
                    <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>';
             while ($option = $selectOptions->fetch_assoc()) {
@@ -84,7 +84,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
         if ($questions['type'] == 'connect') {
             echo ' <script type="text/javascript" src="assets/js/jsplumb.min.js"></script>';
-            echo '<p class="text-muted"><b>Otázka s párovaním správnych odpovedí</b></p>
+            echo '
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
                    <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>';
 
@@ -219,7 +219,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
         }
 
         if ($questions['type'] == 'draw') {
-            echo '<div class="draw-parent"><p class="text-muted"><b>Otázka s nakreslením obrázku</b></p>
+            echo '<div class="draw-parent">
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
                    <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>
                    <div id="' . $questionId . '" class="testInput draw canvasDiv canvas" name="' . $questionId . '"></div>';
@@ -242,6 +242,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Typ odpovede
                 </a>
+                <button class="demoToolList btn btn-primary" onclick="c'.$questionId.'('.$questionId.')" id="clearCanvasSimple" type="button">Odznovu</button>
                 <br>
 
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -249,7 +250,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     <a class="dropdown-item skryt" href="#">Kreslenie</a>
                 </div>
                 <br>
-                <button class="demoToolList" onclick="c'.$questionId.'('.$questionId.')" id="clearCanvasSimple" type="button">Odznovu</button>
+                
             </div></div>
             ';
         ?>
@@ -381,9 +382,10 @@ if ($sessionTestCode == $selectedData['test_code']) {
         }
         if ($questions['type'] == 'math') {
             $questionT = $questions['id'];
-            echo '<div class="math-parent"><p class="text-muted"><b>Otázka s matematickou odpoveďou</b></p>
-                   <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>  
-                      <math-field disabled>' . $questions['name'] . '</math-field>
+            echo '<div class="math-parent">
+                   <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
+                   <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>
+                      <math-field hidden/disabled>' . $questions['name'] . '</math-field>
                    <math-field id="' . $questions['id'] . '" virtual-keyboard-mode="manual" class="testInput math border mb-3" style="display: none"></math-field>
                 ';
             echo '      <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>';
