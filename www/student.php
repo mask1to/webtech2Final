@@ -249,8 +249,9 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     <a class="dropdown-item skryt" href="#">Kreslenie</a>
                 </div>
                 <br>
+                <button class="demoToolList" onclick="c'.$questionId.'('.$questionId.')" id="clearCanvasSimple" type="button">Odznovu</button>
             </div></div>
-            <p class="demoToolList"><button onclick="c'.$questionId.'('.$questionId.')" id="clearCanvasSimple" type="button">Odznovu</button></p>
+            
             ';
         ?>
             <script>
@@ -258,12 +259,14 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     e.preventDefault();
                     $(this).parents('.draw-parent').find('#upl-draw').show();
                     $(this).parents('.draw-parent').find('.canvas').hide();
+                    $(this).parents('.draw-parent').find('.demoToolList').hide();
                     jsPlumb.repaintEverything();
                 });
                 $('.skryt').on('click', function(e) {
                     e.preventDefault();
                     $(this).parents('.draw-parent').find('#upl-draw').hide();
                     $(this).parents('.draw-parent').find('.canvas').show();
+                    $(this).parents('.draw-parent').find('.demoToolList').show();
                     document.getElementById('drawUp').value = '';
                     jsPlumb.repaintEverything();
                 });
