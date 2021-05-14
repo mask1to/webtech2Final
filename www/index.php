@@ -1,13 +1,10 @@
 <?php
 session_start();
 
-if (isset($_SESSION["student"]))
-{
+if (isset($_SESSION["student"])) {
     header("location: student.php");
     exit;
-}
-else if (isset($_SESSION["loggedin"]))
-{
+} else if (isset($_SESSION["loggedin"])) {
     header("Location: admin.php");
 }
 
@@ -19,8 +16,7 @@ $link = $conn;
 $studentName = $studentSurname = $testCode = "";
 $isWriting = null;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST")
-{
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $studentName = $_POST['studentName'];
     $studentSurname = $_POST['studentSurname'];
     $type = "student";
@@ -29,47 +25,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $selectTestCode = $link->query("SELECT test_code, isActive FROM test WHERE test_code = '$testCode'");
 
     $selectUserStatus = $link->query(
-            "SELECT id, name, surname, isWritingExam, currentTestCode 
+        "SELECT id, name, surname, isWritingExam, currentTestCode 
             FROM user WHERE name = '$studentName' AND 
                             surname = '$studentSurname'
                             AND type = 'student'
                           "
-        );
+    );
     $selectedUserStatus = mysqli_fetch_assoc($selectUserStatus);
-
-    if ($selectTestCode->num_rows > 0)
-    {
-        $selectedTestCode = mysqli_fetch_assoc($selectTestCode);
-        if (isset($selectedUserStatus['currentTestCode']))
-        {
-            $dbTestCode = $selectedUserStatus['currentTestCode'];
-        }
-
-        if ($selectedTestCode['isActive'] == 1)
-        {
-            if (isset($selectedUserStatus['isWritingExam']))
-            {
-                $isWriting = $selectedUserStatus['isWritingExam'];
+    if ($selectTestCode) {
+        if ($selectTestCode->num_rows > 0) {
+            $selectedTestCode = mysqli_fetch_assoc($selectTestCode);
+            if (isset($selectedUserStatus['currentTestCode'])) {
+                $dbTestCode = $selectedUserStatus['currentTestCode'];
             }
-            if ($isWriting == null)
-            {
-                $_SESSION['studentName'] = $studentName;
-                $_SESSION['studentSurname'] = $studentSurname;
-                $isWriting = 1;
-                insertNewStudent($link, $type, $studentName, $studentSurname, $isWriting, $testCode);
-                $_SESSION['student'] = true;
-                if (isset($_SESSION["student"]) && $_SESSION["student"] === true)
-                {
-                    $_SESSION['testCode'] = $testCode;
-                    header("location: student.php");
-                    exit;
+
+            if ($selectedTestCode['isActive'] == 1) {
+                if (isset($selectedUserStatus['isWritingExam'])) {
+                    $isWriting = $selectedUserStatus['isWritingExam'];
                 }
-            }
-            else if($isWriting == 0 && !strcmp($testCode, $dbTestCode))
-            {
-                if(isset($_POST['launchTestBtn']))
-                {
-                    echo '<div id="showModal9" class="modal fade text-center">
+                if ($isWriting == null) {
+                    $_SESSION['studentName'] = $studentName;
+                    $_SESSION['studentSurname'] = $studentSurname;
+                    $isWriting = 1;
+                    insertNewStudent($link, $type, $studentName, $studentSurname, $isWriting, $testCode);
+                    $_SESSION['student'] = true;
+                    if (isset($_SESSION["student"]) && $_SESSION["student"] === true) {
+                        $_SESSION['testCode'] = $testCode;
+                        header("location: student.php");
+                        exit;
+                    }
+                } else if ($isWriting == 0 && !strcmp($testCode, $dbTestCode)) {
+                    if (isset($_POST['launchTestBtn'])) {
+                        echo '<div id="showModal9" class="modal fade text-center">
                         <div class="modal-dialog modal-confirm text-center">
                             <div class="modal-content text-center">
                                 <div class="modal-header text-center">
@@ -87,19 +74,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                         </div>
                        </div>
                      </div>';
-                }
-            }
-            else if ($isWriting == 1 && !strcmp($testCode, $dbTestCode))
-            {
-                $_SESSION['studentName'] = $studentName;
-                $_SESSION['studentSurname'] = $studentSurname;
-                $_SESSION['student'] = true;
-                $_SESSION['testCode'] = $testCode;
-                header("location: student.php");
-                exit;
-            }
-            else {
-                echo '<div id="showModal6" class="modal fade text-center">
+                    }
+                } else if ($isWriting == 1 && !strcmp($testCode, $dbTestCode)) {
+                    $_SESSION['studentName'] = $studentName;
+                    $_SESSION['studentSurname'] = $studentSurname;
+                    $_SESSION['student'] = true;
+                    $_SESSION['testCode'] = $testCode;
+                    header("location: student.php");
+                    exit;
+                } else {
+                    echo '<div id="showModal6" class="modal fade text-center">
 	            <div class="modal-dialog modal-confirm text-center">
 		            <div class="modal-content text-center">
 			            <div class="modal-header text-center">
@@ -117,10 +101,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		        </div>
 	           </div>
             </div>';
-            }
-        }
-        else {
-            echo '<div id="showModal4" class="modal fade text-center">
+                }
+            } else {
+                echo '<div id="showModal4" class="modal fade text-center">
 	            <div class="modal-dialog modal-confirm text-center">
 		            <div class="modal-content text-center">
 			            <div class="modal-header text-center">
@@ -138,9 +121,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 		        </div>
 	           </div>
             </div>';
+            }
         }
-    }
-    else {
+    } else {
         echo '<div id="showModal2" class="modal fade text-center">
 	            <div class="modal-dialog modal-confirm text-center">
 		            <div class="modal-content text-center">
@@ -195,14 +178,11 @@ include "partials/header.php";
 </div>
 
 <script>
-    $.ajax
-    ({
+    $.ajax({
         type: "post",
         url: "index.php",
-        success: function()
-        {
-            $('#showModal9').modal
-            ({
+        success: function() {
+            $('#showModal9').modal({
                 backdrop: 'static',
                 keyboard: false
             }, 'show');

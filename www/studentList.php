@@ -106,7 +106,7 @@ $testCode = $_GET['testCode'];
                             $sqlPointsConnect = "SELECT COUNT(a.question_id) as count, q.total_points, a.question_id FROM answer a
                             JOIN user u ON u.id = a.user_id
                             JOIN question q ON q.id = a.question_id
-                            WHERE q.type = 'connect'
+                            WHERE q.type = 'connect' AND a.user_id = '$userId'
                             GROUP BY a.question_id";
 
                             $resultPoints = $conn->query($sqlPointsConnect);
