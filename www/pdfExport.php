@@ -12,10 +12,11 @@ $testCode = $_GET['testCode'];
 $sqlUsers = "SELECT * FROM user WHERE currentTestCode = '$testCode'";
 $resultUsers = $conn->query($sqlUsers);
 
-if ($resultUsers->num_rows > 0) {
+if ($resultUsers->num_rows > 0)
+{
     $html = '<h1 class="mb-4">Export pre test s kódom: ' . $testCode . '</h1>';
-    while ($row = $resultUsers->fetch_assoc()) {
-
+    while ($row = $resultUsers->fetch_assoc())
+    {
         $html .= '<div>
             <h2>' . $row['name'] . ' ' . $row['surname'] . '</h2>';
 
@@ -28,35 +29,49 @@ if ($resultUsers->num_rows > 0) {
 
         $resultQuestion = $conn->query($sqlQuestion);
 
-        if ($resultQuestion && $resultQuestion->num_rows > 0) {
-            while ($rowQuestion = $resultQuestion->fetch_assoc()) {
+        if ($resultQuestion && $resultQuestion->num_rows > 0)
+        {
+            while ($rowQuestion = $resultQuestion->fetch_assoc())
+            {
                 $questionId = $rowQuestion['id'];
                 $html .= '<div style="border: 1px solid black; padding: 5px; margin-bottom: 5px"><h3 style="margin-bottom: 5px">' . $rowQuestion['name'] . '</h3>';
 
                 $sqlAnswer = "SELECT text, isCorrect FROM answer WHERE user_id = '$userId' AND question_id = '$questionId'";
                 $resultAnswer = $conn->query($sqlAnswer);
 
-                if ($resultAnswer->num_rows > 0) {
-                    while ($rowAnswer = $resultAnswer->fetch_assoc()) {
-                        if ($rowQuestion['type'] == 'checkbox') {
-                            if ($rowAnswer['isCorrect'] == 1) {
+                if ($resultAnswer->num_rows > 0)
+                {
+                    while ($rowAnswer = $resultAnswer->fetch_assoc())
+                    {
+                        if ($rowQuestion['type'] == 'checkbox')
+                        {
+                            if ($rowAnswer['isCorrect'] == 1)
+                            {
                                 $html .= '<p style="margin-bottom: 0; font-size: 20px;color:red">' . $rowAnswer['text'] . '</p>';
-                            } else {
+                            }
+                            else {
                                 $html .= '<p style="margin-bottom: 0; font-size: 20px;">' . $rowAnswer['text'] . '</p>';
                             }
-                        } else if ($rowQuestion['type'] == 'short') {
+                        }
+                        else if ($rowQuestion['type'] == 'short')
+                        {
                             $html .= '<p style="margin-bottom: 0; font-size: 20px;">' . $rowAnswer['text'] . '</p>';
-                        } else if ($rowQuestion['type'] == 'draw') {
+                        }
+                        else if ($rowQuestion['type'] == 'draw')
+                        {
                             $path =  $rowAnswer['text'];
                             $type = pathinfo($path, PATHINFO_EXTENSION);
                             $data = file_get_contents($path);
                             $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
                             $html .= '<img src="' . $rowAnswer['text'] . '">';
-                        } else if ($rowQuestion['type'] == 'math') {
+                        }
+                        else if ($rowQuestion['type'] == 'math')
+                        {
                             $html .= '<p style="margin-bottom: 0; font-size: 20px;">' . $rowAnswer['text'] . '</p>';
                         }
                     }
-                    if ($rowQuestion['type'] == 'connect') {
+                    if ($rowQuestion['type'] == 'connect')
+                    {
                         $sqlConnect = "SELECT qo.name, a.text FROM answer a 
                             JOIN questionOption qo ON qo.question_id = a.question_id
                             WHERE a.question_id = '$questionId' AND a.user_id = '$userId' AND a.question_option_id = qo.id";
@@ -64,7 +79,8 @@ if ($resultUsers->num_rows > 0) {
                         $resultConnect = $conn->query($sqlConnect);
                         $html .= '<table style="border-collapse: collapse;">';
 
-                        while ($rowConnect = $resultConnect->fetch_assoc()) {
+                        while ($rowConnect = $resultConnect->fetch_assoc())
+                        {
                             $html .= '<tr style="border-bottom: 1px solid black;">
                                 <td style="padding: 5px 10px; border-bottom: 1px solid black;font-size: 20px;color:red;">' . $rowConnect['name'] . '</td>
                                 <td style="padding: 5px 10px; border-bottom: 1px solid black">>></td>
@@ -83,12 +99,15 @@ if ($resultUsers->num_rows > 0) {
         $html .= '<hr style="margin-top: 10px; margin-bottom: 10px"></div>';
     }
 
-    try {
+    try
+    {
         $html2pdf = new HTML2PDF('P', 'A4', 'en', true, 'UTF-8');
         $html2pdf->writeHTML($html);
         $html2pdf->output();
         exit;
-    } catch (Html2PdfException $e) {
+    }
+    catch (Html2PdfException $e)
+    {
         $html2pdf->clean();
 
         $formatter = new ExceptionFormatter($e);

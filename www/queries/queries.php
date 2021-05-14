@@ -67,49 +67,58 @@ function insertNewPair($conn, $questionId, $questionOptionId, $option)
     return 0;
 }
 
-function getTestTime($conn, $test_code){
+function getTestTime($conn, $test_code)
+{
     $getTest = "SELECT total_time FROM test WHERE test_code='$test_code'";
 
     $result = $conn->query($getTest) or die("Chyba vo vykonávaní query" . $conn->error);
 
     return $result;
 }
-function getUserId($conn, $name, $surname, $code){
+
+function getUserId($conn, $name, $surname, $code)
+{
     $getTest = "SELECT id FROM user WHERE name='$name' and surname='$surname' AND currentTestCode = '$code'";
 
     $result = $conn->query($getTest) or die("Chyba vo vykonávaní query" . $conn->error);
 
     return $result;
 }
+
 function insertAnswer($conn, $questionId, $text, $isCorrect, $userId, $points)
 {
     $insertQuery = "INSERT INTO answer(question_id , text , isCorrect , user_id, points) 
     VALUES ('$questionId', '$text', '$isCorrect', '$userId', '$points')";
 
     $result = $conn->query($insertQuery) or die("Chyba vo vykonávaní query" . $conn->error);
-    if ($result) {
+    if ($result)
+    {
         return $conn->insert_id;
     }
     return 0;
 }
 
-function insertPoints($conn, $questionId, $userId, $points) {
+function insertPoints($conn, $questionId, $userId, $points)
+{
     $sqlUpdate = "UPDATE answer SET isCorrect = '1', points = '$points' WHERE question_id = '$questionId' AND user_id = '$userId'";
 
-    if($conn->query($sqlUpdate)) {
+    if($conn->query($sqlUpdate))
+    {
         return 1;
     }
     else {
         return 0;
     }
 }
+
 function insertAnswerConnect($conn, $questionId, $text, $isCorrect, $userId, $points, $questionOption)
 {
     $insertQuery = "INSERT INTO answer(question_id , text , isCorrect , user_id, points, question_option_id) 
     VALUES ('$questionId', '$text', '$isCorrect', '$userId', '$points', '$questionOption ')";
 
     $result = $conn->query($insertQuery) or die("Chyba vo vykonávaní query" . $conn->error);
-    if ($result) {
+    if ($result)
+    {
         return $conn->insert_id;
     }
     return 0;
@@ -120,7 +129,8 @@ function insertAnswerMathImg($conn, $questionId, $image_path, $isCorrect, $userI
     VALUES ('$questionId', '$image_path', '$isCorrect', '$userId', '$points')";
 
     $result = $conn->query($insertQuery) or die("Chyba vo vykonávaní query" . $conn->error);
-    if ($result) {
+    if ($result)
+    {
         return $conn->insert_id;
     }
     return 0;

@@ -1,117 +1,147 @@
 
-$(document).ready(function () {
+$(document).ready(function ()
+{
     //window.addEventListener('load', function () {
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
     var forms = document.getElementsByClassName('needs-validation');
     // Loop over them and prevent submission
-    var validation = Array.prototype.filter.call(forms, function (form) {
-        form.addEventListener('submit', function (event) {
+    var validation = Array.prototype.filter.call(forms, function (form)
+    {
+        form.addEventListener('submit', function (event)
+        {
             var option = 1;
             event.preventDefault();
-            if (form.checkValidity() === false) {
+            if (form.checkValidity() === false)
+            {
                 event.stopPropagation();
-            } else {
-                $('.question-container').each(function () {
-                    if ($(this).data('type') === 'checkbox' && $(this).find('.form-option').length == 0) {
+            }
+            else {
+                $('.question-container').each(function ()
+                {
+                    if ($(this).data('type') === 'checkbox' && $(this).find('.form-option').length === 0)
+                    {
                         $("html, body").animate({
                             scrollTop: 0
                         }, "slow");
-                        $(".alert-option").fadeTo(2000, 500).slideUp(500, function () {
+
+                        $(".alert-option").fadeTo(2000, 500).slideUp(500, function ()
+                        {
                             $(".alert-option").slideUp(500);
                         })
                         option = 0;
                     }
                 })
-                if (option == 1) {
+                if (option === 1)
+                {
                     addTest();
                 }
             }
             form.classList.add('was-validated');
         }, false);
     });
-    //}, false);
+
     $('.totalTime').text("Celkový počet bodov: " + countPoints());
 
-    $(document).on('input', '.points', function () {
+    $(document).on('input', '.points', function ()
+    {
         $('.totalTime').text("Celkový počet bodov: " + countPoints());
     })
 
-    $('#checkboxQuestion').on('click', function (e) {
+    $('#checkboxQuestion').on('click', function (e)
+    {
         e.preventDefault();
         checkboxCreate();
         $('.needs-validation').removeClass('was-validated');
     });
 
-    $('#shortanswerQuestion').on('click', function (e) {
+    $('#shortanswerQuestion').on('click', function (e)
+    {
         e.preventDefault();
         shortanswerCreate();
         $('.needs-validation').removeClass('was-validated');
     });
 
-    $('#connectQuestion').on('click', function (e) {
+    $('#connectQuestion').on('click', function (e)
+    {
         e.preventDefault();
         connectCreate();
         $('.needs-validation').removeClass('was-validated');
     });
 
-    $('#drawQuestion').on('click', function (e) {
+    $('#drawQuestion').on('click', function (e)
+    {
         e.preventDefault();
         drawquestionCreate();
         $('.needs-validation').removeClass('was-validated');
     });
 
-    $('#mathQuestion').on('click', function (e) {
+    $('#mathQuestion').on('click', function (e)
+    {
         e.preventDefault();
         mathquestionCreate();
         $('.needs-validation').removeClass('was-validated');
     });
 
-    $(document).on('click', '.correctAnswer', function () {
-        if ($(this).hasClass('active')) {
+    $(document).on('click', '.correctAnswer', function ()
+    {
+        if ($(this).hasClass('active'))
+        {
             $(this).removeClass('active');
-        } else {
+        }
+        else {
             $(this).addClass('active');
         }
     });
 
-    $(document).on('click', '.deleteQuestion', function (e) {
+    $(document).on('click', '.deleteQuestion', function (e)
+    {
         e.preventDefault();
-        $(this).parents('.question-container').slideToggle("fast", function () {
+        $(this).parents('.question-container').slideToggle("fast", function ()
+        {
             $(this).remove();
             $('.totalTime').text("Celkový počet bodov: " + countPoints());
         });
     });
 
-    $(document).on('click', '#addAnswer', function (e) {
+    $(document).on('click', '#addAnswer', function (e)
+    {
         e.preventDefault();
         addOption($(this));
         $('.needs-validation').removeClass('was-validated');
     });
 
-    $(document).on('click', '.deleteOption', function () {
-        $(this).parents('.form-option').slideToggle("fast", function () {
+    $(document).on('click', '.deleteOption', function ()
+    {
+        $(this).parents('.form-option').slideToggle("fast", function ()
+        {
             $(this).remove();
         })
     })
 
-    $(document).on('click', '#addPair', function (e) {
+    $(document).on('click', '#addPair', function (e)
+    {
         e.preventDefault();
         addPair($(this));
         $('.needs-validation').removeClass('was-validated');
     });
 
-    $(document).on('click', '.deletePair', function () {
-        $(this).parents('.form-option').slideToggle("fast", function () {
+    $(document).on('click', '.deletePair', function ()
+    {
+        $(this).parents('.form-option').slideToggle("fast", function ()
+        {
             $(this).remove();
         })
     })
 
-    function addTest() {
-        if ($('.question-container').length) {
+    function addTest()
+    {
+        if ($('.question-container').length)
+        {
             var $name = $('#testName').val(),
                 $points = countPoints(),
                 $time = $('#testTime').val();
-            $.ajax({
+            $.ajax
+            ({
                 url: "controllers/addTestController.php",
                 method: "POST",
                 cache: false,
@@ -120,7 +150,8 @@ $(document).ready(function () {
                     points: $points,
                     time: $time
                 },
-                success: function (result) {
+                success: function (result)
+                {
                     if (result > 0) {
                         addQuestion(result);
                     }
@@ -131,26 +162,33 @@ $(document).ready(function () {
             $("html, body").animate({
                 scrollTop: 0
             }, "slow");
-            $(".alert-question").fadeTo(2000, 500).slideUp(500, function () {
+
+            $(".alert-question").fadeTo(2000, 500).slideUp(500, function ()
+            {
                 $(".alert-question").slideUp(500);
             })
         }
     }
 
-    function addQuestion(testId) {
-        if ($('.question-container').length) {
-            $('.question-container').each(function () {
+    function addQuestion(testId)
+    {
+        if ($('.question-container').length)
+        {
+            $('.question-container').each(function ()
+            {
                 var $this = $(this),
                     $type = $this.data('type'),
                     $question = $this.find('.questionInput').val(),
                     $points = $this.find('.points').val();
 
-                if ($type === 'math') {
+                if ($type === 'math')
+                {
                     var regex = /\\/g;
                     var $question = $question.replace(regex, "\\\\");
                 }
 
-                $.ajax({
+                $.ajax
+                ({
                     url: "controllers/addQuestionController.php",
                     method: "POST",
                     cache: false,
@@ -160,19 +198,27 @@ $(document).ready(function () {
                         type: $type,
                         points: $points
                     },
-                    success: function (result) {
-                        if (result > 0) {
-                            if ($('.form-option').length) {
-                                $this.find('.form-option').each(function () {
+                    success: function (result)
+                    {
+                        if (result > 0)
+                        {
+                            if ($('.form-option').length)
+                            {
+                                $this.find('.form-option').each(function ()
+                                {
                                     var $this1 = $(this),
                                         $option = $this1.find('.answer').val();
-                                    if (($this1.find('.correctAnswer').hasClass('active')) || ($this1.find('.answer').hasClass('spravna'))) {
+                                    if (($this1.find('.correctAnswer').hasClass('active')) || ($this1.find('.answer').hasClass('spravna')))
+                                    {
                                         var $correct = 1;
-                                    } else {
+                                    }
+                                    else {
                                         var $correct = 0;
                                     }
+
                                     var question_id=result;
-                                    $.ajax({
+                                    $.ajax
+                                    ({
                                         url: "controllers/addOptionController.php",
                                         method: "POST",
                                         cache: false,
@@ -181,10 +227,13 @@ $(document).ready(function () {
                                             option: $option,
                                             correct: $correct
                                         },
-                                        success: function (result) {
-                                            if($this1.find('.pair').length) {
+                                        success: function (result)
+                                        {
+                                            if($this1.find('.pair').length)
+                                            {
                                                 var $pair = $this1.find('.pair').val();
-                                                $.ajax({
+                                                $.ajax
+                                                ({
                                                     url: "controllers/addPairController.php",
                                                     method: "POST",
                                                     cache: false,
@@ -199,13 +248,17 @@ $(document).ready(function () {
                                             $("html, body").animate({
                                                 scrollTop: 0
                                             }, "slow");
-                                            if (result > 0) {
-                                                $(".alert-success").fadeTo(2000, 500).slideUp(500, function () {
+
+                                            if (result > 0)
+                                            {
+                                                $(".alert-success").fadeTo(2000, 500).slideUp(500, function ()
+                                                {
                                                     $(".alert-success").slideUp(500);
                                                     window.location.replace('admin.php');
                                                 })
                                             } else {
-                                                $(".alert-error").fadeTo(2000, 500).slideUp(500, function () {
+                                                $(".alert-error").fadeTo(2000, 500).slideUp(500, function ()
+                                                {
                                                     $(".alert-error").slideUp(500);
                                                 });
                                             }
@@ -217,7 +270,9 @@ $(document).ready(function () {
                                 $("html, body").animate({
                                     scrollTop: 0
                                 }, "slow");
-                                $(".alert-success").fadeTo(2000, 500).slideUp(500, function () {
+
+                                $(".alert-success").fadeTo(2000, 500).slideUp(500, function ()
+                                {
                                     $(".alert-success").slideUp(500);
                                     window.location.replace('admin.php');
                                 })
@@ -226,7 +281,9 @@ $(document).ready(function () {
                             $("html, body").animate({
                                 scrollTop: 0
                             }, "slow");
-                            $(".alert-error").fadeTo(2000, 500).slideUp(500, function () {
+
+                            $(".alert-error").fadeTo(2000, 500).slideUp(500, function ()
+                            {
                                 $(".alert-error").slideUp(500);
                             })
                         }
@@ -238,13 +295,16 @@ $(document).ready(function () {
             $("html, body").animate({
                 scrollTop: 0
             }, "slow");
-            $(".alert-question").fadeTo(2000, 500).slideUp(500, function () {
+
+            $(".alert-question").fadeTo(2000, 500).slideUp(500, function ()
+            {
                 $(".alert-question").slideUp(500);
             })
         }
     }
 
-    function checkboxCreate() {
+    function checkboxCreate()
+    {
         var question = ($('<div class="form-group question-container" data-type="checkbox" style="display: none">' +
             '<div class="d-flex align-items-center justify-content-between">' +
             '<input type="number" class="form-control w-25 points" name="points" placeholder="Počet bodov" required>' +
@@ -256,7 +316,8 @@ $(document).ready(function () {
         question.insertBefore('#addTest').slideDown("fast");
     }
 
-    function shortanswerCreate() {
+    function shortanswerCreate()
+    {
         var question = ($('<div class="form-group question-container" data-type="short" style="display: none">' +
             '<div class="d-flex align-items-center justify-content-between">' +
             '<input type="number" class="form-control w-25 points" name="points" placeholder="Počet bodov" required>' +
@@ -271,7 +332,8 @@ $(document).ready(function () {
         question.insertBefore('#addTest').slideDown("fast");
     }
 
-    function connectCreate() {
+    function connectCreate()
+    {
         var question = ($('<div class="form-group question-container" data-type="connect" style="display: none">' +
             '<div class="d-flex align-items-center justify-content-between">' +
             '<input type="number" class="form-control w-25 points" name="points" placeholder="Počet bodov" required>' +
@@ -283,7 +345,8 @@ $(document).ready(function () {
         question.insertBefore('#addTest').slideDown("fast");
     }
 
-    function drawquestionCreate() {
+    function drawquestionCreate()
+    {
         var question = ($('<div class="form-group question-container" data-type="draw" style="display: none">' +
             '<div class="d-flex align-items-center justify-content-between">' +
             '<input type="number" class="form-control w-25 points" name="points" placeholder="Počet bodov" required>' +
@@ -294,7 +357,8 @@ $(document).ready(function () {
         question.insertBefore('#addTest').slideDown("fast");
     }
 
-    function mathquestionCreate() {
+    function mathquestionCreate()
+    {
         var question = ($('<div class="form-group question-container" data-type="math" style="display: none">' +
             '<div class="d-flex align-items-center justify-content-between">' +
             '<input type="number" class="form-control w-25 points" name="points" placeholder="Počet bodov" required>' +
@@ -305,7 +369,8 @@ $(document).ready(function () {
         question.insertBefore('#addTest').slideDown("fast");
     }
 
-    function addOption(btn) {
+    function addOption(btn)
+    {
         var option = ($('<div class="form-group form-option" style="display: none">' +
             '<label>Možnosť</label>' +
             '<div class="d-flex align-items-center align-items-center">' +
@@ -317,7 +382,8 @@ $(document).ready(function () {
         option.insertBefore(btn).slideDown("fast");
     }
 
-    function addPair(btn) {
+    function addPair(btn)
+    {
         var option = ($('<div class="form-group form-option" style="display: none">' +
             '<label>Správne dvojice</label>' +
             '<div class="d-flex align-items-center align-items-center">' +
@@ -329,11 +395,14 @@ $(document).ready(function () {
         option.insertBefore(btn).slideDown("fast");
     }
 
-    function countPoints() {
+    function countPoints()
+    {
         var points = 0;
 
-        $('.points').each(function () {
-            if ($(this).val() != '') {
+        $('.points').each(function ()
+        {
+            if ($(this).val() != '')
+            {
                 points += parseInt($(this).val());
             }
         });
@@ -341,11 +410,14 @@ $(document).ready(function () {
         return points;
     }
 
-    $(window).scroll(function () {
-        if ($(window).scrollTop() >= 100) {
+    $(window).scroll(function ()
+    {
+        if ($(window).scrollTop() >= 100)
+        {
             $('.fixed-element').addClass("fixed");
 
-        } else {
+        }
+        else {
             $('.fixed-element').removeClass("fixed");
         }
     });

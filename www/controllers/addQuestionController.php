@@ -9,8 +9,10 @@ $type = $_POST['type'];
 $points = $_POST['points'];
 
 $result = insertNewQuestion($conn, $testId, $type, $points, $question);
-if ($result > 0) {
+if ($result > 0)
+{
     echo $result;
-} else {
+}
+else {
     echo 0;
 }

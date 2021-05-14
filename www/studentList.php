@@ -1,6 +1,7 @@
 <?php
 session_start();
-if (!isset($_SESSION["loggedin"])) {
+if (!isset($_SESSION["loggedin"]))
+{
     header("location: index.php");
 }
 include "partials/header.php";
@@ -28,21 +29,25 @@ $testCode = $_GET['testCode'];
                 $sqlUsers = "SELECT * FROM user WHERE currentTestCode = '$testCode' AND isWritingExam = 0";
                 $resultUsers = $conn->query($sqlUsers);
 
-                if ($resultUsers->num_rows > 0 && $resultUsers) {
+                if ($resultUsers->num_rows > 0 && $resultUsers)
+                {
                     echo '<div class="d-flex align-items-center mb-4">
-                <form class="form-inline" method="post" action="pdfExport.php?testCode=' . $testCode . '">
-                    <button type="submit" id="pdf" name="generate_pdf" class="btn btn-primary"><i class="fa fa-pdf" aria-hidden=" true"></i>
-                        Export pdf</button>
-                </form>
-                <a href="csvExport.php?testCode=' . $testCode . '" class="btn btn-primary ml-3">Export cvs</a>
-            </div>';
-                    while ($rowUser = $resultUsers->fetch_assoc()) {
+                            <form class="form-inline" method="post" action="pdfExport.php?testCode=' . $testCode . '">
+                                <button type="submit" id="pdf" name="generate_pdf" class="btn btn-primary"><i class="fa fa-pdf" aria-hidden=" true"></i>
+                                    Export pdf</button>
+                            </form>
+                            <a href="csvExport.php?testCode=' . $testCode . '" class="btn btn-primary ml-3">Export cvs</a>
+                          </div>';
+
+                    while ($rowUser = $resultUsers->fetch_assoc())
+                    {
                         $userId = $rowUser['id'];
 
                         $sqlAnswerNum = "SELECT * FROM answer WHERE user_id = '$userId'";
                         $resultAnswerNum = $conn->query($sqlAnswerNum);
 
-                        if ($resultAnswerNum->num_rows > 0 && $resultAnswerNum) {
+                        if ($resultAnswerNum->num_rows > 0 && $resultAnswerNum)
+                        {
                             $sqlPoints = "SELECT COUNT(a.question_id) as count, q.total_points, a.question_id FROM answer a
                             JOIN user u ON u.id = a.user_id
                             JOIN question q ON q.id = a.question_id
@@ -51,7 +56,8 @@ $testCode = $_GET['testCode'];
 
                             $resultPoints = $conn->query($sqlPoints);
 
-                            while ($row = $resultPoints->fetch_assoc()) {
+                            while ($row = $resultPoints->fetch_assoc())
+                            {
                                 $questionId = $row['question_id'];
                                 $totalPoints = $row['total_points'];
                                 $count = $row['count'];
@@ -63,9 +69,11 @@ $testCode = $_GET['testCode'];
 
                                 $resultAnswer = $conn->query($sqlCheckAnswer);
 
-                                while ($rowCorrect = $resultAnswer->fetch_assoc()) {
+                                while ($rowCorrect = $resultAnswer->fetch_assoc())
+                                {
                                     $points = 0;
-                                    if (strcmp($rowCorrect['aCorrect'], $rowCorrect['qCorrect']) == 0) {
+                                    if (strcmp($rowCorrect['aCorrect'], $rowCorrect['qCorrect']) == 0)
+                                    {
                                         $points = $pointPerAnswer;
                                     }
                                     $id = $rowCorrect['id'];
@@ -74,7 +82,6 @@ $testCode = $_GET['testCode'];
                                     $conn->query($sqlUpdate);
                                 }
                             }
-
 
                             $sqlSumPoints = "SELECT ROUND(SUM(points), 2) as points FROM answer
                             WHERE user_id = '$userId'
@@ -87,7 +94,8 @@ $testCode = $_GET['testCode'];
 
                             $resultShort = $conn->query($sqlShortPoints);
 
-                            if ($resultShort->num_rows > 0) {
+                            if ($resultShort->num_rows > 0)
+                            {
                                 $rowShort = $resultShort->fetch_assoc();
                                 $points = $rowShort['total_points'];
                                 $id = $rowShort['id'];
@@ -103,7 +111,8 @@ $testCode = $_GET['testCode'];
 
                             $resultPoints = $conn->query($sqlPointsConnect);
 
-                            while ($row = $resultPoints->fetch_assoc()) {
+                            while ($row = $resultPoints->fetch_assoc())
+                            {
                                 $questionId = $row['question_id'];
                                 $totalPoints = $row['total_points'];
                                 $count = $row['count'];
@@ -114,7 +123,8 @@ $testCode = $_GET['testCode'];
                                 WHERE a.user_id = '$userId' AND a.question_id = '$questionId' AND a.question_option_id = op.questionOption_id AND a.text = op.name";
 
                                 $resultAnswer = $conn->query($sqlCheckAnswerConnect);
-                                while ($rowCorrect = $resultAnswer->fetch_assoc()) {
+                                while ($rowCorrect = $resultAnswer->fetch_assoc())
+                                {
                                     $id = $rowCorrect['id'];
                                     $sqlUpdate = "UPDATE answer SET points = '$pointPerAnswer' WHERE id = '$id'";
                                     $conn->query($sqlUpdate);
@@ -123,7 +133,8 @@ $testCode = $_GET['testCode'];
 
                             $resultPoints = $conn->query($sqlSumPoints)->fetch_assoc();
 
-                            if (!isset($resultPoints)) {
+                            if (!isset($resultPoints))
+                            {
                                 $resultPoints['points'] = 0;
                             }
 
@@ -139,13 +150,15 @@ $testCode = $_GET['testCode'];
                                 <a href="studentTestResult.php?testId=' . $testId . '&id=' . $userId . '&name=' . $rowUser['name'] . '&surname=' . $rowUser['surname'] . '&testCode=' . $testCode . '" class="mr-4 student-test"><i class="bi bi-list-check"></i></a>
                                 <p class="points-total">' . $resultPoints['points'] . '/' . $totalPointsTest . '</p>';
 
-                            if ($resultEx->num_rows > 0) {
+                            if ($resultEx->num_rows > 0)
+                            {
                                 echo '<i class="bi bi-exclamation-circle exclamation ml-4"></i>';
                             }
 
                             echo '</div>
                         </div>';
-                        } else {
+                        }
+                        else {
                             echo '<div class="test-item">
                                 <p class="name mb-3">' . $rowUser['name'] . ' ' . $rowUser['surname'] . '</p>
                                 <p class="name">Študent odovzdal prázdny test</p>
@@ -153,22 +166,21 @@ $testCode = $_GET['testCode'];
                             </div>';
                         }
                     }
-                } else {
+                }
+                else {
                     echo '<div class="test-item d-flex align-items-center justify-content-between">
                     <p class="name">Nikto ešte nepísal test</p>
                     
                 </div>';
                 }
-
                 ?>
+
                 <a href="admin.php" class="btn btn-secondary">Späť na zoznam testov</a>
             </div>
         </div>
     </div>
 
 </main>
-
-
 
 <?php
 include "partials/footer.php";

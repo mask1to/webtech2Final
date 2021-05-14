@@ -1,7 +1,8 @@
 <?php
 
 session_start();
-if (!isset($_SESSION["loggedin"])) {
+if (!isset($_SESSION["loggedin"]))
+{
     header("location: index.php");
 }
 
@@ -64,6 +65,7 @@ require_once("config/config.php");
 </main>
 
 <script src="assets/js/addTest.js"></script>
+
 <?php
 include "partials/footer.php";
 ?>

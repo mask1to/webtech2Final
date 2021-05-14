@@ -6,10 +6,6 @@ include "queries/queries.php";
 
 $link = $conn;
 
-/*
- * VYHODNOTENIE REGISTRÁCIE
- */
-
 if(isset($_POST['registerTeacherBtn']))
 {
     $teacherName = $_POST['teacherName'];

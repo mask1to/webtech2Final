@@ -7,7 +7,8 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-if(isset($_POST['logOut'])) {
+if(isset($_POST['logOut']))
+{
 
     if(isset($_SESSION['student']))
     {

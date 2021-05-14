@@ -15,15 +15,10 @@ $teacherEmail = $teacherPassword = "";
 
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
-    /*
-     * Overenie údajov pri prihlásení
-     */
-
     $teacherEmail = $_POST['loginEmailTeacher'];
     $teacherPassword = $_POST['loginPasswordTeacher'];
     $selectData = $link->query("SELECT id, name, surname, password, email FROM user WHERE email = '$teacherEmail'");
     $selectedData = mysqli_fetch_assoc($selectData);
-
 
     if($selectData->num_rows > 0)
     {
@@ -77,7 +72,9 @@ include "partials/header.php";
                 <div class="bar"></div>
             </div>
             <div class="button-container">
-                <button name="loginTeacherBtn" type="submit"><span>Prihlásiť sa</span></button>
+                <button name="loginTeacherBtn" type="submit"><span class="btnRight">Prihlásiť sa</span></button>
+
+                <div class="footer"><a href="index.php" class="redirectRight">Ste študent ?</a></div>
         </form>
     </div>
     <div class="card alt">

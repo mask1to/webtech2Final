@@ -1,6 +1,7 @@
 <?php
 session_start();
-if (!isset($_SESSION["loggedin"])) {
+if (!isset($_SESSION["loggedin"]))
+{
     header("location: index.php");
 }
 include "partials/header.php";
@@ -36,9 +37,12 @@ $testCode = $_GET['testCode'];
 
                 $resultQuestion = $conn->query($sqlQuestion);
 
-                if ($resultQuestion->num_rows > 0) {
-                    while ($rowQuestion = $resultQuestion->fetch_assoc()) {
-                        if ($rowQuestion['type'] == 'checkbox') {
+                if ($resultQuestion->num_rows > 0)
+                {
+                    while ($rowQuestion = $resultQuestion->fetch_assoc())
+                    {
+                        if ($rowQuestion['type'] == 'checkbox')
+                        {
                             $questionId = $rowQuestion['question_id'];
                             echo '<div class="form-group question-container" data-type="checkbox" data-id="' . $questionId . '">
                                 <div class="form-group">
@@ -50,16 +54,20 @@ $testCode = $_GET['testCode'];
                             JOIN questionOption q ON q.question_id = a.question_id
                             WHERE q.name = a.text AND q.question_id = '$questionId' AND a.user_id = '$id'";
                             $resultOptions = $conn->query($sqlOptions);
-                            while ($rowOption = $resultOptions->fetch_assoc()) {
+                            while ($rowOption = $resultOptions->fetch_assoc())
+                            {
                                 echo '<div class="form-group form-check d-flex align-items-center">';
-                                if ($rowOption['aCorrect'] == 1) {
+                                if ($rowOption['aCorrect'] == 1)
+                                {
                                     echo '<input type="checkbox" class="form-check-input" checked onclick="return false;">';
-                                } else {
+                                }
+                                else {
                                     echo '<input type="checkbox" class="form-check-input" onclick="return false;">';
                                 }
                                 echo '<label class="form-check-label">' . $rowOption['text'] . '</label>';
 
-                                if ($rowOption['qCorrect'] == 1) {
+                                if ($rowOption['qCorrect'] == 1)
+                                {
                                     echo '<i class="bi bi-check-circle-fill correctAnswerCheck ml-3"></i>';
                                 } else {
                                     echo '<i class="bi bi-x-circle-fill wrongAnswerCheck ml-3"></i>';
@@ -71,7 +79,9 @@ $testCode = $_GET['testCode'];
                                 <input type="number" class="form-control w-50"placeholder="Počet bodov" value="' . $rowQuestion['points'] . '" readonly>
                             </div>';
                             echo '</div>';
-                        } else if ($rowQuestion['type'] == 'short') {
+                        }
+                        else if ($rowQuestion['type'] == 'short')
+                        {
                             $questionId = $rowQuestion['question_id'];
                             $sqlOptions = "SELECT text, points FROM answer WHERE question_id = '$questionId' AND user_id = '$id'";
                             $questionId = $rowQuestion['question_id'];
@@ -91,7 +101,9 @@ $testCode = $_GET['testCode'];
                                     <input type="number" class="form-control w-50 points" placeholder="Počet bodov" value="' . $row['points'] . '" min="0" max="' . $rowQuestion['total_points'] . '">
                                 </div>
                                 </div>';
-                        } else if ($rowQuestion['type'] == 'draw') {
+                        }
+                        else if ($rowQuestion['type'] == 'draw')
+                        {
                             $questionId = $rowQuestion['question_id'];
                             $sqlOptions = "SELECT text, points FROM answer WHERE question_id = '$questionId' AND user_id = '$id'";
                             $questionId = $rowQuestion['question_id'];
@@ -111,7 +123,9 @@ $testCode = $_GET['testCode'];
                                     <input type="number" class="form-control w-50 points" placeholder="Počet bodov" value="' . $row['points'] . '" min="0" max="' . $rowQuestion['total_points'] . '">
                                 </div>
                                 </div>';
-                        } else if ($rowQuestion['type'] == 'math') {
+                        }
+                        else if ($rowQuestion['type'] == 'math')
+                        {
                             $questionId = $rowQuestion['question_id'];
                             $sqlOptions = "SELECT text, points, image_path FROM answer WHERE question_id = '$questionId' AND user_id = '$id'";
                             $questionId = $rowQuestion['question_id'];
@@ -124,9 +138,11 @@ $testCode = $_GET['testCode'];
                                 <math-field disabled>' . $rowQuestion['name'] . '</math-field>
                                 <div class="form-group">
                                     <label>Študentova odpoveď</label>';
-                            if ($row['text'] == NULL) {
+                            if ($row['text'] == NULL)
+                            {
                                 echo '<img src="' . $row['image_path'] . '" width="100%">';
-                            } else {
+                            }
+                            else {
                                 echo '<math-field disabled>' . $row['text'] . '</math-field>';
                             }
                             echo '</div>
@@ -135,7 +151,8 @@ $testCode = $_GET['testCode'];
                                     <input type="number" class="form-control w-50 points" placeholder="Počet bodov" value="' . $row['points'] . '" min="0" max="' . $rowQuestion['total_points'] . '">
                                 </div>
                                 </div>';
-                        } else {
+                        }
+                        else {
                             $questionId = $rowQuestion['question_id'];
                             echo '<div class="form-group question-container" data-type="short" data-id="' . $questionId . '">
                                 <div class="form-group">
@@ -150,7 +167,8 @@ $testCode = $_GET['testCode'];
                             WHERE a.question_id = '$questionId' AND a.user_id = '$id' AND a.question_option_id = qo.id";
                             $resultConnect = $conn->query($sqlConnect);
 
-                            while ($rowConnect = $resultConnect->fetch_assoc()) {
+                            while ($rowConnect = $resultConnect->fetch_assoc())
+                            {
                                 echo '<div class="d-flex align-items-center align-items-center mb-2">
                                 <input type="text" class="form-control answer" readonly value="' . $rowConnect['name'] . '" >
                                 <input type="text" class="form-control pair" readonly value="' . $rowConnect['text'] . '">
@@ -178,35 +196,50 @@ $testCode = $_GET['testCode'];
 <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>
 
 <script>
-    $(document).ready(function() {
-        $('#btnSend').on('click', function(e) {
+    $(document).ready(function()
+    {
+        $('#btnSend').on('click', function(e)
+        {
             e.preventDefault();
-            $('.question-container').each(function() {
-                if ($(this).data('type') === 'checkbox') {
+            $('.question-container').each(function()
+            {
+                if ($(this).data('type') === 'checkbox')
+                {
                     return;
                 }
                 $questionId = $(this).data('id');
                 $points = $(this).find('.points').val();
 
-                if ($points > $(this).find('.points').attr('max')) {
-                    $("html, body").animate({
+                if ($points > $(this).find('.points').attr('max'))
+                {
+                    $("html, body").animate
+                    ({
                         scrollTop: 0
                     }, "slow");
-                    $(".alert-max").fadeTo(2000, 500).slideUp(500, function() {
+
+                    $(".alert-max").fadeTo(2000, 500).slideUp(500, function()
+                    {
                         $(".alert-max").slideUp(500);
                     })
+
                     return false;
-                } else if ($points < $(this).find('.points').attr('min')) {
-                    $("html, body").animate({
+                }
+                else if ($points < $(this).find('.points').attr('min'))
+                {
+                    $("html, body").animate
+                    ({
                         scrollTop: 0
                     }, "slow");
-                    $(".alert-min").fadeTo(2000, 500).slideUp(500, function() {
+
+                    $(".alert-min").fadeTo(2000, 500).slideUp(500, function()
+                    {
                         $(".alert-min").slideUp(500);
                     })
                     return false;
                 }
 
-                $.ajax({
+                $.ajax
+                ({
                     url: 'controllers/addPoints.php',
                     method: 'post',
                     data: {
@@ -214,8 +247,10 @@ $testCode = $_GET['testCode'];
                         userId: <?php echo $id ?>,
                         points: $points
                     },
-                    success: function(result) {
-                        if (result == 1) {
+                    success: function(result)
+                    {
+                        if (result == 1)
+                        {
                             window.location.replace('studentList.php?id=<?php echo $testId ?>&testCode=<?php echo $testCode ?>');
                         }
                     }

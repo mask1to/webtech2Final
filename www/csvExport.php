@@ -12,8 +12,10 @@ GROUP BY a.user_id";
 $result = $conn->query($sql);
 
 $users = array();
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
+if ($result->num_rows > 0)
+{
+    while ($row = $result->fetch_assoc())
+    {
         $users[] = $row;
     }
 }
@@ -25,8 +27,10 @@ echo "\xEF\xBB\xBF";
 $output = fopen('php://output', 'w');
 fputcsv($output, array('ID', 'Meno', 'Priezvisko', 'Body'));
 
-if (count($users) > 0) {
-    foreach ($users as $row) {
+if (count($users) > 0)
+{
+    foreach ($users as $row)
+    {
         fputcsv($output, $row);
     }
 }

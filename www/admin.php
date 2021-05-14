@@ -1,6 +1,7 @@
 <?php
 session_start();
-if (!isset($_SESSION["loggedin"])) {
+if (!isset($_SESSION["loggedin"]))
+{
     header("location: index.php");
 }
 include "partials/header.php";
@@ -20,8 +21,10 @@ require_once("config/config.php");
 
                 $result = $conn->query($sql);
 
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
+                if ($result->num_rows > 0)
+                {
+                    while ($row = $result->fetch_assoc())
+                    {
                         echo '<div class="test-item d-flex align-items-center justify-content-between" data-id="' . $row['id'] . '">
                         <div>
                             <p class="name">' . $row['name'] . '</p>
@@ -36,7 +39,8 @@ require_once("config/config.php");
                         </div>
                     </div>';
                     }
-                } else {
+                }
+                else {
                     echo '<div class="test-item d-flex align-items-center justify-content-between">
                         <p class="name">Nie je vložený žiadny test</p>
                     </div>';

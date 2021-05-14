@@ -1,10 +1,13 @@
 <?php
 session_start();
 
-if (isset($_SESSION["student"])) {
+if (isset($_SESSION["student"]))
+{
     header("location: student.php");
     exit;
-} else if (isset($_SESSION["loggedin"])) {
+}
+else if (isset($_SESSION["loggedin"]))
+{
     header("Location: admin.php");
 }
 
@@ -16,7 +19,8 @@ $link = $conn;
 $studentName = $studentSurname = $testCode = "";
 $isWriting = null;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST")
+{
     $studentName = $_POST['studentName'];
     $studentSurname = $_POST['studentSurname'];
     $type = "student";
@@ -33,13 +37,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         );
     $selectedUserStatus = mysqli_fetch_assoc($selectUserStatus);
 
-    if ($selectTestCode->num_rows > 0) {
+    if ($selectTestCode->num_rows > 0)
+    {
         $selectedTestCode = mysqli_fetch_assoc($selectTestCode);
-        if (isset($selectedUserStatus['currentTestCode'])) {
+        if (isset($selectedUserStatus['currentTestCode']))
+        {
             $dbTestCode = $selectedUserStatus['currentTestCode'];
         }
 
-        if ($selectedTestCode['isActive'] == 1) {
+        if ($selectedTestCode['isActive'] == 1)
+        {
             if (isset($selectedUserStatus['isWritingExam']))
             {
                 $isWriting = $selectedUserStatus['isWritingExam'];
@@ -111,7 +118,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	           </div>
             </div>';
             }
-        } else {
+        }
+        else {
             echo '<div id="showModal4" class="modal fade text-center">
 	            <div class="modal-dialog modal-confirm text-center">
 		            <div class="modal-content text-center">
@@ -131,7 +139,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	           </div>
             </div>';
         }
-    } else {
+    }
+    else {
         echo '<div id="showModal2" class="modal fade text-center">
 	            <div class="modal-dialog modal-confirm text-center">
 		            <div class="modal-content text-center">
@@ -178,20 +187,25 @@ include "partials/header.php";
                 <div class="bar"></div>
             </div>
             <div class="button-container">
-                <button name="launchTestBtn"><span>Spustiť test</span></button>
+                <button name="launchTestBtn"><span class="btnRight">Spustiť test</span></button>
             </div>
-            <div class="footer"><a href="teacher.php">Ste učiteľ ?</a></div>
+            <div class="footer"><a href="teacher.php" class="redirectRight">Ste učiteľ ?</a></div>
         </form>
     </div>
 </div>
 
 <script>
-    $.ajax({
+    $.ajax
+    ({
         type: "post",
         url: "index.php",
         success: function()
         {
-            $('#showModal9').modal({ backdrop: 'static', keyboard: false }, 'show');
+            $('#showModal9').modal
+            ({
+                backdrop: 'static',
+                keyboard: false
+            }, 'show');
         }
     })
 </script>

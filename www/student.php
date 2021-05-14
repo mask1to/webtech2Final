@@ -15,7 +15,6 @@ if (isset($_POST['img_draw']) && $student_name && $student_surname && $test_code
     file_put_contents("images/drawing_questions/" . $_SESSION['studentName'] . "_" . $_SESSION['studentSurname'] . "_" . $_SESSION['testCode'] . '_' . $_POST['id'] .".jpg", file_get_contents($_POST['img_draw']));
 }
 
-
 include "partials/header.php";
 include "queries/queries.php";
 require_once("config/config.php");
@@ -43,11 +42,13 @@ if ($sessionTestCode == $selectedData['test_code']) {
             <p class="text-muted"><b>Počet bodov v teste: ' . $selectedData["total_points"] . '</b></p>
             <hr>';
 
-    while ($questions = $selectTypeOfQuestion->fetch_assoc()) {
+    while ($questions = $selectTypeOfQuestion->fetch_assoc())
+    {
         $questionId = $questions['id'];
 
         $selectOptions = $link->query("SELECT * FROM questionOption WHERE question_id = '$questionId'");
-        if ($questions['type'] == 'checkbox') {
+        if ($questions['type'] == 'checkbox')
+        {
             echo '
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
                    <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>';
@@ -64,7 +65,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
             }
             echo '<hr>';
         }
-        if ($questions['type'] == 'short') {
+        if ($questions['type'] == 'short')
+        {
             echo '
                    <p class="text-muted""><b>Body: ' .   $questions['total_points'] . '</b></p>
                    <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>';
@@ -82,7 +84,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
             echo '<hr>';
         }
 
-        if ($questions['type'] == 'connect') {
+        if ($questions['type'] == 'connect')
+        {
             echo ' <script type="text/javascript" src="assets/js/jsplumb.min.js"></script>';
             echo '
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
@@ -184,8 +187,10 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 });
             </script>
             <?php
-            while ($option = $selectOptions->fetch_assoc()) {
-                if ($option['question_id'] == $questionId) {
+            while ($option = $selectOptions->fetch_assoc())
+            {
+                if ($option['question_id'] == $questionId)
+                {
                     echo "<input id=" . $questionId . " type='hidden' name='left[]' class='connect_left testInput connect '>";
                     $opname = $option['name'];
             ?>
@@ -218,51 +223,53 @@ if ($sessionTestCode == $selectedData['test_code']) {
             echo '<hr>';
         }
 
-        if ($questions['type'] == 'draw') {
+        if ($questions['type'] == 'draw')
+        {
             echo '<div class="draw-parent">
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
                    <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>
                    <div id="' . $questionId . '" class="testInput draw canvasDiv canvas" name="' . $questionId . '"></div>';
 
             echo '
-                
                 <div id="upl-draw" class="form-group" style="display: none">
-<div class="input-group">
-  <input type="text" class="form-control" readonly>
-<div class="input-group-btn">
-  <span class="fileUpload">
-      <span class="upl" id="upload">Upload file</span>
-      <input name="file-draw" type="file" class="upload up file-btn-draw " id="drawUp" accept="image/jpeg" />
-    </span><!-- btn-orange -->
- </div><!-- btn -->
- </div><!-- group -->
- </div><!-- form-group -->
-            
-            <div class="dropdown show">
-                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Typ odpovede
-                </a>
-                <button class="demoToolList btn btn-primary" onclick="c'.$questionId.'('.$questionId.')" id="clearCanvasSimple" type="button">Odznovu</button>
-                <br>
-
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item nahrat-subor-draw" href="#">Nahrat subor</a>
-                    <a class="dropdown-item skryt" href="#">Kreslenie</a>
-                </div>
-                <br>
+                    <div class="input-group">
+                      <input type="text" class="form-control" readonly>
+                    <div class="input-group-btn">
+                      <span class="fileUpload">
+                          <span class="upl" id="upload">Upload file</span>
+                          <input name="file-draw" type="file" class="upload up file-btn-draw " id="drawUp" accept="image/jpeg" />
+                        </span><!-- btn-orange -->
+                     </div><!-- btn -->
+                     </div><!-- group -->
+                     </div><!-- form-group -->
                 
-            </div></div>
+                    <div class="dropdown show">
+                        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Typ odpovede
+                        </a>
+                        <button class="demoToolList btn btn-primary" onclick="c'.$questionId.'('.$questionId.')" id="clearCanvasSimple" type="button">Odznovu</button>
+                        <br>
+        
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item nahrat-subor-draw" href="#">Nahrat subor</a>
+                            <a class="dropdown-item skryt" href="#">Kreslenie</a>
+                        </div>
+                        <br>
+                    </div>
+                </div>
             ';
         ?>
             <script>
-                $('.nahrat-subor-draw').on('click', function(e) {
+                $('.nahrat-subor-draw').on('click', function(e)
+                {
                     e.preventDefault();
                     $(this).parents('.draw-parent').find('#upl-draw').show();
                     $(this).parents('.draw-parent').find('.canvas').hide();
                     $(this).parents('.draw-parent').find('.demoToolList').hide();
                     jsPlumb.repaintEverything();
                 });
-                $('.skryt').on('click', function(e) {
+                $('.skryt').on('click', function(e)
+                {
                     e.preventDefault();
                     $(this).parents('.draw-parent').find('#upl-draw').hide();
                     $(this).parents('.draw-parent').find('.canvas').show();
@@ -274,14 +281,13 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
             <script>
                 build_canvas();
-
                 var clickX<?php echo $questionId ?> = new Array();
                 var clickY<?php echo $questionId ?> = new Array();
                 var clickDrag<?php echo $questionId ?> = new Array();
                 var paint<?php echo $questionId ?>;
 
-
-                function build_canvas() {
+                function build_canvas()
+                {
                     var canvasDiv = document.getElementById('<?php echo $questionId ?>');
                     canvas<?php echo $questionId ?> = document.createElement('canvas');
                     canvas<?php echo $questionId ?>.setAttribute('width', 550);
@@ -294,7 +300,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     }
                 }
 
-                function c<?php echo $questionId ?>(id) {
+                function c<?php echo $questionId ?>(id)
+                {
                     var context = document.getElementById('canvas-' + id).getContext('2d');
                     context.clearRect(0, 0, canvas<?php echo $questionId ?>.width, canvas<?php echo $questionId ?>.height);
                     //context.closePath();
@@ -306,7 +313,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     context.save();
                 }
 
-                $('#<?php echo $questionId ?>').mousedown(function(e) {
+                $('#<?php echo $questionId ?>').mousedown(function(e)
+                {
                     var mouseX = e.pageX - this.offsetLeft;
                     var mouseY = e.pageY - this.offsetTop;
                     var id = <?php echo $questionId ?>;
@@ -316,7 +324,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     redraw<?php echo $questionId ?>(id);
                 });
 
-                $('#<?php echo $questionId ?>').mousemove(function(e) {
+                $('#<?php echo $questionId ?>').mousemove(function(e)
+                {
                     var id = <?php echo $questionId ?>;
                     if (paint<?php echo $questionId ?>) {
                         addClick<?php echo $questionId ?>(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
@@ -324,15 +333,17 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     }
                 });
 
-                $('#<?php echo $questionId ?>').mouseup(function(e) {
+                $('#<?php echo $questionId ?>').mouseup(function()
+                {
                     paint<?php echo $questionId ?> = false;
                 });
 
-                $('#<?php echo $questionId ?>').mouseleave(function(e) {
+                $('#<?php echo $questionId ?>').mouseleave(function()
+                {
                     paint<?php echo $questionId ?> = false;
                 });
 
-                $(document).on('click', '.send_answers', function(event) {
+                $(document).on('click', '.send_answers', function() {
                     var dataURL = canvas<?php echo $questionId ?>.toDataURL("image/jpeg", 1);
                     var id = <?php echo $questionId ?>;
                     $.ajax({
@@ -347,13 +358,15 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     })
                 })
 
-                function addClick<?php echo $questionId ?>(x, y, dragging) {
+                function addClick<?php echo $questionId ?>(x, y, dragging)
+                {
                     clickX<?php echo $questionId ?>.push(x);
                     clickY<?php echo $questionId ?>.push(y);
                     clickDrag<?php echo $questionId ?>.push(dragging);
                 }
 
-                function redraw<?php echo $questionId ?>(id) {
+                function redraw<?php echo $questionId ?>(id)
+                {
                     var context = document.getElementById('canvas-' + id).getContext('2d');
                     context.clearRect(0, 0, canvas<?php echo $questionId ?>.width, canvas<?php echo $questionId ?>.height); // Clears the canvas
 
@@ -361,11 +374,15 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     context.lineJoin = "round";
                     context.lineWidth = 5;
 
-                    for (var i = 0; i < clickX<?php echo $questionId ?>.length; i++) {
+                    for (var i = 0; i < clickX<?php echo $questionId ?>.length; i++)
+                    {
                         context.beginPath();
-                        if (clickDrag<?php echo $questionId ?>[i] && i) {
+                        if (clickDrag<?php echo $questionId ?>[i] && i)
+                        {
                             context.moveTo(clickX<?php echo $questionId ?>[i - 1], clickY<?php echo $questionId ?>[i - 1]);
-                        } else {
+                        }
+                        else
+                        {
                             context.moveTo(clickX<?php echo $questionId ?>[i] - 1, clickY<?php echo $questionId ?>[i]);
                         }
                         context.lineTo(clickX<?php echo $questionId ?>[i], clickY<?php echo $questionId ?>[i]);
@@ -380,7 +397,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
             echo '<hr>';
         }
-        if ($questions['type'] == 'math') {
+        if ($questions['type'] == 'math')
+        {
             $questionT = $questions['id'];
             echo '<div class="math-parent">
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
@@ -389,32 +407,28 @@ if ($sessionTestCode == $selectedData['test_code']) {
                    <math-field id="' . $questions['id'] . '" virtual-keyboard-mode="manual" class="testInput math border mb-3" style="display: none"></math-field>
                 ';
             echo '      <script src="https://unpkg.com/mathlive/dist/mathlive.min.js"></script>';
-            echo '
-            
-<div class="form-group upl" style="display: none">
-<div class="input-group">
-  <input type="text" class="form-control" readonly>
-<div class="input-group-btn">
-  <span class="fileUpload">
-      <span class="upl" id="upload">Upload file</span>
-      <input name="file-math" type="file" class="upload up file-btn-math" id="mathUp" accept="image/jpeg" />
-    </span><!-- btn-orange -->
- </div><!-- btn -->
- </div><!-- group -->
- </div><!-- form-group -->
+            echo '<div class="form-group upl" style="display: none">
+                    <div class="input-group">
+                      <input type="text" class="form-control" readonly>
+                    <div class="input-group-btn">
+                      <span class="fileUpload">
+                          <span class="upl" id="upload">Upload file</span>
+                          <input name="file-math" type="file" class="upload up file-btn-math" id="mathUp" accept="image/jpeg" />
+                        </span><!-- btn-orange -->
+                     </div><!-- btn -->
+                     </div><!-- group -->
+                   </div><!-- form-group -->
 
-            <div class="dropdown show">
-                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Typ odpovede
-                </a>
-
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item nahrat-subor" href="#">Nahranim suboru</a>
-                    <a class="dropdown-item vyraz" href="#">Matematickým výrazom</a>
-                </div>
-            </div>
-            </div>
-            ';
+                    <div class="dropdown show">
+                        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Typ odpovede
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item nahrat-subor" href="#">Nahranim suboru</a>
+                            <a class="dropdown-item vyraz" href="#">Matematickým výrazom</a>
+                        </div>
+                    </div>
+                    </div>';
         ?>
 
 <?php
@@ -423,18 +437,15 @@ if ($sessionTestCode == $selectedData['test_code']) {
     }
     echo '</div>
                 <button data-clicked="false" type="submit" id="sendTheTest" name="sendTheTest" class="send_answers odoslat">Odoslať test</button>
-    </div>
+          </div>
     </form>';
 }
 
 ?>
 
-<script>
-
-</script>
-
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function()
+    {
         $('.nahrat-subor').on('click', function(e)
         {
             e.preventDefault();
@@ -453,7 +464,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
             jsPlumb.repaintEverything();
         });
 
-        $(window).on('resize', function() {
+        $(window).on('resize', function()
+        {
             jsPlumb.repaintEverything();
         })
 
@@ -465,8 +477,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
             {
                 sendTheTest();
                 clearInterval(i);
-                console.log(checkCookie("timerMinutes"));
-                console.log(checkCookie("timerSeconds"));
                 delete_cookie('timerMinutes');
                 delete_cookie('timerSeconds');
                 $('#showModal8').modal
@@ -489,12 +499,14 @@ if ($sessionTestCode == $selectedData['test_code']) {
             var left = new Array()
             var right = new Array()
 
-            $('.connect_right').each(function() {
+            $('.connect_right').each(function()
+            {
                 right.push($(this).val())
                 left.push($(this).attr("id"))
             })
             let i = 0
-            $('.testInput').each(function() {
+            $('.testInput').each(function()
+            {
                 if ($(this)[0].classList.contains('checkbox'))
                 {
                     data.push({
@@ -562,15 +574,14 @@ if ($sessionTestCode == $selectedData['test_code']) {
                         }
                         if (form_data_math)
                         {
-                            $.ajax({
+                            $.ajax
+                            ({
                                 url: 'uploadFileMath.php',
                                 method: "POST",
                                 contentType: false,
                                 processData: false,
                                 data: form_data_math,
-                                success: function(data) {
-                                    console.log(data);
-                                }
+                                success: function(data) {}
                             })
                         }
                     }
@@ -605,7 +616,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
                     if (form_data_draw)
                     {
-                        $.ajax({
+                        $.ajax
+                        ({
                             url: 'uploadFileDraw.php',
                             method: "POST",
                             contentType: false,
@@ -618,14 +630,13 @@ if ($sessionTestCode == $selectedData['test_code']) {
 
             })
 
-            $.ajax({
+            $.ajax
+            ({
                 url: "controllers/addTestAnswer.php",
                 method: "POST",
                 cache: false,
                 data: JSON.stringify(data),
-                success: function(result) {
-                    //console.log(result)
-                }
+                success: function(result) {}
             });
         }
 
@@ -683,11 +694,16 @@ if ($sessionTestCode == $selectedData['test_code']) {
             }
             else
             {
-                if ((iTimeMinutes < 10) || (iTimeMinutes < "10")) {
+                if ((iTimeMinutes < 10) || (iTimeMinutes < "10"))
+                {
                     document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + "0" + iTimeMinutes + ":" + iTimeSeconds;
-                } else if ((iTimeSeconds < 10) || (iTimeSeconds < "10")) {
+                }
+                else if ((iTimeSeconds < 10) || (iTimeSeconds < "10"))
+                {
                     document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + iTimeMinutes + ":" + "0" + iTimeSeconds;
-                } else {
+                }
+                else
+                {
                     document.getElementById("fixedTimer").innerHTML = "Zostávajúci čas " + iTimeMinutes + ":" + iTimeSeconds;
                 }
             }
@@ -721,7 +737,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
         {
             var names = [];
             var length = $(this).get(0).files.length;
-            for (var i = 0; i < $(this).get(0).files.length; ++i) {
+            for (var i = 0; i < $(this).get(0).files.length; ++i)
+            {
                 names.push($(this).get(0).files[i].name);
             }
             if (length > 2)

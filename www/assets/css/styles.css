@@ -929,3 +929,9 @@ input:checked + .slider:before {
     font-weight: bolder;
     margin-bottom: 5px;
 }
+
+.redirectRight, .btnRight
+{
+    font-size: 18px;
+}
+

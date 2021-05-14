@@ -8,7 +8,8 @@ $sql = "DELETE FROM test WHERE id = '$id'";
 
 $conn->query($sql);
 
-if($conn->query($sql)) {
+if($conn->query($sql))
+{
     echo 1;
 } 
 else {
