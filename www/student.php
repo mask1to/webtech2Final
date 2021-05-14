@@ -258,12 +258,14 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     e.preventDefault();
                     $(this).parents('.draw-parent').find('#upl-draw').show();
                     $(this).parents('.draw-parent').find('.canvas').hide();
+                    jsPlumb.repaintEverything();
                 });
                 $('.skryt').on('click', function(e) {
                     e.preventDefault();
                     $(this).parents('.draw-parent').find('#upl-draw').hide();
                     $(this).parents('.draw-parent').find('.canvas').show();
                     document.getElementById('drawUp').value = '';
+                    jsPlumb.repaintEverything();
                 });
             </script>
 
@@ -298,7 +300,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     clickY<?php echo $questionId ?> = new Array();
                     clickDrag<?php echo $questionId ?> = new Array();
 
-                    console.log(clickX<?php echo $questionId ?>);
                     context.save();
                 }
 
@@ -347,7 +348,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     clickX<?php echo $questionId ?>.push(x);
                     clickY<?php echo $questionId ?>.push(y);
                     clickDrag<?php echo $questionId ?>.push(dragging);
-                    console.log(clickX<?php echo $questionId ?>);
                 }
 
                 function redraw<?php echo $questionId ?>(id) {
@@ -437,6 +437,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
             console.log($(this));
             $(this).parents('.math-parent').find('.upl').show();
             $(this).parents('.math-parent').find('.testInput').hide();
+            jsPlumb.repaintEverything();
         });
 
         $('.vyraz').on('click', function(e)
@@ -445,7 +446,12 @@ if ($sessionTestCode == $selectedData['test_code']) {
             $(this).parents('.math-parent').find('.upl').hide();
             $(this).parents('.math-parent').find('.testInput').show();
             document.getElementById('mathUp').value = '';
+            jsPlumb.repaintEverything();
         });
+
+        $(window).on('resize', function() {
+            jsPlumb.repaintEverything();
+        })
 
         $(".odoslat").click(function(e)
         {
