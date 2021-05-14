@@ -74,6 +74,9 @@ if(isset($_POST['theModalButton']) || isset($_POST['theModalButtonTest']))
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="docs.php">Technická dokumentácia</a>
+                    </li>
                     <?php
 
                     if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
