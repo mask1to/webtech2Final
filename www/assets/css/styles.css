@@ -599,6 +599,7 @@ body {
 .wrapper {
     max-width: 600px;
     margin: 20px auto;
+    border-radius: 10px;
 }
 
 .content {
@@ -924,5 +925,9 @@ input:checked + .slider:before {
 .bestModalBtn
 {
     margin-right: 215px;
+}
+
+#clearCanvasSimple{
+    border-radius: .25rem!important;
 }
 

@@ -251,7 +251,6 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 <br>
                 <button class="demoToolList" onclick="c'.$questionId.'('.$questionId.')" id="clearCanvasSimple" type="button">Odznovu</button>
             </div></div>
-            
             ';
         ?>
             <script>
@@ -287,7 +286,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     canvas<?php echo $questionId ?>.setAttribute('width', 550);
                     canvas<?php echo $questionId ?>.setAttribute('height', 220);
                     canvas<?php echo $questionId ?>.setAttribute('id', 'canvas-' + <?php echo $questionId ?>);
-                    canvas<?php echo $questionId ?>.style = "border:thin solid black;";
+                    canvas<?php echo $questionId ?>.style = "border:thin solid black; border-radius: 20px";
                     canvasDiv.appendChild(canvas<?php echo $questionId ?>);
                     if (typeof G_vmlCanvasManager != 'undefined') {
                         canvas<?php echo $questionId ?> = G_vmlCanvasManager.initElement(canvas);
