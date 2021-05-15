@@ -103,7 +103,7 @@ $(document).ready(function ()
         });
     });
 
-    $(document).on('click', '#addAnswer', function (e)
+    $(document).on('click', '.addAnswer', function (e)
     {
         e.preventDefault();
         addOption($(this));
@@ -311,7 +311,7 @@ $(document).ready(function ()
             '<a href="#" class="d-inline-block deleteQuestion"><i class="bi bi-x-circle-fill"></i></a></div>' +
             '<label class="d-block col-form-label col-form-label-lg">Znenie otázky</label>' +
             '<input type="text" class="form-control form-control-lg mb-4 questionInput" name="questionTitle" placeholder="Otázka" required>' +
-            '<button id="addAnswer" class="btn btn-secondary">Pridať možnosť</button>' +
+            '<button class="btn btn-secondary addAnswer">Pridať možnosť</button>' +
             '</div>'));
         question.insertBefore('#addTest').slideDown("fast");
     }

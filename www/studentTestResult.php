@@ -65,10 +65,10 @@ $testCode = $_GET['testCode'];
                                 }
                                 echo '<label class="form-check-label">' . $rowOption['text'] . '</label>';
 
-                                if (($rowOption['aCorrect'] == 1 && $rowOption['points'] > 0) || ($rowOption['aCorrect'] == 0 && $rowOption['points'] == 0))
+                                if (($rowOption['aCorrect'] == 1 && $rowOption['points'] > 0) || ($rowOption['aCorrect'] == 0 && $rowOption['points'] > 0))
                                 {
                                     echo '<i class="bi bi-check-circle-fill correctAnswerCheck ml-3"></i>';
-                                } else if(($rowOption['aCorrect'] == 0 && $rowOption['points'] > 0) || ($rowOption['aCorrect'] == 1 && $rowOption['points'] == 0)) {
+                                } else if(($rowOption['aCorrect'] == 1 && $rowOption['points'] == 0)) {
                                     echo '<i class="bi bi-x-circle-fill wrongAnswerCheck ml-3"></i>';
                                 }
                                 echo '</div>';
