@@ -222,7 +222,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
             echo '<div class="draw-parent">
                    <p class="text-muted""><b>Body: ' . $questions['total_points'] . '</b></p>
                    <p class="text-justify h5 pb-2 font-weight-bold">' . $questions['name'] . '</p>
-                   <div id="' . $questionId . '" class="testInput draw canvasDiv canvas" name="' . $questionId . '"></div>';
+                   <div id="canvasParent-' . $questionId . '" class="testInput draw canvasDiv canvas" name="' . $questionId . '"></div>';
 
             echo '
                 <div class="form-group upl-draw" style="display: none">
@@ -261,7 +261,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                 var paint<?php echo $questionId ?>;
 
                 function build_canvas() {
-                    var canvasDiv = document.getElementById('<?php echo $questionId ?>');
+                    var canvasDiv = document.getElementById('canvasParent-<?php echo $questionId ?>');
                     canvas<?php echo $questionId ?> = document.createElement('canvas');
                     canvas<?php echo $questionId ?>.setAttribute('width', 550);
                     canvas<?php echo $questionId ?>.setAttribute('height', 220);
@@ -285,7 +285,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     context.save();
                 }
 
-                $('#<?php echo $questionId ?>').mousedown(function(e) {
+                $('#canvasParent-<?php echo $questionId ?>').mousedown(function(e) {
                     var mouseX = e.pageX - this.offsetLeft;
                     var mouseY = e.pageY - this.offsetTop;
                     var id = <?php echo $questionId ?>;
@@ -295,7 +295,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     redraw<?php echo $questionId ?>(id);
                 });
 
-                $('#<?php echo $questionId ?>').mousemove(function(e) {
+                $('#canvasParent-<?php echo $questionId ?>').mousemove(function(e) {
                     var id = <?php echo $questionId ?>;
                     if (paint<?php echo $questionId ?>) {
                         addClick<?php echo $questionId ?>(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
@@ -303,11 +303,11 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     }
                 });
 
-                $('#<?php echo $questionId ?>').mouseup(function() {
+                $('#canvasParent-<?php echo $questionId ?>').mouseup(function() {
                     paint<?php echo $questionId ?> = false;
                 });
 
-                $('#<?php echo $questionId ?>').mouseleave(function() {
+                $('#canvasParent-<?php echo $questionId ?>').mouseleave(function() {
                     paint<?php echo $questionId ?> = false;
                 });
 
@@ -569,7 +569,7 @@ if ($sessionTestCode == $selectedData['test_code']) {
                     if (draw) {
                         var form_data_draw = new FormData();
                         form_data_draw.append('file', draw);
-                        form_data_draw.append('id', $(this).attr("id"));
+                        form_data_draw.append('id', $(this).attr("name"));
                     }
 
                     if (form_data_draw) {
@@ -582,8 +582,8 @@ if ($sessionTestCode == $selectedData['test_code']) {
                             success: function(data) {}
                         })
                     } else {
-                        var dataURL = $('#canvas-'+ $(this).attr("id"))[0].toDataURL("image/jpeg", 1);
-                        var id = $(this).attr("id");
+                        var dataURL = $('#canvas-'+ $(this).attr("name"))[0].toDataURL("image/jpeg", 1);
+                        var id = $(this).attr("name");
                         $.ajax({
                             type: "post",
                             url: "student.php",
