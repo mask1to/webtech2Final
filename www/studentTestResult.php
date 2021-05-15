@@ -50,9 +50,8 @@ $testCode = $_GET['testCode'];
                                 </div>
                                 <label class="d-block col-form-label col-form-label-lg">' . $rowQuestion['name'] . '</label>';
 
-                            $sqlOptions = "SELECT a.question_id, a.text, a.isCorrect as aCorrect, q.isCorrect as qCorrect FROM answer a
-                            JOIN questionOption q ON q.question_id = a.question_id
-                            WHERE q.name = a.text AND q.question_id = '$questionId' AND a.user_id = '$id'";
+                            $sqlOptions = "SELECT a.question_id, a.text, a.isCorrect as aCorrect, a.points FROM answer a
+                            WHERE a.question_id = '$questionId' AND a.user_id = '$id'";
                             $resultOptions = $conn->query($sqlOptions);
                             while ($rowOption = $resultOptions->fetch_assoc())
                             {
@@ -66,10 +65,10 @@ $testCode = $_GET['testCode'];
                                 }
                                 echo '<label class="form-check-label">' . $rowOption['text'] . '</label>';
 
-                                if ($rowOption['qCorrect'] == 1)
+                                if (($rowOption['aCorrect'] == 1 && $rowOption['points'] > 0) || ($rowOption['aCorrect'] == 0 && $rowOption['points'] == 0))
                                 {
                                     echo '<i class="bi bi-check-circle-fill correctAnswerCheck ml-3"></i>';
-                                } else {
+                                } else if(($rowOption['aCorrect'] == 0 && $rowOption['points'] > 0) || ($rowOption['aCorrect'] == 1 && $rowOption['points'] == 0)) {
                                     echo '<i class="bi bi-x-circle-fill wrongAnswerCheck ml-3"></i>';
                                 }
                                 echo '</div>';
